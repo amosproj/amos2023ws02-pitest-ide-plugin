@@ -1,10 +1,8 @@
 # Pitest IDE Plugin (AMOS WS 2023/2024 Project #2)
 
-<!-- Project logo here:
 <p align="center">
-  <img src="/path/to/logo" alt="Pitest IDE Plugin Logo" width="250"/>
+  <img src="Deliverables/sprint-01/team-logo.png" alt="Pitest IDE Plugin Logo" width="250"/>
 </p>
--->
 
 ## About the Project
 
