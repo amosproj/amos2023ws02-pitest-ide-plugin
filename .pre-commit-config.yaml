@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2023 Brianne Oberson <brianne.oberson@gmail.com>
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-yaml
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: no-commit-to-branch
+        args: ["--branch", "main", "--branch", "dev"]
+
+  - repo: git://github.com/jcchavezs/pre-commit-kotlin
+    rev: HEAD
+    hooks:
+      - id: mvn-verify # it does not accept arguments
+      - id: ktlint
+        args:
+        - --color
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.3
+    hooks:
+      - id: prettier
+
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v2.1.0
+    hooks:
+      - id: reuse
