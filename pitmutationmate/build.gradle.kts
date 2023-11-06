@@ -2,6 +2,16 @@ plugins {
   id("java")
   id("org.jetbrains.kotlin.jvm") version "1.9.0"
   id("org.jetbrains.intellij") version "1.15.0"
+  id("info.solidsoft.pitest") version "1.15.0"
+}
+
+tasks.test {
+  useJUnitPlatform()
+}
+
+dependencies {
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
 group = "com.amos.pitmutationmate"
