@@ -1,4 +1,4 @@
 package com.amos.pitmutationmate.pitmutationmate
 
-class display {
+class Display {
 }

@@ -1,4 +1,4 @@
 package com.amos.pitmutationmate.pitmutationmate
 
-class xmlParser {
+class GradleTask {
 }
