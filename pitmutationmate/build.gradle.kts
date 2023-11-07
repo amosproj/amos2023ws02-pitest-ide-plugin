@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023
+
 plugins {
   id("java")
   id("org.jetbrains.kotlin.jvm") version "1.9.0"
