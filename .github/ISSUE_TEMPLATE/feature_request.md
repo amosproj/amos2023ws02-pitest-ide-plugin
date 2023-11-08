@@ -27,9 +27,13 @@ assignees: ''
 
 ## Definition of done (DoD)
 
-- Added only after week 5
-- The same for all features
-- Here goes the project specific part
+- Acceptance criteria are met.
+- Upload the work products to the GitHub repository or incorporate them into the wiki.
+- The bill of materials section of the planning documents is updated.
+- A pull request is created for each related branch.
+- The work products in the pull requests are reviewed.
+- The corresponding branches are merged and closed - (Without closing the Issue!).
+- All specified conventions are complied with.
 
 ## DoD general criteria
 
