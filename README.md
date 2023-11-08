@@ -6,8 +6,8 @@ SPDX-FileCopyrightText: 2023
 # Pitest IDE Plugin (AMOS WS 2023/2024 Project #2)
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="Deliverables/sprint-01/team-logo-darkmode.png">
-  <img alt="Text changing depending on mode. Light: 'So light!' Dark: 'So dark!'" src="Deliverables/sprint-01/team-logo.png">
+  <source media="(prefers-color-scheme: dark)" srcset="Deliverables/sprint-01/team-logo-darkmode.png" width="250">
+  <img alt="Text changing depending on mode. Light: 'So light!' Dark: 'So dark!'" src="Deliverables/sprint-01/team-logo.png" width="250">
 </picture>
 
 ## About the Project
