@@ -5,9 +5,10 @@ SPDX-FileCopyrightText: 2023
 
 # Pitest IDE Plugin (AMOS WS 2023/2024 Project #2)
 
-<p align="center">
-  <img src="Deliverables/sprint-01/team-logo.png" alt="Pitest IDE Plugin Logo" width="250"/>
-</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="Deliverables/sprint-01/team-logo-darkmode.png">
+  <img alt="Text changing depending on mode. Light: 'So light!' Dark: 'So dark!'" src="Deliverables/sprint-01/team-logo.png">
+</picture>
 
 ## About the Project
 
