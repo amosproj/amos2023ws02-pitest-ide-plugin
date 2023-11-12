@@ -30,8 +30,8 @@
 
   </extensions>
     <actions>
-        <action id="com.amos.pitmutationmate.pitmutationmate.RunConfiguration"
-                class="com.amos.pitmutationmate.pitmutationmate.RunConfiguration" text="PITest Run"
+        <action id="com.amos.pitmutationmate.pitmutationmate.RunConfigurationAction"
+                class="com.amos.pitmutationmate.pitmutationmate.RunConfigurationAction" text="PITest Run"
                 description="Initializes a PITest run on the selected class">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
             <keyboard-shortcut
