@@ -16,6 +16,9 @@ dependencies {
   implementation("org.pitest:pitest-command-line:1.7.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
+  implementation("org.jetbrains.kotlinx:kotlinx-xml-builder:0.25.0")
+
 }
 
 group = "com.amos.pitmutationmate"
