@@ -1,6 +1,9 @@
 #SPDX-License-Identifier: MIT
 #SPDX-FileCopyrightText: 2023
 
+# exclude run files
+.run/
+
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
