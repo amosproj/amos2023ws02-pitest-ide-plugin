@@ -38,21 +38,6 @@ class CustomMutationResultListenerFactory : MutationResultListenerFactory {
 
     // Define your ResultDataStructure data class according to your requirements
     private data class ResultDataStructure(
-        val mutationInfos: List<MutationInfo>
-    )
-
-    private data class MutationInfo(
-        val detected: Boolean,
-        val status: String,
-        val numberOfTestsRun: Int,
-        val sourceFile: String,
-        val mutatedClass: String,
-        val lineNumber: Int,
-        val mutatedMethod: String,
-        val methodDescription: String,
-        val mutator: String,
-        val indexes: List<Int>,
-        val killingTest: String,
-        val description: String
+        // Implement your data structure fields here
     )
 }
