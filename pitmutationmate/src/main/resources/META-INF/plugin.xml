@@ -31,6 +31,10 @@
                                 language=""/>
 <!--      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.RunConfigurationMarker"-->
 <!--                                language="java"/>-->
+
+      <configurationType
+          implementation="com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfigurationType"/>
+
   </extensions>
     <actions>
         <action id="com.amos.pitmutationmate.pitmutationmate.RunConfigurationAction"
