@@ -12,33 +12,25 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.ui.Messages
 import com.intellij.psi.PsiDocumentManager
 
-
 class RunConfigurationAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
-        println("RunConfigure Action Performed")
-
-        var project: com.intellij.openapi.project.Project? = e.project
-        var message: StringBuilder = StringBuilder(e.presentation.text + " Selected!")
-        var editor: Editor? = e.getData(CommonDataKeys.EDITOR_EVEN_IF_INACTIVE) //NAVIGATABLE)
-        var name: String = ""
+        val project: com.intellij.openapi.project.Project? = e.project
+        val message: StringBuilder = StringBuilder(e.presentation.text + " Selected!")
+        val editor: Editor? = e.getData(CommonDataKeys.EDITOR_EVEN_IF_INACTIVE) //NAVIGATABLE)
         if (editor != null) {
-            var document: Document? = editor.document
-            if (document != null) {
-                var psi = PsiDocumentManager.getInstance(project!!).getPsiFile(document)
-                if (psi != null) {
-                    message.append("\nSelected Element: ").append(psi.name)
-                    name = psi.name
-                }
+            val document: Document = editor.document
+            val psi = PsiDocumentManager.getInstance(project!!).getPsiFile(document)
+            if (psi != null) {
+                message.append("\nSelected Element: ").append(psi.name)
             }
         }
-        var title: String = e.presentation.description
+        val title: String = e.presentation.description
         Messages.showMessageDialog(
             project,
             message.toString(),
             title,
             Messages.getInformationIcon()
         )
-        val runConfig = RunConfiguration(name)
     }
 
     override fun update(e: AnActionEvent) {
@@ -50,7 +42,4 @@ class RunConfigurationAction : AnAction() {
         println("getActionUpdateThread")
         return super.getActionUpdateThread()
     }
-}
-
-class RunConfiguration(val fileName: String) {
 }
