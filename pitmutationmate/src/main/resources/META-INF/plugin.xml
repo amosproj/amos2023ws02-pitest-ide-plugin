@@ -16,7 +16,7 @@
        Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
        Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
   <description><![CDATA[
-    Enter short description for your plugin here.<br>
+    Pit Mutation Mate.<br>
     <em>most HTML tags may be used</em>
   ]]></description>
 
@@ -27,7 +27,10 @@
   <!-- Extension points defined by the plugin.
        Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
   <extensions defaultExtensionNs="com.intellij">
-
+      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.RunConfigurationMarker"
+                                language=""/>
+<!--      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.RunConfigurationMarker"-->
+<!--                                language="java"/>-->
   </extensions>
     <actions>
         <action id="com.amos.pitmutationmate.pitmutationmate.RunConfigurationAction"
