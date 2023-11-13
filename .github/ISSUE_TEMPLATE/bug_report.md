@@ -1,8 +1,3 @@
-<!--
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2023
--->
-
 ---
 
 name: Bug report
@@ -45,3 +40,8 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+<!--
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2023
+-->
