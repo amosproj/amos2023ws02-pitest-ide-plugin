@@ -22,6 +22,7 @@ class GradleTaskExecutor {
         gradleExecutable: String?,
         taskName: String?
     ): ProcessHandler {
+        println("GradeTaskExecutor executeTask")
         val commandLine = buildCommandLine(gradleExecutable, taskName, projectDir)
         val processHandler = createProcessHandler(commandLine)
         ProcessTerminatedListener.attach(processHandler)

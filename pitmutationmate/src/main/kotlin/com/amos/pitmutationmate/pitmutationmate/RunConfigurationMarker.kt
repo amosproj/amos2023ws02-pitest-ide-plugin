@@ -12,13 +12,16 @@ class RunConfigurationMarker : RunLineMarkerContributor() {
     override fun getInfo(element: PsiElement): Info? {
         val gutterIcon: Icon = AllIcons.General.ArrowRight
         val toolTip = "Run Pit Mutation Mate"
-        val runActions: Array<AnAction> = arrayOf(RunConfigurationAction())
+        val runActions: Array<RunConfigurationAction> = arrayOf(RunConfigurationAction())
+        for (runConfig in runActions) {
+            runConfig.init(element.text.toString())
+        }
         val toolTipProvider: (PsiElement) -> String = { _ -> toolTip }
 
         if (element.elementType.toString() == "CLASS") {
             return Info(gutterIcon, runActions, toolTipProvider)
         }
+
         return null
     }
-
 }
