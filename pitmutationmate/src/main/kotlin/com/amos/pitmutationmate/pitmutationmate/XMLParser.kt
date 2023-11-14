@@ -9,7 +9,7 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 class XMLParser {
-    private fun loadResultsFromXmlReport(xmlReportPath: String?): ResultData {
+    fun loadResultsFromXmlReport(xmlReportPath: String?): ResultData {
         // Implement the logic to parse the XML report and load key results into a data structure
         val resultData = ResultData()
         val documentBuilderFactory = DocumentBuilderFactory.newInstance()
@@ -31,7 +31,7 @@ class XMLParser {
                 val mutatedClass = element.getElementsByTagName("mutatedClass").item(0).textContent
                 val mutatedMethod = element.getElementsByTagName("mutatedMethod").item(0).textContent
                 val methodDescription = element.getElementsByTagName("methodDescription").item(0).textContent
-                val lineNumber = element.getAttribute("lineNumber").toInt()
+                val lineNumber = element.getElementsByTagName("lineNumber").item(0).textContent.toInt()
                 val mutator = element.getElementsByTagName("mutator").item(0).textContent
                 val indexesNodeList = element.getElementsByTagName("index")
                 val indexes = (0 until indexesNodeList.length).map { indexesNodeList.item(it).textContent.toInt() }
@@ -63,7 +63,7 @@ class XMLParser {
         return resultData
     }
 
-    private data class ResultData(
+    data class ResultData(
         val mutationResults: MutableList<MutationResult> = mutableListOf()
     ) {
         fun addMutationResult(mutationResult: MutationResult) {
