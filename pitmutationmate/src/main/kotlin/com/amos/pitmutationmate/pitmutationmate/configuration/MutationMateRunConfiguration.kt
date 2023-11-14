@@ -20,6 +20,7 @@ class MutationMateRunConfiguration(
     name: String?
 ) : RunConfigurationBase<MutationMateRunConfigurationOptions?>(project, factory, name) {
     private val projectDir: String
+    var className: String = ""
 
     init {
         projectDir = project.basePath!!

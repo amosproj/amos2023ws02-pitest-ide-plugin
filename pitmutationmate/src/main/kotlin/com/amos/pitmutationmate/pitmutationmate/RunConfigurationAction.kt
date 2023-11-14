@@ -3,6 +3,10 @@
 
 package com.amos.pitmutationmate.pitmutationmate
 
+import com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfigurationType
+import com.intellij.execution.ExecutorRegistry
+import com.intellij.execution.ProgramRunnerUtil
+import com.intellij.execution.RunManager
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
@@ -21,12 +25,16 @@ class RunConfigurationAction : AnAction() {
     }
 
     override fun actionPerformed(e: AnActionEvent) {
-        println("RunConfiguratorAction actionPerformed for class $className")
-        val project: com.intellij.openapi.project.Project? = e.project
-        val gradleTaskExecutor = GradleTaskExecutor()
-        if (project != null) {
-            project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
-        }
+        val runConfigs = RunManager.getInstance(e.project!!).getConfigurationSettingsList(MutationMateRunConfigurationType::class.java)
+        val executor = ExecutorRegistry.getInstance().getExecutorById("Run")
+
+        ProgramRunnerUtil.executeConfiguration(runConfigs.first(), executor!!)
+//        println("RunConfiguratorAction actionPerformed for class $className")
+//        val project: com.intellij.openapi.project.Project? = e.project
+//        val gradleTaskExecutor = GradleTaskExecutor()
+//        if (project != null) {
+//            project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
+//        }
     }
 
     override fun update(e: AnActionEvent) {
