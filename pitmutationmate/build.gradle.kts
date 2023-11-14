@@ -18,7 +18,10 @@ dependencies {
   implementation("org.junit.jupiter:junit-jupiter:5.8.1")
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-
+  // https://mvnrepository.com/artifact/org.jfree/jfreechart
+  implementation("org.jfree:jfreechart:1.0.19")
+  // https://mvnrepository.com/artifact/jfree/jcommon
+  implementation("org.jfree:jcommon:1.0.24")
 }
 
 group = "com.amos.pitmutationmate"
