@@ -1,8 +1,3 @@
-<!--
-SPDX-License-Identifier: MIT
-SPDX-FileCopyrightText: 2023
--->
-
 ---
 
 name: Feature request
@@ -43,3 +38,9 @@ assignees: ''
 - Product owner approved features
 - All tests are passing
 - Developers agreed to release
+
+ <!--
+SPDX-License-Identifier: MIT
+SPDX-FileCopyrightText: 2023
+-->
+
