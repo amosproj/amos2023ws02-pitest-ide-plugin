@@ -17,8 +17,7 @@ class ToolMenuAction : AnAction() {
     }
 
     override fun actionPerformed(e: AnActionEvent) {
-        println("RunConfiguratorAction actionPerformed for class $className")
-        val project: Project? = e.project
+        println("RunConfiguratorAction actionPerformed for whole project")
         val gradleTaskExecutor = GradleTaskExecutor()
         if (project != null) {
             project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
