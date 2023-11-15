@@ -9,7 +9,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
 
-class RunConfigurationAction : AnAction() {
+class ToolMenuAction : AnAction() {
     private lateinit var className: String
 
     fun init(cn: String) {

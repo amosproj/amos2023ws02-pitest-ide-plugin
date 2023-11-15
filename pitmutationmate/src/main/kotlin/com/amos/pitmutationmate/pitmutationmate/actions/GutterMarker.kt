@@ -7,11 +7,11 @@ import com.intellij.psi.util.elementType
 import javax.swing.Icon
 
 
-class RunConfigurationMarker : RunLineMarkerContributor() {
+class GutterMarker : RunLineMarkerContributor() {
     override fun getInfo(element: PsiElement): Info? {
         val gutterIcon: Icon = AllIcons.General.ArrowRight
         val toolTip = "Run Pit Mutation Mate"
-        val runActions: Array<RunConfigurationAction> = arrayOf(RunConfigurationAction())
+        val runActions: Array<ToolMenuAction> = arrayOf(ToolMenuAction())
         for (runConfig in runActions) {
             runConfig.init(element.text.toString())
         }
