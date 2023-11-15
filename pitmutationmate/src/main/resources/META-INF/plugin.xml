@@ -33,9 +33,9 @@
     <toolWindow id="Pitest Result" secondary="false" icon="AllIcons.Toolwindows.WebToolWindow" anchor="right"
                 factoryClass="com.amos.pitmutationmate.pitmutationmate.MutationTestToolWindowFactory"/>
 
-      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.RunConfigurationMarker"
+      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.actions.RunConfigurationMarker"
                                 language=""/>
-<!--      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.RunConfigurationMarker"-->
+<!--      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.actions.RunConfigurationMarker"-->
 <!--                                language="java"/>-->
 
       <configurationType
@@ -44,17 +44,23 @@
 
   </extensions>
     <actions>
-        <action id="com.amos.pitmutationmate.pitmutationmate.RunConfigurationAction"
-                class="com.amos.pitmutationmate.pitmutationmate.RunConfigurationAction" text="PITest Run"
-                description="Initializes a PITest run on the selected class">
+        <action id="com.amos.pitmutationmate.pitmutationmate.actions.RunConfigurationAction"
+                class="com.amos.pitmutationmate.pitmutationmate.actions.RunConfigurationAction" text="PiTest Run"
+                description="Initializes a PiTest run on the selected class">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
-            <keyboard-shortcut
+            <!-- <keyboard-shortcut
                     keymap="$default"
                     first-keystroke="control alt A"
                     second-keystroke="C"/>
             <mouse-shortcut
                 keymap="$default"
-                keystroke="control button3 doubleClick"/>
+                keystroke="control button3 doubleClick"/> -->
+        </action>
+        <action id="com.amos.pitmutationmate.pitmutationmate.actions.ContextMenuAction"
+                class="com.amos.pitmutationmate.pitmutationmate.actions.ContextMenuAction" text="PiTest Run"
+                description="Initializes a PiTest run on the selected class">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
         </action>
     </actions>
 </idea-plugin>

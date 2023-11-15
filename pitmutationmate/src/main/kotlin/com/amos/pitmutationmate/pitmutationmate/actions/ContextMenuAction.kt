@@ -1,0 +1,38 @@
+package com.amos.pitmutationmate.pitmutationmate.actions
+
+import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
+
+class ContextMenuAction: AnAction() {
+    override fun actionPerformed(e: AnActionEvent) {
+        println("ContextMenuAction actionPerformed")
+
+        val project: Project? = e.project
+        val gradleTaskExecutor = GradleTaskExecutor()
+        if (project != null) {
+            project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
+        }
+    }
+
+    override fun update(e: AnActionEvent) {
+        println("ContextMenuAction update")
+        
+        // Get the project and the file associated with the action event
+        val project: Project? = e.project
+        val file: VirtualFile? = e.getDataContext().getData("virtualFile") as VirtualFile?
+
+        // Check your condition to determine whether to enable or disable the action
+        val shouldEnable: Boolean = checkCondition(file)
+
+        // Enable or disable the action based on the condition
+        e.presentation.isEnabled = shouldEnable
+    }
+
+    private fun checkCondition(file: VirtualFile?): Boolean {
+        return file != null && (file.name.endsWith(".java") || file.name.endsWith(".kt"))
+    }
+
+}
