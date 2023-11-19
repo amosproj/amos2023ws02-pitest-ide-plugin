@@ -41,6 +41,7 @@
       <configurationType
           implementation="com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfigurationType"/>
 
+      <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.amos.pitmutationmate.pitmutationmate.MyLineMarkerProvider"/>
 
   </extensions>
     <actions>

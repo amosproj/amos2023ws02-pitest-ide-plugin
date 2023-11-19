@@ -1,11 +1,9 @@
 ---
-
 name: Feature request
 about: Suggest new feature (using user story)
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 ## User story
@@ -43,4 +41,3 @@ assignees: ''
 SPDX-License-Identifier: MIT
 SPDX-FileCopyrightText: 2023
 -->
-
