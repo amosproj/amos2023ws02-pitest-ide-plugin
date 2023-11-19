@@ -1,8 +1,11 @@
+// SPDX-FileCopyrightText: 2023 2023
+//
+// SPDX-License-Identifier: MIT
+
 package com.amos.pitmutationmate.pitmutationmate
 
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
 import com.intellij.icons.AllIcons
-import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.elementType
 import javax.swing.Icon
