@@ -57,4 +57,10 @@
                 keystroke="control button3 doubleClick"/>
         </action>
     </actions>
+<!--    <application-components>-->
+<!--        <component>-->
+<!--            <implementation-class>com.amos.pitmutationmate.pitmutationmate.visualization.EditorLineHighlighter-->
+<!--            </implementation-class>-->
+<!--        </component>-->
+<!--    </application-components>-->
 </idea-plugin>
