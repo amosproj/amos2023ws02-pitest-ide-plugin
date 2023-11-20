@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023
+
 package com.amos.pitmutationmate.pitmutationmate.actions
 
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
@@ -10,7 +13,7 @@ import javax.swing.Icon
 class GutterMarker : RunLineMarkerContributor() {
     override fun getInfo(element: PsiElement): Info? {
         val gutterIcon: Icon = AllIcons.General.ArrowRight
-        val toolTip = "Run Pit Mutation Mate"
+        val toolTip = "Run PIT MutationMate"
         val runActions: Array<ToolMenuAction> = arrayOf(ToolMenuAction())
         for (runConfig in runActions) {
             runConfig.init(element.text.toString())

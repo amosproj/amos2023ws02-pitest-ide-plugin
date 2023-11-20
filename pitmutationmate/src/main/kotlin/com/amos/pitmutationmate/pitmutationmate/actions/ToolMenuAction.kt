@@ -26,12 +26,10 @@ class ToolMenuAction : AnAction() {
     }
 
     override fun update(e: AnActionEvent) {
-        println("RunConfiguratorAction update")
         super.update(e)
     }
 
     override fun getActionUpdateThread(): ActionUpdateThread {
-        println("RunConfiguratorAction getActionUpdateThread")
         return super.getActionUpdateThread()
     }
 }

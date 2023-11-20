@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023
+
 package com.amos.pitmutationmate.pitmutationmate.actions
 
 import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
@@ -20,8 +23,6 @@ class ContextMenuAction: AnAction() {
     }
 
     override fun update(e: AnActionEvent) {
-        println("ContextMenuAction update")
-        
         // Get the project and the file associated with the action event
         val project: Project? = e.project
         val file: VirtualFile? = e.getDataContext().getData("virtualFile") as VirtualFile?
