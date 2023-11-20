@@ -34,15 +34,13 @@
                 factoryClass="com.amos.pitmutationmate.pitmutationmate.MutationTestToolWindowFactory"/>
 
       <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.RunConfigurationMarker"
-                                language=""/>
+                                language="kotlin"/>
 <!--      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.RunConfigurationMarker"-->
 <!--                                language="java"/>-->
 
       <configurationType
           implementation="com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfigurationType"/>
-
-      <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.amos.pitmutationmate.pitmutationmate.MyLineMarkerProvider"/>
-
+      <codeInsight.lineMarkerProvider implementationClass="HighlightGutterRenderer" language="kotlin"/>
   </extensions>
     <actions>
         <action id="com.amos.pitmutationmate.pitmutationmate.RunConfigurationAction"
@@ -58,10 +56,4 @@
                 keystroke="control button3 doubleClick"/>
         </action>
     </actions>
-<!--    <application-components>-->
-<!--        <component>-->
-<!--            <implementation-class>com.amos.pitmutationmate.pitmutationmate.visualization.EditorLineHighlighter-->
-<!--            </implementation-class>-->
-<!--        </component>-->
-<!--    </application-components>-->
 </idea-plugin>
