@@ -34,13 +34,10 @@
                 factoryClass="com.amos.pitmutationmate.pitmutationmate.MutationTestToolWindowFactory"/>
 
       <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.RunConfigurationMarker"
-                                language="kotlin"/>
-<!--      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.RunConfigurationMarker"-->
-<!--                                language="java"/>-->
+                                language=""/>
 
       <configurationType
           implementation="com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfigurationType"/>
-      <codeInsight.lineMarkerProvider implementationClass="HighlightGutterRenderer" language="kotlin"/>
   </extensions>
     <actions>
         <action id="com.amos.pitmutationmate.pitmutationmate.RunConfigurationAction"

@@ -1,24 +1,17 @@
 // SPDX-FileCopyrightText: 2023
-// SPDX-FileCopyrightText: 2023 2023
 // SPDX-License-Identifier: MIT
 
 package com.amos.pitmutationmate.pitmutationmate
 
+import HighlightGutterRenderer
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.colors.TextAttributesKey
-import com.intellij.openapi.editor.markup.GutterIconRenderer
+import com.intellij.openapi.editor.markup.MarkupModel
 import com.intellij.openapi.editor.markup.RangeHighlighter
-import com.intellij.openapi.ui.MessageType
-import com.intellij.openapi.ui.popup.Balloon
-import com.intellij.openapi.ui.popup.JBPopupFactory
-import com.intellij.ui.awt.RelativePoint
-import org.jetbrains.annotations.NotNull
-import java.awt.*
-import javax.swing.Icon
 
 class RunConfigurationAction : AnAction() {
     private lateinit var className: String
@@ -36,8 +29,11 @@ class RunConfigurationAction : AnAction() {
         if (project != null && editor != null) {
             project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
             if (editor is Editor) {
-                GutterIconExample.addGreenBar(editor, 10)
-                GutterIconExample.addRedBar(editor, 11)
+                val markupModel: MarkupModel = editor.markupModel
+                markupModel.removeAllHighlighters()
+                GutterIconExample.addBar(editor, "red", 10)
+                GutterIconExample.addBar(editor, "green", 11)
+                GutterIconExample.addBar(editor, "yellow", 12)
             }
         }
     }
@@ -53,182 +49,16 @@ class RunConfigurationAction : AnAction() {
         return super.getActionUpdateThread()
     }
 
-
-    class RedBarGutterRenderer : GutterIconRenderer() {
-        override fun equals(other: Any?): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun hashCode(): Int {
-            TODO("Not yet implemented")
-        }
-
-        @NotNull
-        override fun getIcon(): Icon {
-            return RED_BAR_ICON
-        }
-
-        @NotNull
-        override fun getAlignment(): Alignment {
-            return Alignment.LEFT // Adjust alignment as needed
-        }
-
-        override fun getTooltipText(): String? {
-            return "Test Text for Highlight"
-        }
-
-        override fun getClickAction(): AnAction? {
-            println("clicked")
-
-            return ShowTextAction("Clicked Test Text to show")
-        }
-
-        private class ShowTextAction(private val text: String) : AnAction() {
-            override fun actionPerformed(e: AnActionEvent) {
-                val editor: Editor? = e.getData(CommonDataKeys.EDITOR)
-                if (editor != null) {
-                    showTextBalloon(editor, text)
-                }
-            }
-
-            private fun showTextBalloon(editor: Editor?, text: String) {
-//                println("HALLOO" + text)
-                val balloon = JBPopupFactory.getInstance()
-                    .createHtmlTextBalloonBuilder(text, MessageType.INFO, null)
-                    .setFillColor(editor?.colorsScheme?.defaultBackground ?: Color.GRAY)
-                    .setHideOnAction(true)
-                    .setHideOnFrameResize(true)
-                    .setHideOnKeyOutside(true)
-                    .setHideOnClickOutside(true)
-                    .createBalloon()
-                var va = editor?.scrollingModel?.visibleArea
-                var x = va?.centerX ?: 0
-                var y = va?.centerY ?: 0
-                val point = RelativePoint(editor?.contentComponent!!, Point(x.toInt(), y.toInt()))
-                balloon.show(point, Balloon.Position.below)
-            }
-        }
-
-
-        private class RedBarIcon : Icon {
-            override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
-                g.setColor(Color.RED)
-                g.fillRect(x, y, iconWidth, iconHeight)
-            }
-
-            override fun getIconWidth(): Int {
-                return 10
-            }
-
-            override fun getIconHeight(): Int {
-                return 16
-            }
-
-        }
-
-        companion object {
-            private val RED_BAR_ICON: Icon = RedBarIcon()
-        }
-    }
-
-    class GreenBarGutterRenderer : GutterIconRenderer() {
-        override fun equals(other: Any?): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun hashCode(): Int {
-            TODO("Not yet implemented")
-        }
-
-        @NotNull
-        override fun getIcon(): Icon {
-            return GREEN_BAR_ICON
-        }
-
-        @NotNull
-        override fun getAlignment(): Alignment {
-            return Alignment.LEFT // Adjust alignment as needed
-        }
-
-        override fun getTooltipText(): String? {
-            return "Test Text for Highlight"
-        }
-
-        override fun getClickAction(): AnAction? {
-            println("clicked")
-
-            return ShowTextAction("Clicked Test Text to show")
-        }
-
-        private class ShowTextAction(private val text: String) : AnAction() {
-            override fun actionPerformed(e: AnActionEvent) {
-                val editor: Editor? = e.getData(CommonDataKeys.EDITOR)
-                if (editor != null) {
-                    showTextBalloon(editor, text)
-                }
-            }
-
-            private fun showTextBalloon(editor: Editor?, text: String) {
-                val balloon = JBPopupFactory.getInstance()
-                    .createHtmlTextBalloonBuilder(text, MessageType.INFO, null)
-                    .setFillColor(editor?.colorsScheme?.defaultBackground ?: Color.GRAY)
-                    .setHideOnAction(true)
-                    .setHideOnFrameResize(true)
-                    .setHideOnKeyOutside(true)
-                    .setHideOnClickOutside(true)
-                    .createBalloon()
-                var va = editor?.scrollingModel?.visibleArea
-                var x = va?.centerX ?: 0
-                var y = va?.centerY ?: 0
-                val point = RelativePoint(editor?.contentComponent!!, Point(x.toInt(), y.toInt()))
-                balloon.show(point, Balloon.Position.below)
-            }
-        }
-
-
-        private class GreenBarIcon : Icon {
-            override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
-                g.setColor(Color.GREEN)
-                g.fillRect(x, y, iconWidth, iconHeight)
-            }
-
-            override fun getIconWidth(): Int {
-                return 10
-            }
-
-            override fun getIconHeight(): Int {
-                return 16
-            }
-
-        }
-
-        companion object {
-            private val GREEN_BAR_ICON: Icon = GreenBarIcon()
-        }
-    }
-
     object GutterIconExample {
-        fun addRedBar(editor: Editor, lineNumber: Int) {
+        fun addBar(editor: Editor, color: String, lineNumber: Int) {
             val markupModel = editor.markupModel
-            val redBarGutterRenderer = RedBarGutterRenderer()
-            markupModel.removeAllHighlighters()
+            val barGutterRenderer = HighlightGutterRenderer(color)
             val rangeHighlighter: RangeHighlighter = markupModel.addLineHighlighter(
                 TextAttributesKey.createTextAttributesKey("RED_BAR_TEXT_ATTRIBUTES"),
                 lineNumber,
                 0
             )
-            rangeHighlighter.gutterIconRenderer = redBarGutterRenderer
-        }
-        fun addGreenBar(editor: Editor, lineNumber: Int) {
-            val markupModel = editor.markupModel
-            val greenBarGutterRenderer = GreenBarGutterRenderer()
-            markupModel.removeAllHighlighters()
-            val rangeHighlighter: RangeHighlighter = markupModel.addLineHighlighter(
-                TextAttributesKey.createTextAttributesKey("GREEN_BAR_TEXT_ATTRIBUTES"),
-                lineNumber,
-                0
-            )
-            rangeHighlighter.gutterIconRenderer = greenBarGutterRenderer
+            rangeHighlighter.gutterIconRenderer = barGutterRenderer
         }
     }
 }
