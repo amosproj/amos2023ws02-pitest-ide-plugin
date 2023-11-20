@@ -3,7 +3,6 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
-<<<<<<< HEAD:pitmutationmate/src/main/kotlin/com/amos/pitmutationmate/pitmutationmate/RunConfigurationAction.kt
 import HighlightGutterRenderer
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
@@ -13,13 +12,8 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.MarkupModel
 import com.intellij.openapi.editor.markup.RangeHighlighter
-=======
 import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
-import com.intellij.openapi.actionSystem.ActionUpdateThread
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
->>>>>>> main:pitmutationmate/src/main/kotlin/com/amos/pitmutationmate/pitmutationmate/actions/ToolMenuAction.kt
 
 class ToolMenuAction : AnAction() {
     private lateinit var className: String

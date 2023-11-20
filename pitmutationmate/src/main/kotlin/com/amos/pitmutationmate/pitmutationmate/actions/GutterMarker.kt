@@ -1,15 +1,7 @@
-<<<<<<< HEAD:pitmutationmate/src/main/kotlin/com/amos/pitmutationmate/pitmutationmate/RunConfigurationMarker.kt
-// SPDX-FileCopyrightText: 2023 2023
-//
-// SPDX-License-Identifier: MIT
-
-package com.amos.pitmutationmate.pitmutationmate
-=======
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2023
 
 package com.amos.pitmutationmate.pitmutationmate.actions
->>>>>>> main:pitmutationmate/src/main/kotlin/com/amos/pitmutationmate/pitmutationmate/actions/GutterMarker.kt
 
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
 import com.intellij.icons.AllIcons
