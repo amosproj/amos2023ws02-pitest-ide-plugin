@@ -35,13 +35,9 @@
 
       <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.actions.GutterMarker"
                                 language=""/>
-<!--      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.actions.RunConfigurationMarker"-->
-<!--                                language="java"/>-->
 
       <configurationType
           implementation="com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfigurationType"/>
-
-
   </extensions>
     <actions>
         <action id="com.amos.pitmutationmate.pitmutationmate.actions.ToolMenuAction"

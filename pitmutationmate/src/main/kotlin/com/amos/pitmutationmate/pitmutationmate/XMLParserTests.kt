@@ -4,8 +4,8 @@
 package com.amos.pitmutationmate.pitmutationmate
 
 import org.junit.Test
-import  java.io.File
 import org.junit.jupiter.api.Assertions.*
+import java.io.File
 
 class XMLParserTests{
     fun getTestInputFilepath(filename: String): File {
