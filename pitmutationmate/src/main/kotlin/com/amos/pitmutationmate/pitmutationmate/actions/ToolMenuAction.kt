@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023
 // SPDX-License-Identifier: MIT
 
-package com.amos.pitmutationmate.pitmutationmate
+package com.amos.pitmutationmate.pitmutationmate.actions
 
 import HighlightGutterRenderer
 import com.intellij.openapi.actionSystem.ActionUpdateThread
@@ -12,8 +12,10 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.MarkupModel
 import com.intellij.openapi.editor.markup.RangeHighlighter
+import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
+import com.intellij.openapi.project.Project
 
-class RunConfigurationAction : AnAction() {
+class ToolMenuAction : AnAction() {
     private lateinit var className: String
 
     fun init(cn: String) {
@@ -21,8 +23,8 @@ class RunConfigurationAction : AnAction() {
     }
 
     override fun actionPerformed(e: AnActionEvent) {
-        println("RunConfiguratorAction actionPerformed for class $className")
-        val project: com.intellij.openapi.project.Project? = e.project
+        println("RunConfiguratorAction actionPerformed for whole project")
+        val project: Project? = e.project
         val gradleTaskExecutor = GradleTaskExecutor()
         val editor: Any? = e.getData(CommonDataKeys.EDITOR)
         println(editor)
@@ -40,12 +42,10 @@ class RunConfigurationAction : AnAction() {
 
 
     override fun update(e: AnActionEvent) {
-        println("RunConfiguratorAction update")
         super.update(e)
     }
 
     override fun getActionUpdateThread(): ActionUpdateThread {
-        println("RunConfiguratorAction getActionUpdateThread")
         return super.getActionUpdateThread()
     }
 
