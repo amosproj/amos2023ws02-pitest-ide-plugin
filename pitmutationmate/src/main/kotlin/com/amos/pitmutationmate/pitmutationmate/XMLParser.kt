@@ -57,7 +57,7 @@ class XMLParser {
                 }
             }
         } catch (e: Exception) {
-            // Handle parsing errors
+            //TODO: Handle Parser exceptions
             e.printStackTrace()
         }
 

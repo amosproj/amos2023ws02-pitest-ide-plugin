@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.File
 
-public class XMLParserTests{
+class XMLParserTests{
 
     private fun getTestInputFilepath(filename: String): File {
         val path = "src/test/resources/$filename"
