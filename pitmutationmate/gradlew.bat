@@ -1,7 +1,3 @@
-REM SPDX-FileCopyrightText: 2023 2023
-REM
-REM SPDX-License-Identifier: MIT
-
 @rem
 @rem Copyright 2015 the original author or authors.
 @rem

@@ -28,4 +28,4 @@ jobs:
           arguments: build
 
       - name: Run Tests
-        run: ./gradlew test --no-daemon
+        run: ./gradle test --no-daemon
