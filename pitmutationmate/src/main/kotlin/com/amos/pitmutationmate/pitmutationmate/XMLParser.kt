@@ -10,57 +10,94 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 class XMLParser {
     fun loadResultsFromXmlReport(xmlReportPath: String?): ResultData {
-        // Implement the logic to parse the XML report and load key results into a data structure
         val resultData = ResultData()
-        val documentBuilderFactory = DocumentBuilderFactory.newInstance()
-        val documentBuilder = documentBuilderFactory.newDocumentBuilder()
-        val document = documentBuilder.parse(File(xmlReportPath))
+        try {
+            val documentBuilderFactory = DocumentBuilderFactory.newInstance()
+            val documentBuilder = documentBuilderFactory.newDocumentBuilder()
+            val document = documentBuilder.parse(File(xmlReportPath))
 
-        val mutationsNodeList = document.getElementsByTagName("mutation")
+            val mutationsNodeList = document.getElementsByTagName("mutation")
 
-        for (i in 0 until mutationsNodeList.length) {
-            val mutationNode = mutationsNodeList.item(i)
+            for (i in 0 until mutationsNodeList.length) {
+                val mutationNode = mutationsNodeList.item(i)
 
-            if (mutationNode.nodeType == Node.ELEMENT_NODE) {
-                val element = mutationNode as Element
+                if (mutationNode.nodeType == Node.ELEMENT_NODE) {
+                    val element = mutationNode as Element
 
-                val detected = element.getAttribute("detected").toBoolean()
-                val status = element.getAttribute("status")
-                val numberOfTestsRun = element.getAttribute("numberOfTestsRun").toInt()
-                val sourceFile = element.getElementsByTagName("sourceFile").item(0).textContent
-                val mutatedClass = element.getElementsByTagName("mutatedClass").item(0).textContent
-                val mutatedMethod = element.getElementsByTagName("mutatedMethod").item(0).textContent
-                val methodDescription = element.getElementsByTagName("methodDescription").item(0).textContent
-                val lineNumber = element.getElementsByTagName("lineNumber").item(0).textContent.toInt()
-                val mutator = element.getElementsByTagName("mutator").item(0).textContent
-                val indexesNodeList = element.getElementsByTagName("index")
-                val indexes = (0 until indexesNodeList.length).map { indexesNodeList.item(it).textContent.toInt() }
-                val blocksNodeList = element.getElementsByTagName("block")
-                val blocks = (0 until blocksNodeList.length).map { blocksNodeList.item(it).textContent.toInt() }
-                val killingTest = element.getElementsByTagName("killingTest").item(0).textContent
-                val description = element.getElementsByTagName("description").item(0).textContent
+                    val detected = getAttribute(element, "detected", false)
+                    val status = getAttribute(element, "status", "N/A")
+                    val numberOfTestsRun = getAttribute(element, "numberOfTestsRun", -1)
+                    val sourceFile = getTextContent(element, "sourceFile")
+                    val mutatedClass = getTextContent(element, "mutatedClass")
+                    val mutatedMethod = getTextContent(element, "mutatedMethod")
+                    val methodDescription = getTextContent(element, "methodDescription")
+                    val lineNumber = getAttribute(element, "lineNumber", -1)
+                    val mutator = getTextContent(element, "mutator")
+                    val indexes = getListContent(element, "index")
+                    val blocks = getListContent(element, "block")
+                    val killingTest = getTextContent(element, "killingTest")
+                    val description = getTextContent(element, "description")
 
-                // Create a MutationResult object and add it to the data structure
-                val mutationResult = MutationResult(
-                    detected,
-                    status,
-                    numberOfTestsRun,
-                    sourceFile,
-                    mutatedClass,
-                    mutatedMethod,
-                    methodDescription,
-                    lineNumber,
-                    mutator,
-                    indexes,
-                    blocks,
-                    killingTest,
-                    description
-                )
-                resultData.addMutationResult(mutationResult)
+                    val mutationResult = MutationResult(
+                        detected,
+                        status,
+                        numberOfTestsRun,
+                        sourceFile,
+                        mutatedClass,
+                        mutatedMethod,
+                        methodDescription,
+                        lineNumber,
+                        mutator,
+                        indexes,
+                        blocks,
+                        killingTest,
+                        description
+                    )
+                    resultData.addMutationResult(mutationResult)
+                }
             }
+        } catch (e: Exception) {
+            // Handle parsing errors
+            e.printStackTrace()
         }
 
         return resultData
+    }
+
+    private fun getTextContent(element: Element, tagName: String): String {
+        val nodeList = element.getElementsByTagName(tagName)
+        return if (nodeList.length > 0) {
+            nodeList.item(0).textContent
+        } else {
+            "N/A"
+        }
+    }
+
+    private fun getListContent(element: Element, tagName: String): List<Int> {
+        val nodeList = element.getElementsByTagName(tagName)
+        return if (nodeList.length > 0) {
+            (0 until nodeList.length).map { nodeList.item(it).textContent.toInt() }
+        } else {
+            emptyList()
+        }
+    }
+
+    private fun <T> getAttribute(element: Element, attributeName: String, defaultValue: T): T {
+        return try {
+            val attributeValue = element.getAttribute(attributeName)
+            if (attributeValue.isNotEmpty()) {
+                when (defaultValue) {
+                    is Boolean -> attributeValue.toBoolean() as T
+                    is Int -> attributeValue.toInt() as T
+                    is String -> attributeValue as T
+                    else -> defaultValue
+                }
+            } else {
+                defaultValue
+            }
+        } catch (e: Exception) {
+            defaultValue
+        }
     }
 
     data class ResultData(
@@ -87,3 +124,4 @@ class XMLParser {
         val description: String
     )
 }
+
