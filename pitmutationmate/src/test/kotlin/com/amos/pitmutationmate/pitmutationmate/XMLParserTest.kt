@@ -1,22 +1,19 @@
-// SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2023
-
 package com.amos.pitmutationmate.pitmutationmate
 
-import org.junit.Test
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import java.io.File
 
 class XMLParserTests{
-    fun getTestInputFilepath(filename: String): File {
-        val classLoader = Thread.currentThread().contextClassLoader
-        val resource = classLoader.getResource(filename)
-        val file = File(resource.file)
-        return file
+
+    private fun getTestInputFilepath(filename: String): File {
+        val path = "src/test/resources/$filename"
+
+        return File(path)
     }
 
     @Test
-    fun testloadResultsFromXmlReportFlyerReport(){
+    fun loadResultsFromXml_reportFlyerReport() {
         val file = getTestInputFilepath("test_report/mutations.xml")
         val parser = XMLParser()
         val actualResultData = parser.loadResultsFromXmlReport(file.absolutePath)
@@ -35,6 +32,21 @@ class XMLParserTests{
         assertEquals("lambda\$calculateValue\$1", seventhMutationResult.mutatedMethod)
     }
 
+    @Test
+    fun loadResultFromXml_missingXmlNode(){
+        val file = getTestInputFilepath("test_report/mutations_missingXmlNode.xml")
+        val parser = XMLParser()
+        val actualResultData = parser.loadResultsFromXmlReport(file.absolutePath)
 
+        assertTrue(actualResultData.mutationResults.isNotEmpty())
+    }
 
+    @Test
+    fun loadResultFromXml_additionalXmlNode(){
+        val file = getTestInputFilepath("test_report/mutations_additionalNodes.xml")
+        val parser = XMLParser()
+        val actualResultData = parser.loadResultsFromXmlReport(file.absolutePath)
+
+        assertTrue(actualResultData.mutationResults.isNotEmpty())
+    }
 }
