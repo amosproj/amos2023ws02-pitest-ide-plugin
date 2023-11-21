@@ -21,12 +21,8 @@ jobs:
           java-version: '17'
           
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3    
         
-      - name: Build with Gradle
-        run: gradle build --no-daemon --debug
-        working-directory: 'pitmutationmate'
-
       - name: Run Tests
         run: gradle test --no-daemon --debug
         working-directory: 'pitmutationmate'
