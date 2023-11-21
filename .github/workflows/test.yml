@@ -24,9 +24,9 @@ jobs:
         uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
         
       - name: Build with Gradle
-        run: ./gradle build --no-daemon
+        run: gradle build 
         working-directory: 'pitmutationmate'
 
       - name: Run Tests
-        run: ./gradle test --no-daemon
+        run: gradle test
         working-directory: 'pitmutationmate'
