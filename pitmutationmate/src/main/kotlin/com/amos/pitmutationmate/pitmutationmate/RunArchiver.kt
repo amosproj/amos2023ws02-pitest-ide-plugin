@@ -1,21 +1,28 @@
 package com.amos.pitmutationmate.pitmutationmate
+import com.intellij.openapi.project.Project
 import java.io.File
 import java.lang.Exception
+import java.nio.file.Paths
 
 
-class RunArchiver (packageName: String) {
+class RunArchiver (packageName: String, project: Project) {
     private val pn: String = packageName
-    private val rootPiTestDirectoryPathName: String = "./build/reports/pitest"
+    private val pwd: String? = project.basePath?.let { Paths.get(it).toAbsolutePath().toString() }
+    private val rootPiTestDirectoryPathName: String = "$pwd/build/reports/pitest"
     private val reportDirectory: File = File("$rootPiTestDirectoryPathName/${this.pn}")
 
     fun archiveRun () {
+        println("Archiving $reportDirectory")
         var archiveDirectory = File("$rootPiTestDirectoryPathName/history/${this.pn}")
-        if (!archiveDirectory.exists() && archiveDirectory.isDirectory) {
+        print("Archive directory $archiveDirectory exists: ${archiveDirectory.exists()}")
+        if (!archiveDirectory.exists()) { // && archiveDirectory.isDirectory) {
             val success = archiveDirectory.mkdirs()
 
             if (!success) {
                 throw Exception("error creating archive directory")
             }
+
+            print("Created $archiveDirectory")
         }
 
         val index: Int = archiveDirectory.listFiles()!!.size + 1
