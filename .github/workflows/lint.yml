@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Lennart Heimbs <lennart@heimbs.me>
+#
+# SPDX-License-Identifier: MIT
+
 ---
 name: ktlint
 
