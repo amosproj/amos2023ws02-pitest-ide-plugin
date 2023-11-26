@@ -6,17 +6,15 @@ import org.pitest.mutationtest.MutationResultListener
 
 class MyMutationResultListener : MutationResultListener {
     override fun runStart() {
-        // Initialization of logic or needed classes before the mutation testing run
+        //TODO If needed: Initialization of logic or needed classes before the mutation testing run
     }
 
     override fun handleMutationResult(results: ClassMutationResults?) {
-        // Process and handle each mutation Result
-        val value = 6
+        //TODO: Process and handle each mutation Result
     }
 
     override fun runEnd() {
-        // Cleanup or final logic after the mutation test run
-        XMLParser().loadResultsFromXmlReport("needtofindpath")
+        //TODO If needed: Cleanup or final logic after the mutation test run
     }
 
 }
