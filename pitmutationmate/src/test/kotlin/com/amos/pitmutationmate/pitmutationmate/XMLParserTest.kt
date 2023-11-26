@@ -1,5 +1,6 @@
 package com.amos.pitmutationmate.pitmutationmate
 
+import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.File

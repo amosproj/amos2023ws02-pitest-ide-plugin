@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2023
 
-package com.amos.pitmutationmate.pitmutationmate
+package com.amos.pitmutationmate.pitmutationmate.reporting
 
 import org.w3c.dom.Element
 import org.w3c.dom.Node
