@@ -36,9 +36,7 @@ class RunConfigurationAction : AnAction() {
                 GutterIconExample.addBar(editor, "yellow", 12)
             }
         }
-
     }
-
 
     override fun update(e: AnActionEvent) {
         println("RunConfiguratorAction update")

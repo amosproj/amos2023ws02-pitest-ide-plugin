@@ -12,10 +12,9 @@ import com.intellij.execution.RunManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiJavaFile
-import com.intellij.openapi.project.Project
-
 
 class ContextMenuAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
@@ -33,7 +32,8 @@ class ContextMenuAction : AnAction() {
         val executor = ExecutorRegistry.getInstance().getExecutorById("Run")
 
         val runConfig = RunManager.getInstance(e.project!!).getConfigurationSettingsList(
-            MutationMateRunConfigurationType::class.java).first()
+            MutationMateRunConfigurationType::class.java
+        ).first()
 
         runConfig.configuration.let {
             val rc = it as MutationMateRunConfiguration
