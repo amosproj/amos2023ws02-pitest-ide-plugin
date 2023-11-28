@@ -5,7 +5,7 @@ import org.pitest.mutationtest.MutationResultListener
 import org.pitest.mutationtest.MutationResultListenerFactory
 import java.util.*
 
-class MyMutationResultListenerFactory : MutationResultListenerFactory  {
+class MyMutationResultListenerFactory : MutationResultListenerFactory {
     override fun description(): String = "Custom MutationResulListenerFactory for generating custom MutationResultListener"
 
     override fun getListener(props: Properties?, args: ListenerArguments?): MutationResultListener {

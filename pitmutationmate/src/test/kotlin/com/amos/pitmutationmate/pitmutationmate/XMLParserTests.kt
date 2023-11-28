@@ -1,11 +1,13 @@
 package com.amos.pitmutationmate.pitmutationmate
 
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
 
-class XMLParserTests{
+class XMLParserTests {
 
     private fun getTestInputFilepath(filename: String): File {
         val path = "src/test/resources/$filename"
@@ -34,7 +36,7 @@ class XMLParserTests{
     }
 
     @Test
-    fun loadResultFromXml_missingXmlNode(){
+    fun loadResultFromXml_missingXmlNode() {
         val file = getTestInputFilepath("test_report/mutations_missingXmlNode.xml")
         val parser = XMLParser()
         val actualResultData = parser.loadResultsFromXmlReport(file.absolutePath)
@@ -43,7 +45,7 @@ class XMLParserTests{
     }
 
     @Test
-    fun loadResultFromXml_additionalXmlNode(){
+    fun loadResultFromXml_additionalXmlNode() {
         val file = getTestInputFilepath("test_report/mutations_additionalNodes.xml")
         val parser = XMLParser()
         val actualResultData = parser.loadResultsFromXmlReport(file.absolutePath)

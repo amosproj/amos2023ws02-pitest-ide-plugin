@@ -1,14 +1,14 @@
 package com.amos.pitmutationmate.pitmutationmate.reporting
 
-import java.util.Optional
 import org.pitest.mutationtest.ClassMutationResults
 import org.pitest.mutationtest.DetectionStatus
 import org.pitest.mutationtest.MutationResultListener
 import org.pitest.mutationtest.engine.MutationDetails
-
+import java.util.Optional
 
 class MyMutationResultListener : MutationResultListener {
     private  var resultData = ResultData()
+
     override fun runStart() {
         resultData = ResultData()
     }
