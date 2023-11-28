@@ -27,7 +27,7 @@ class RunConfigurationAction : AnAction() {
         val editor: Any? = e.getData(CommonDataKeys.EDITOR)
         println(editor)
         if (project != null && editor != null) {
-            project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
+            project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest", null) }
             if (editor is Editor) {
                 val markupModel: MarkupModel = editor.markupModel
                 markupModel.removeAllHighlighters()

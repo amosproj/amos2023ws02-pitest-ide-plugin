@@ -16,14 +16,16 @@ class GradleTaskExecutor {
     private var gradleExecutable: String? = null
     private val windowsGradleExecutable = "gradlew.bat"
     private val unixGradleExecutable = "gradlew"
+    private val classFQN: String? = null
 
     fun executeTask(
         projectDir: String,
         gradleExecutable: String?,
-        taskName: String?
+        taskName: String?,
+        classFQN: String?
     ): ProcessHandler {
-        println("GradeTaskExecutor executeTask")
-        val commandLine = buildCommandLine(gradleExecutable, taskName, projectDir)
+        println("GradeTaskExecutor: executeTask")
+        val commandLine = buildCommandLine(gradleExecutable, taskName, projectDir, classFQN)
         val processHandler = createProcessHandler(commandLine)
         ProcessTerminatedListener.attach(processHandler)
         return processHandler
@@ -32,7 +34,8 @@ class GradleTaskExecutor {
     private fun buildCommandLine(
         gradleExecutable: String?,
         taskName: String?,
-        projectDir: String
+        projectDir: String,
+        classFQN: String?
     ): GeneralCommandLine {
         val commandLine = GeneralCommandLine()
 

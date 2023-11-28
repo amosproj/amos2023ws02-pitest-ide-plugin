@@ -4,7 +4,6 @@
 package com.amos.pitmutationmate.pitmutationmate.configuration
 
 import com.intellij.execution.configurations.RunConfigurationOptions
-import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.components.StoredProperty
 
 class MutationMateRunConfigurationOptions : RunConfigurationOptions() {
@@ -13,6 +12,13 @@ class MutationMateRunConfigurationOptions : RunConfigurationOptions() {
         get() = taskNameOption.getValue(this)
         set(value) {
             taskNameOption.setValue(this, value)
+        }
+
+    private var classFQNOption: StoredProperty<String?> = string("").provideDelegate(this, "gradle.task")
+    var classFQN: String?
+        get() = classFQNOption.getValue(this)
+        set(value) {
+            classFQNOption.setValue(this, value)
         }
 
     private val gradleExecutableOption: StoredProperty<String?> = string("").provideDelegate(this, "gradle.executable")
