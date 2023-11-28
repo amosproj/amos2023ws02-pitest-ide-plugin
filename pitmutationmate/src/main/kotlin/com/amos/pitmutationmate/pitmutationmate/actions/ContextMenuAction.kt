@@ -56,8 +56,4 @@ class ContextMenuAction: AnAction() {
         return file != null && (file.name.endsWith(".java") || file.name.endsWith(".kt"))
     }
 
-//    override fun getActionUpdateThread(): ActionUpdateThread {
-//        return
-//    }
-
 }
