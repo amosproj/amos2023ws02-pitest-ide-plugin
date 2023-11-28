@@ -40,5 +40,4 @@ class ContextMenuAction: AnAction() {
     private fun checkCondition(file: VirtualFile?): Boolean {
         return file != null && (file.name.endsWith(".java") || file.name.endsWith(".kt"))
     }
-
 }
