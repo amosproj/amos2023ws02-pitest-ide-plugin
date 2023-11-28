@@ -22,6 +22,7 @@ dependencies {
   implementation("org.jfree:jfreechart:1.0.19")
   // https://mvnrepository.com/artifact/jfree/jcommon
   implementation("org.jfree:jcommon:1.0.24")
+  implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
 }
 
 group = "com.amos.pitmutationmate"
@@ -37,7 +38,7 @@ intellij {
   version.set("2022.2.5")
   type.set("IC") // Target IDE Platform
 
-  plugins.set(listOf(/* Plugin Dependencies */))
+  plugins.set(listOf("org.jetbrains.kotlin", "com.intellij.java"))
 }
 
 tasks {

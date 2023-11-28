@@ -7,7 +7,6 @@ import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.*
-import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
@@ -41,6 +40,13 @@ class MutationMateRunConfiguration(
             options.gradleExecutable = gradleExecutable
         }
 
+    var classFQN: String
+        get() = options.classFQN ?: ""
+        set(classFQN) {
+            options.classFQN = classFQN
+            println("MutationMateRunConfiguration: classFQN was updated to '$classFQN'.")
+        }
+
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
         return MutationMateSettingsEditor()
     }
@@ -54,7 +60,7 @@ class MutationMateRunConfiguration(
             @Throws(ExecutionException::class)
             override fun startProcess(): ProcessHandler {
                 val gradleTaskExecutor = GradleTaskExecutor()
-                return gradleTaskExecutor.executeTask(projectDir, gradleExecutable, taskName)
+                return gradleTaskExecutor.executeTask(projectDir, gradleExecutable, taskName, classFQN)
             }
         }
     }
