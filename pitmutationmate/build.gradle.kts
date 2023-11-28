@@ -13,6 +13,14 @@ tasks.test {
 }
 
 dependencies {
+
+  // https://mvnrepository.com/artifact/org.apache.maven.shared/maven-invoker
+  implementation("org.apache.maven.shared:maven-invoker:3.2.0")
+
+  implementation("org.gradle:gradle-tooling-api:7.3-20210825160000+0000")
+  // The tooling API need an SLF4J implementation available at runtime, replace this with any other implementation
+  runtimeOnly("org.slf4j:slf4j-simple:1.7.10")
+
   implementation("org.pitest:pitest-command-line:1.7.0")
   implementation("org.junit.jupiter:junit-jupiter:5.8.1")
   implementation("org.junit.jupiter:junit-jupiter:5.8.1")
@@ -29,6 +37,9 @@ version = "1.0-SNAPSHOT"
 
 repositories {
   mavenCentral()
+  maven {
+    url = uri("https://mvnrepository.com/artifact/org.apache.maven/maven-plugin-api")
+  }
 }
 
 // Configure Gradle IntelliJ Plugin
