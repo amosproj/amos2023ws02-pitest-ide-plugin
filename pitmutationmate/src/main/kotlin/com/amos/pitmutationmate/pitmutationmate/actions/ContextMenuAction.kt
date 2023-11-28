@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: 2023
 
 package com.amos.pitmutationmate.pitmutationmate.actions
-
+import com.amos.pitmutationmate.pitmutationmate.RunArchiver
 import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -17,6 +17,9 @@ class ContextMenuAction : AnAction() {
         val project: Project? = e.project
         val gradleTaskExecutor = GradleTaskExecutor()
         if (project != null) {
+            //        For testing run archiver
+            val ra: RunArchiver = RunArchiver("de.pfoerd.example.pitest.coffeemachine.service", project)
+            ra.archiveRun()
             project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
         }
     }
