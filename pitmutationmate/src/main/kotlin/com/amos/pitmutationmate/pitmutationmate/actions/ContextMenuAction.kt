@@ -10,11 +10,11 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 
-class ContextMenuAction: AnAction() {
+class ContextMenuAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val context = e.getDataContext()
         val file: VirtualFile? = context.getData("virtualFile") as VirtualFile?
-        println("ContextMenuAction actionPerformed for file ${file}")
+        println("ContextMenuAction actionPerformed for file $file")
         val project: Project? = e.project
         val gradleTaskExecutor = GradleTaskExecutor()
         if (project != null) {
