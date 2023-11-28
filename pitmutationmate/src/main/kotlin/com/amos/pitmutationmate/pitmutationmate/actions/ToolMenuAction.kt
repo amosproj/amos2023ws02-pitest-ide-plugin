@@ -4,6 +4,7 @@
 package com.amos.pitmutationmate.pitmutationmate.actions
 
 import HighlightGutterRenderer
+import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -12,7 +13,6 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.MarkupModel
 import com.intellij.openapi.editor.markup.RangeHighlighter
-import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
 import com.intellij.openapi.project.Project
 
 class ToolMenuAction : AnAction() {
@@ -29,7 +29,7 @@ class ToolMenuAction : AnAction() {
         val editor: Any? = e.getData(CommonDataKeys.EDITOR)
         println(editor)
         if (project != null && editor != null) {
-            project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
+            project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest", "") }
             if (editor is Editor) {
                 val markupModel: MarkupModel = editor.markupModel
                 markupModel.removeAllHighlighters()
