@@ -4,13 +4,12 @@ package com.amos.pitmutationmate.pitmutationmate.reporting
 import org.pitest.mutationtest.ClassMutationResults
 import org.pitest.mutationtest.MutationResultListener
 import org.pitest.mutationtest.*
-import org.pitest.mutationtest.engine.MutationDetails;
+import org.pitest.mutationtest.engine.MutationDetails
 import java.util.*
 
 
 class MyMutationResultListener : MutationResultListener {
     private  var resultData = ResultData()
-    private var mutators = mutableListOf<String>()
     override fun runStart() {
         resultData = ResultData()
     }
