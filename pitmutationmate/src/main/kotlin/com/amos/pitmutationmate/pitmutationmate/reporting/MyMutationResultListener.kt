@@ -1,11 +1,10 @@
 package com.amos.pitmutationmate.pitmutationmate.reporting
 
-
-import org.pitest.mutationtest.ClassMutationResults
-import org.pitest.mutationtest.MutationResultListener
-import org.pitest.mutationtest.*
-import org.pitest.mutationtest.engine.MutationDetails
-import java.util.*
+import java.util.Optional;
+import org.pitest.mutationtest.ClassMutationResults;
+import org.pitest.mutationtest.DetectionStatus;
+import org.pitest.mutationtest.MutationResultListener;
+import org.pitest.mutationtest.engine.MutationDetails;
 
 
 class MyMutationResultListener : MutationResultListener {
@@ -15,7 +14,7 @@ class MyMutationResultListener : MutationResultListener {
     }
 
     override fun handleMutationResult(results: ClassMutationResults) {
-        for (result in results.mutations){
+        for (result in results.mutations) {
             val details: MutationDetails = result.details
             val status: DetectionStatus = result.status
 
@@ -40,7 +39,7 @@ class MyMutationResultListener : MutationResultListener {
     }
 
     override fun runEnd() {
-        //TODO If needed: Cleanup or final logic after the mutation test run
+        // TODO If needed: Cleanup or final logic after the mutation test run
     }
 
     data class ResultData(
@@ -66,5 +65,4 @@ class MyMutationResultListener : MutationResultListener {
         val killingTest: Optional<String>,
         val description: String
     )
-
 }

@@ -57,7 +57,7 @@ class XMLParser {
                 }
             }
         } catch (e: Exception) {
-            //TODO: Handle Parser exceptions
+            // TODO: Handle Parser exceptions
             e.printStackTrace()
         }
 
@@ -124,4 +124,3 @@ class XMLParser {
         val description: String
     )
 }
-
