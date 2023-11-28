@@ -4,7 +4,6 @@
 package com.amos.pitmutationmate.pitmutationmate.actions
 
 import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
-import com.amos.pitmutationmate.pitmutationmate.RunArchiver
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
@@ -18,9 +17,6 @@ class ContextMenuAction : AnAction() {
         val project: Project? = e.project
         val gradleTaskExecutor = GradleTaskExecutor()
         if (project != null) {
-            //        For testing run archiver
-            val ra: RunArchiver = RunArchiver("de.esolutions.pitest.showcase", project)
-            ra.archiveRun()
             project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
         }
     }

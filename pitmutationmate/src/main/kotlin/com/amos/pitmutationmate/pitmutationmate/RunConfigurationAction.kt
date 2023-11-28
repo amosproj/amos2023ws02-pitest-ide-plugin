@@ -12,6 +12,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.MarkupModel
 import com.intellij.openapi.editor.markup.RangeHighlighter
+import com.amos.pitmutationmate.pitmutationmate.RunArchiver
 
 class RunConfigurationAction : AnAction() {
     private lateinit var className: String
@@ -27,6 +28,9 @@ class RunConfigurationAction : AnAction() {
         val editor: Any? = e.getData(CommonDataKeys.EDITOR)
         println(editor)
         if (project != null && editor != null) {
+                //        For testing run archiver
+            val ra: RunArchiver = RunArchiver("de.pfoerd.example.pitest.coffeemachine.service", project)
+            ra.archiveRun()
             project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
             if (editor is Editor) {
                 val markupModel: MarkupModel = editor.markupModel
