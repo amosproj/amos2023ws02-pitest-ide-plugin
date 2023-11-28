@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023 Tim Herzig <tim.herzig@hotmail.com>
+
 package com.amos.pitmutationmate.pitmutationmate
 import com.intellij.openapi.project.Project
 import java.io.File
 import java.lang.Exception
 import java.nio.file.Path
 import java.nio.file.Paths
-
 
 class RunArchiver(packageName: String, project: Project) {
     private val pn: String = packageName
