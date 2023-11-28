@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
+import com.amos.pitmutationmate.pitmutationmate.RunArchiver
 import com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfiguration
 import com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfigurationType
 import com.intellij.execution.ExecutorRegistry
@@ -11,11 +12,11 @@ import com.intellij.execution.RunManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiJavaFile
 
-
-class ContextMenuAction: AnAction() {
+class ContextMenuAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
         println("ContextMenuAction: actionPerformed for file $psiFile")
@@ -31,7 +32,8 @@ class ContextMenuAction: AnAction() {
         val executor = ExecutorRegistry.getInstance().getExecutorById("Run")
 
         val runConfig = RunManager.getInstance(e.project!!).getConfigurationSettingsList(
-            MutationMateRunConfigurationType::class.java).first()
+            MutationMateRunConfigurationType::class.java
+        ).first()
 
         runConfig.configuration.let {
             val rc = it as MutationMateRunConfiguration
@@ -39,6 +41,13 @@ class ContextMenuAction: AnAction() {
         }
 
         ProgramRunnerUtil.executeConfiguration(runConfig, executor!!)
+
+        // Testing RunArchiver TODO: remove this later
+        val project: Project? = e.project
+        if (project != null) {
+            val ra: RunArchiver = RunArchiver("de.pfoerd.example.pitest.coffeemachine.service", project)
+            ra.archiveRun()
+        }
     }
 
     override fun update(e: AnActionEvent) {
@@ -55,5 +64,4 @@ class ContextMenuAction: AnAction() {
     private fun checkCondition(file: VirtualFile?): Boolean {
         return file != null && (file.name.endsWith(".java") || file.name.endsWith(".kt"))
     }
-
 }

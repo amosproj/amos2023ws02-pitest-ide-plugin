@@ -38,7 +38,6 @@ class RunConfigurationAction : AnAction() {
         }
     }
 
-
     override fun update(e: AnActionEvent) {
         println("RunConfiguratorAction update")
         super.update(e)
