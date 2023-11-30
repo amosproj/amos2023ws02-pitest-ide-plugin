@@ -11,7 +11,7 @@ internal class MutationMateRunConfigurationType : ConfigurationTypeBase(
     ID, "PITmutationmate", "PITmutationmate run configuration type",
     NotNullLazyValue.createValue { AllIcons.Nodes.Console }) {
     init {
-        addFactory(MutationMateConfigurationFactory(this))
+        addFactory(ConfigurationFactory(this))
     }
 
     companion object {
