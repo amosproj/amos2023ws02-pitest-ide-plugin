@@ -38,7 +38,7 @@
                                 language=""/>
 
       <configurationType
-          implementation="com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfigurationType"/>
+          implementation="com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType"/>
   </extensions>
     <actions>
         <action id="com.amos.pitmutationmate.pitmutationmate.actions.ToolMenuAction"
