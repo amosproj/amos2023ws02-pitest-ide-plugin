@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2023 Netflix, Inc.
 //
 // SPDX-License-Identifier: Apache-2.0
+//
+// Modified by Lennart Heimbs, 2023
 
 package io.github.amosproj.pitmutationmate.override.reader
 
@@ -14,6 +16,7 @@ package io.github.amosproj.pitmutationmate.override.reader
  * </pre>
  */
 class SystemPropertyOverrideReader implements OverrideReader {
+
     static final String OVERRIDE_PROPERTY_PREFIX = 'pitmutationmate.override.'
 
     /**
@@ -23,8 +26,10 @@ class SystemPropertyOverrideReader implements OverrideReader {
      */
     @Override
     Map<String, String> parseProperties() {
-        def overrideProperties = System.properties.findAll { property -> property.key.startsWith(OVERRIDE_PROPERTY_PREFIX) }
+        def overrideProperties = System.properties.findAll { property ->
+            property.key.startsWith(OVERRIDE_PROPERTY_PREFIX) }
         // Remove property prefix
-        overrideProperties.collectEntries { key, value -> [key - OVERRIDE_PROPERTY_PREFIX, value] }
+        return overrideProperties.collectEntries { key, value -> [key - OVERRIDE_PROPERTY_PREFIX, value] }
     }
+
 }

@@ -18,12 +18,17 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
 
     init {
         gradleTaskField.text = "pitest"
-        gradleExecutableField.addBrowseFolderListener("Select Gradle Script", null, null,
-            FileChooserDescriptorFactory.createSingleFileDescriptor());
-        myPanel = FormBuilder.createFormBuilder()
-            .addLabeledComponent("Gradle task", gradleTaskField)
-            .addLabeledComponent("Gradle script", gradleExecutableField)
-            .panel
+        gradleExecutableField.addBrowseFolderListener(
+            "Select Gradle Script",
+            null,
+            null,
+            FileChooserDescriptorFactory.createSingleFileDescriptor()
+        )
+        myPanel =
+            FormBuilder.createFormBuilder()
+                .addLabeledComponent("Gradle task", gradleTaskField)
+                .addLabeledComponent("Gradle script", gradleExecutableField)
+                .panel
     }
 
     override fun resetEditorFrom(runConfiguration: RunConfiguration) {

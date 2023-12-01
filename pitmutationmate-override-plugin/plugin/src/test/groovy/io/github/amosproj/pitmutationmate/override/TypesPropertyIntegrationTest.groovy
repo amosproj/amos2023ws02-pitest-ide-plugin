@@ -5,12 +5,28 @@
 // Modifications by: Lennart Heimbs
 // - Adapt to pitest specific use case
 
+/* groovylint-disable */
+
 package io.github.amosproj.pitmutationmate.override
 
+import nebula.test.IntegrationSpec
 import nebula.test.functional.internal.toolingapi.ToolingExecutionResult
+import org.gradle.api.logging.LogLevel
 import spock.lang.Unroll
 
-class TypesPropertyIntegrationTest extends BaseOverridePluginIntegrationTest {
+/**
+ * Integration tests for the plugin.
+ */
+class TypesPropertyIntegrationTest extends IntegrationSpec {
+
+    /* groovylint-disable JUnitPublicNonTestMethod, MethodReturnTypeRequired, NoDef */
+    def setup() {
+        logLevel = LogLevel.DEBUG
+        fork = true
+        buildFile << """
+        apply plugin: 'io.github.amosproj.pitmutationmate.override'
+        """
+    }
 
     @Unroll("'#commandLineParameter' should be converted to '#expectedValue'")
     def "Should allow to override Set property"() {

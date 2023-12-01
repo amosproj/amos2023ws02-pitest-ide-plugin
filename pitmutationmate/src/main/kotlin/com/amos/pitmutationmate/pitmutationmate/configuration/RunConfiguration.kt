@@ -7,7 +7,11 @@ import com.amos.pitmutationmate.pitmutationmate.execution.GradleTaskExecutor
 import com.amos.pitmutationmate.pitmutationmate.execution.MavenTaskExecutor
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
-import com.intellij.execution.configurations.*
+import com.intellij.execution.configurations.CommandLineState
+import com.intellij.execution.configurations.ConfigurationFactory
+import com.intellij.execution.configurations.RunConfiguration
+import com.intellij.execution.configurations.RunConfigurationBase
+import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.externalSystem.ExternalSystemModulePropertyManager
@@ -16,19 +20,19 @@ import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import org.jetbrains.annotations.NotNull
 
-class MutationMateRunConfiguration(
+class RunConfiguration(
     project: Project,
     factory: ConfigurationFactory?,
     name: String?
-) : RunConfigurationBase<MutationMateRunConfigurationOptions?>(project, factory, name) {
+) : RunConfigurationBase<RunConfigurationOptions?>(project, factory, name) {
     private val projectDir: String
 
     init {
         projectDir = project.basePath!!
     }
 
-    override fun getOptions(): MutationMateRunConfigurationOptions {
-        return super.getOptions() as MutationMateRunConfigurationOptions
+    override fun getOptions(): RunConfigurationOptions {
+        return super.getOptions() as RunConfigurationOptions
     }
 
     var taskName: String?
@@ -51,7 +55,7 @@ class MutationMateRunConfiguration(
         }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
-        return MutationMateSettingsEditor()
+        return com.amos.pitmutationmate.pitmutationmate.configuration.SettingsEditor()
     }
 
     override fun getState(

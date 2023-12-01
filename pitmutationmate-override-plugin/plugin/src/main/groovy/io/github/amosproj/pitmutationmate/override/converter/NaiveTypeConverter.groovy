@@ -12,14 +12,23 @@ import org.gradle.api.file.Directory
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 
+/**
+ * NaiveTypeConverter
+ *
+ * This class is responsible for converting a string value to a given type.
+ * It is used by the [PITSettingOverridePlugin] to convert the values of the
+ * gradle-pitest-plugin extension to the correct type.
+ *
+ * @see [PITSettingOverridePlugin]
+ */
 class NaiveTypeConverter implements TypeConverter {
-    @SuppressWarnings("FieldName")
+
+    @SuppressWarnings('FieldName')
     private final static Logger log = Logging.getLogger(PITSettingOverridePlugin)
     private final ConvertUtilsBean convertUtilsBean = new ConvertUtilsBean()
 
     @Override
     Object convert(String value, Class<?> clazz, Project project) {
-
         switch (clazz) {
             case Integer:
                 log.trace("Converting Integer value '$value' to type '$clazz'.")
@@ -66,6 +75,7 @@ class NaiveTypeConverter implements TypeConverter {
         }
         value = value.replace('[', '')
                 .replace(']', '')
-        return value.split(",").collect { it.trim() }
+        return value.split(',')*.trim()
     }
+
 }

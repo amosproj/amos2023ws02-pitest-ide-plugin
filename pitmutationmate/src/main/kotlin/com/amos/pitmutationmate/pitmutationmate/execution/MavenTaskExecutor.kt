@@ -14,7 +14,7 @@ class MavenTaskExecutor : BasePitestExecutor() {
         executable: String?,
         taskName: String?,
         projectDir: String,
-        classFQN: String?,
+        classFQN: String?
     ): GeneralCommandLine {
         val commandLine = GeneralCommandLine()
 
@@ -43,4 +43,3 @@ class MavenTaskExecutor : BasePitestExecutor() {
         return parameters
     }
 }
-

@@ -48,7 +48,7 @@ gradlePlugin {
                 listOf(
                     "pitmutationmate", "pitest", "mutation", "mutation testing", "mutation testing tool",
                     "mutation testing framework", "mutation testing gradle plugin", "mutation testing ide plugin",
-                    "mutation testing intellij plugin", "mutation testing intellij idea plugin",
+                    "mutation testing intellij plugin", "mutation testing intellij idea plugin"
                 )
             implementationClass = "io.github.amosproj.pitmutationmate.override.PITSettingOverridePlugin"
         }

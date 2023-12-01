@@ -40,7 +40,6 @@ class ToolMenuAction : AnAction() {
         }
     }
 
-
     override fun update(e: AnActionEvent) {
         super.update(e)
     }

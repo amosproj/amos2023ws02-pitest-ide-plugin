@@ -13,8 +13,20 @@ import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 
+/**
+ * GradlePitestPluginOverrideStrategy
+ *
+ * This class is responsible for overriding the properties of the gradle-pitest-plugin.
+ * It is used by the [PITSettingOverridePlugin] to override the values of the
+ * gradle-pitest-plugin extension.
+ *
+ * @see [PITSettingOverridePlugin]
+ */
 class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
-    @SuppressWarnings("FieldName")
+
+    static final String OVERRIDE_SECTION = 'pitest'
+
+    @SuppressWarnings('FieldName')
     private final static Logger log = Logging.getLogger(PITSettingOverridePlugin)
     TypeConverter typeConverter = new NaiveTypeConverter() as TypeConverter
 
@@ -22,7 +34,7 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
     void apply(Project project, String propertyName, String overrideValue) {
         log.debug("Overriding property '$propertyName' with '$overrideValue'.")
 
-        def pitestExtension = project.extensions.findByName("pitest")
+        def pitestExtension = project.extensions.findByName(OVERRIDE_SECTION)
         if (pitestExtension == null) {
             throw new GradleException("PITest extension not found. Please apply the PITest plugin first.")
         }
@@ -34,7 +46,8 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
         PITConfigurationValues overrideFields = new PITConfigurationValues()
         def overrideProperty = overrideFields.properties.find { it.key == propertyName }
         if (overrideProperty == null) {
-            throw new GradleException("Cannot override property '$propertyName' for pitest extension: Unknown Property.")
+            throw new GradleException(
+                "Cannot override property '$propertyName' for pitest extension: Unknown Property.")
         }
 
         Class clazz = overrideProperty.value.getClass()
@@ -43,5 +56,5 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
 
         log.debug("Property '$propertyName' successfully overwritten with '$newValue'.")
     }
-}
 
+}

@@ -4,10 +4,18 @@
 
 package io.github.amosproj.pitmutationmate.override.converter
 
-
 import spock.lang.Specification
 import spock.lang.Unroll
 
+/* groovylint-disable JUnitPublicNonTestMethod, MethodName */
+
+/**
+ * NaiveTypeConverterTest
+ *
+ * This class is responsible for testing the [NaiveTypeConverter].
+ *
+ * @see [NaiveTypeConverter]
+ */
 class NaiveTypeConverterTest extends Specification {
 
     @Unroll
@@ -77,7 +85,8 @@ class NaiveTypeConverterTest extends Specification {
         'false'               | 'boolean'                      || false
         '1'                   | 'integer'                      || 1
         '999'                 | 'integer'                      || 999
-        'foobar'              | 'string'                       || 'foobar' as String
-        '9999999999999.999'   | 'BigDec'                       || new BigDecimal('9999999999999.999')
+        'foobar'              | 'string'                       || 'foobar'
+        '9999999999999.999'   | 'BigDec'                       || 9999999999999.999G
     }
+
 }
