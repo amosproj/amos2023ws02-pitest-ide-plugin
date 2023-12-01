@@ -14,6 +14,8 @@ import nebula.test.ProjectSpec
 import org.gradle.api.GradleException
 import org.gradle.api.file.Directory
 
+import java.nio.file.Files
+
 /**
  * Tests for [GradlePitestPluginOverrideStrategy].
  */
@@ -152,12 +154,13 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
         given:
         OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
         project.extensions.create('pitest', PITConfigurationValues)
-        def givenDir = new File("build/reports/pitest") as Directory
-        def newDir = new File("/tmp/test") as Directory
+        def givenDir = new File('build/reports/pitest') as Directory
+        def newDirPath = Files.createTempDirectory("myTempDirPrefix")
+        def newDir = new File(newDirPath.toString()) as Directory
         assert project.pitest.reportDir.absolutePath == givenDir.absolutePath
 
         when:
-        overrideStrategy.apply(project, 'reportDir', '/tmp/test')
+        overrideStrategy.apply(project, 'reportDir', newDirPath.toString())
 
         then:
         project.pitest.reportDir.toString() == newDir.absolutePath

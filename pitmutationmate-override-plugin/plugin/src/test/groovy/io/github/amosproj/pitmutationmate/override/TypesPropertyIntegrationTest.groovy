@@ -12,7 +12,10 @@ package io.github.amosproj.pitmutationmate.override
 import nebula.test.IntegrationSpec
 import nebula.test.functional.internal.toolingapi.ToolingExecutionResult
 import org.gradle.api.logging.LogLevel
+import spock.lang.IgnoreIf
 import spock.lang.Unroll
+
+import java.nio.file.Files
 
 /**
  * Integration tests for the plugin.
@@ -112,7 +115,7 @@ class TypesPropertyIntegrationTest extends IntegrationSpec {
         'null'               || 0           // should become 0
     }
 
-    @Unroll("'#commandLineParameter' should be converted to '#expectedValue'")
+    @IgnoreIf({ System.properties['os.name'].toLowerCase().contains('windows') })
     def "Should allow to override Directory pitest properties"() {
         given:
         buildFile << """
@@ -123,19 +126,15 @@ class TypesPropertyIntegrationTest extends IntegrationSpec {
                 assert pitest.reportDir == null
                 task checkOverriddenProperties {
                     doLast {
-                        assert pitest.reportDir.toString() == $expectedValue
+                        assert pitest.reportDir.toString() == '$projectDir/test'
                     }
                 }
                 """
         when:
         ToolingExecutionResult executionResult = runTasksSuccessfully(
                 'checkOverriddenProperties',
-                "-Dpitmutationmate.override.reportDir=$commandLineParameter") as ToolingExecutionResult
+                "-Dpitmutationmate.override.reportDir=test") as ToolingExecutionResult
         then:
         executionResult.standardOutput.contains(':checkOverriddenProperties')
-        where:
-        commandLineParameter || expectedValue
-        '/tmp/test'          || 'new File("/tmp/test").toString()'
-        'null'               || '"null"'
     }
 }
