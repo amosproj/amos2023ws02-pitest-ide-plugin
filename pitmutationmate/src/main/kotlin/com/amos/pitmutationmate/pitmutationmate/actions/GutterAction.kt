@@ -5,8 +5,8 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 
-class ToolMenuAction : RunConfigurationAction() {
+class GutterAction(private val fqn: String) : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
-        runConfiguration(null, e.project!!)
+        runConfiguration(fqn, e.project!!)
     }
 }
