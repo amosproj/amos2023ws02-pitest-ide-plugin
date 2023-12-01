@@ -14,9 +14,8 @@ class GutterMarker : RunLineMarkerContributor() {
     override fun getInfo(psielement: PsiElement): Info? {
         if (psielement is PsiClass) {
             val gutterIcon: Icon = AllIcons.General.ArrowRight
+            val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${psielement.name}'" }
             val fqn = psielement.qualifiedName
-            val toolTip = "Run PIT MutationMate on '$fqn'"
-            val toolTipProvider: (PsiElement) -> String = { _ -> toolTip }
             val action: Array<GutterAction?> = arrayOf(fqn?.let { GutterAction(it) })
             return Info(gutterIcon, action, toolTipProvider)
         }
