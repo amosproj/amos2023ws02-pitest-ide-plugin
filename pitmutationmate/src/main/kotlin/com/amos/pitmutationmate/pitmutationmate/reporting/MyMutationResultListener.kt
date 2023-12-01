@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.reporting
 
+import HighlightGutterRenderer
 import org.pitest.mutationtest.ClassMutationResults
 import org.pitest.mutationtest.DetectionStatus
 import org.pitest.mutationtest.MutationResultListener
@@ -21,28 +22,30 @@ class MyMutationResultListener : MutationResultListener {
             val details: MutationDetails = result.details
             val status: DetectionStatus = result.status
 
-            resultData.addMutationResult(
-                MutationResult(
-                    detected = status.isDetected,
-                    status = status.name,
-                    numberOfTestsRun = result.numberOfTestsRun,
-                    sourceFile = details.filename,
-                    mutatedClass = details.className.nameWithoutPackage.asJavaName(),
-                    mutatedMethod = details.method,
-                    methodDescription = details.id.location.methodDesc,
-                    lineNumber = details.lineNumber,
-                    mutator = details.mutator,
-                    indexes = details.id.indexes.toList(),
-                    block = details.block,
-                    killingTest = result.killingTest,
-                    description = details.description
-                )
+            val mutationResult = MutationResult(
+                detected = status.isDetected,
+                status = status.name,
+                numberOfTestsRun = result.numberOfTestsRun,
+                sourceFile = details.filename,
+                mutatedClass = details.className.nameWithoutPackage.asJavaName(),
+                mutatedMethod = details.method,
+                methodDescription = details.id.location.methodDesc,
+                lineNumber = details.lineNumber,
+                mutator = details.mutator,
+                indexes = details.id.indexes.toList(),
+                block = details.block,
+                killingTest = result.killingTest,
+                description = details.description
             )
+
+            resultData.addMutationResult(mutationResult)
+
+            resultData.displayResult(mutationResult)
         }
     }
 
     override fun runEnd() {
-        // TODO If needed: Cleanup or final logic after the mutation test run
+        // TODO If needed: Cleanup or final logic after the mutation test run (could be removal of gutter icons?)
     }
 
     data class ResultData(
@@ -50,6 +53,12 @@ class MyMutationResultListener : MutationResultListener {
     ) {
         fun addMutationResult(mutationResult: MutationResult) {
             mutationResults.add(mutationResult)
+        }
+
+        fun displayResult(mutationResult: MutationResult) {
+//            val editor =
+//            val color =
+            HighlightGutterRenderer.GutterHighlighter.addBar(editor, color, mutationResult.lineNumber)
         }
     }
 
