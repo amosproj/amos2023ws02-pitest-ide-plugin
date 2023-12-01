@@ -3,8 +3,12 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
+import HighlightGutterRenderer
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.colors.TextAttributesKey
+import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.elementType
 import javax.swing.Icon

@@ -33,9 +33,9 @@ class ToolMenuAction : AnAction() {
             if (editor is Editor) {
                 val markupModel: MarkupModel = editor.markupModel
                 markupModel.removeAllHighlighters()
-                GutterIconExample.addBar(editor, "red", 10)
-                GutterIconExample.addBar(editor, "green", 11)
-                GutterIconExample.addBar(editor, "yellow", 12)
+                HighlightGutterRenderer.GutterHighlighter.addBar(editor, "red", 10)
+                HighlightGutterRenderer.GutterHighlighter.addBar(editor, "green", 11)
+                HighlightGutterRenderer.GutterHighlighter.addBar(editor, "yellow", 12)
             }
         }
     }
@@ -47,18 +47,5 @@ class ToolMenuAction : AnAction() {
 
     override fun getActionUpdateThread(): ActionUpdateThread {
         return super.getActionUpdateThread()
-    }
-
-    object GutterIconExample {
-        fun addBar(editor: Editor, color: String, lineNumber: Int) {
-            val markupModel = editor.markupModel
-            val barGutterRenderer = HighlightGutterRenderer(color)
-            val rangeHighlighter: RangeHighlighter = markupModel.addLineHighlighter(
-                TextAttributesKey.createTextAttributesKey("RED_BAR_TEXT_ATTRIBUTES"),
-                lineNumber,
-                0
-            )
-            rangeHighlighter.gutterIconRenderer = barGutterRenderer
-        }
     }
 }
