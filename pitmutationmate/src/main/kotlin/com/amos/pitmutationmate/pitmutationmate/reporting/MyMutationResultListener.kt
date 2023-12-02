@@ -2,8 +2,6 @@
 // SPDX-FileCopyrightText: 2023
 
 package com.amos.pitmutationmate.pitmutationmate.reporting
-
-import HighlightGutterRenderer
 import org.pitest.mutationtest.ClassMutationResults
 import org.pitest.mutationtest.DetectionStatus
 import org.pitest.mutationtest.MutationResultListener
@@ -21,26 +19,23 @@ class MyMutationResultListener : MutationResultListener {
         for (result in results.mutations) {
             val details: MutationDetails = result.details
             val status: DetectionStatus = result.status
-
-            val mutationResult = MutationResult(
-                detected = status.isDetected,
-                status = status.name,
-                numberOfTestsRun = result.numberOfTestsRun,
-                sourceFile = details.filename,
-                mutatedClass = details.className.nameWithoutPackage.asJavaName(),
-                mutatedMethod = details.method,
-                methodDescription = details.id.location.methodDesc,
-                lineNumber = details.lineNumber,
-                mutator = details.mutator,
-                indexes = details.id.indexes.toList(),
-                block = details.block,
-                killingTest = result.killingTest,
-                description = details.description
+            resultData.addMutationResult(
+                MutationResult(
+                    detected = status.isDetected,
+                    status = status.name,
+                    numberOfTestsRun = result.numberOfTestsRun,
+                    sourceFile = details.filename,
+                    mutatedClass = details.className.nameWithoutPackage.asJavaName(),
+                    mutatedMethod = details.method,
+                    methodDescription = details.id.location.methodDesc,
+                    lineNumber = details.lineNumber,
+                    mutator = details.mutator,
+                    indexes = details.id.indexes.toList(),
+                    block = details.block,
+                    killingTest = result.killingTest,
+                    description = details.description
+                )
             )
-
-            resultData.addMutationResult(mutationResult)
-
-            resultData.displayResult(mutationResult)
         }
     }
 
@@ -53,12 +48,6 @@ class MyMutationResultListener : MutationResultListener {
     ) {
         fun addMutationResult(mutationResult: MutationResult) {
             mutationResults.add(mutationResult)
-        }
-
-        fun displayResult(mutationResult: MutationResult) {
-//            val editor =
-//            val color =
-            HighlightGutterRenderer.GutterHighlighter.addBar(editor, color, mutationResult.lineNumber)
         }
     }
 

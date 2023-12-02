@@ -2,7 +2,8 @@
 // SPDX-FileCopyrightText: 2023
 
 package com.amos.pitmutationmate.pitmutationmate.reporting
-
+import HighlightGutterRenderer
+import com.intellij.openapi.editor.Editor
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import java.io.File
@@ -54,8 +55,11 @@ class XMLParser {
                         description
                     )
                     resultData.addMutationResult(mutationResult)
+                    // display color bars for mutation result
+                    resultData.displayResult(mutationResult)
                 }
             }
+
         } catch (e: Exception) {
             // TODO: Handle Parser exceptions
             e.printStackTrace()
@@ -105,6 +109,11 @@ class XMLParser {
     ) {
         fun addMutationResult(mutationResult: MutationResult) {
             mutationResults.add(mutationResult)
+        }
+        fun displayResult(mutationResult: MutationResult) {
+//            val editor =
+            val color = if (mutationResult.detected) "green" else "red"
+            HighlightGutterRenderer.GutterHighlighter.addBar(editor, color, mutationResult.lineNumber)
         }
     }
 
