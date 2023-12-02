@@ -38,6 +38,15 @@ class ToolMenuAction : AnAction() {
                 HighlightGutterRenderer.GutterHighlighter.addBar(editor, "yellow", 12)
             }
         }
+        // color bar logic pseudocode
+        val file = getTestInputFilepath("test_report/mutations.xml")
+        val parser = XMLParser()
+        val resultData = parser.loadResultsFromXmlReport(file.absolutePath)
+        for (i in 0 until resultData.mutationResults.length) {
+            val mutationResult = resultData.mutationResults[i]
+            val color = if (mutationResult.detected) "green" else "red"
+            HighlightGutterRenderer.GutterHighlighter.addBar(editor, color, mutationResult.lineNumber)
+        }
     }
 
 
