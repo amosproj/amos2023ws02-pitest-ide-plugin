@@ -21,7 +21,7 @@ class ContextMenuAction : RunConfigurationAction() {
                 println("ContextMenuAction: detected class '$fqn'")
             }
         }
-        runConfiguration(fqns.first(), e.project!!)
+        updateAndExecuteRunConfig(fqns.first(), e.project!!)
     }
 
     override fun update(e: AnActionEvent) {

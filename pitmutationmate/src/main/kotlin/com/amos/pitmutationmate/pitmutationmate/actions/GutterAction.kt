@@ -7,6 +7,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 
 class GutterAction(private val fqn: String) : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
-        runConfiguration(fqn, e.project!!)
+        updateAndExecuteRunConfig(fqn, e.project!!)
     }
 }

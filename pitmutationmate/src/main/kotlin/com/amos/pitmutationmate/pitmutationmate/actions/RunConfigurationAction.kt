@@ -12,7 +12,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.project.Project
 
 abstract class RunConfigurationAction: AnAction() {
-    fun runConfiguration(classFQN: String?, project: Project) {
+    fun updateAndExecuteRunConfig(classFQN: String?, project: Project) {
         val executor = ExecutorRegistry.getInstance().getExecutorById("Run")
 
         val runConfig = RunManager.getInstance(project).getConfigurationSettingsList(
