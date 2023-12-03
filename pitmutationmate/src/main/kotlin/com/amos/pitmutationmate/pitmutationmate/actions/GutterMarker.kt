@@ -9,7 +9,6 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import javax.swing.Icon
 
-
 class GutterMarker : RunLineMarkerContributor() {
     override fun getInfo(psielement: PsiElement): Info? {
         if (psielement is PsiClass) {
