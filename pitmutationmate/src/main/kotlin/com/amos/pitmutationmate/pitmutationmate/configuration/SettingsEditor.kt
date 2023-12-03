@@ -11,27 +11,32 @@ import com.intellij.util.ui.FormBuilder
 import javax.swing.JComponent
 import javax.swing.JPanel
 
-class MutationMateSettingsEditor : SettingsEditor<MutationMateRunConfiguration>() {
+class SettingsEditor : SettingsEditor<RunConfiguration>() {
     private val myPanel: JPanel
     private val gradleTaskField: TextFieldWithHistory = TextFieldWithHistory()
     private val gradleExecutableField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
 
     init {
         gradleTaskField.text = "pitest"
-        gradleExecutableField.addBrowseFolderListener("Select Gradle Script", null, null,
-            FileChooserDescriptorFactory.createSingleFileDescriptor());
-        myPanel = FormBuilder.createFormBuilder()
-            .addLabeledComponent("Gradle task", gradleTaskField)
-            .addLabeledComponent("Gradle script", gradleExecutableField)
-            .panel
+        gradleExecutableField.addBrowseFolderListener(
+            "Select Gradle Script",
+            null,
+            null,
+            FileChooserDescriptorFactory.createSingleFileDescriptor()
+        )
+        myPanel =
+            FormBuilder.createFormBuilder()
+                .addLabeledComponent("Gradle task", gradleTaskField)
+                .addLabeledComponent("Gradle script", gradleExecutableField)
+                .panel
     }
 
-    override fun resetEditorFrom(runConfiguration: MutationMateRunConfiguration) {
+    override fun resetEditorFrom(runConfiguration: RunConfiguration) {
         gradleTaskField.text = runConfiguration.taskName
         runConfiguration.gradleExecutable.also { gradleExecutableField.text = it }
     }
 
-    override fun applyEditorTo(runConfiguration: MutationMateRunConfiguration) {
+    override fun applyEditorTo(runConfiguration: RunConfiguration) {
         runConfiguration.taskName = gradleTaskField.text
         runConfiguration.gradleExecutable = gradleExecutableField.text
     }

@@ -4,8 +4,8 @@
 package com.amos.pitmutationmate.pitmutationmate.actions
 
 import com.amos.pitmutationmate.pitmutationmate.RunArchiver
-import com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfiguration
-import com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfigurationType
+import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfiguration
+import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType
 import com.intellij.execution.ExecutorRegistry
 import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
@@ -32,11 +32,11 @@ class ContextMenuAction : AnAction() {
         val executor = ExecutorRegistry.getInstance().getExecutorById("Run")
 
         val runConfig = RunManager.getInstance(e.project!!).getConfigurationSettingsList(
-            MutationMateRunConfigurationType::class.java
+            RunConfigurationType::class.java
         ).first()
 
         runConfig.configuration.let {
-            val rc = it as MutationMateRunConfiguration
+            val rc = it as RunConfiguration
             rc.classFQN = fqns.first()
         }
 
