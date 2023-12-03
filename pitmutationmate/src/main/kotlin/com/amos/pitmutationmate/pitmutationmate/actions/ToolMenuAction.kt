@@ -7,6 +7,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 
 class ToolMenuAction : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
-        runConfiguration(null, e.project!!)
+        runConfiguration("", e.project!!)
     }
 }
