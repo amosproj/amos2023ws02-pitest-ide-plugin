@@ -6,13 +6,13 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiJavaFile
+import com.intellij.psi.PsiClassOwner
 
 class ContextMenuAction : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
         println("ContextMenuAction: actionPerformed for file $psiFile")
-        val psiClasses = (psiFile as PsiJavaFile).classes
+        val psiClasses = (psiFile as PsiClassOwner).classes
         val fqns = mutableListOf<String>()
         for (psiClass in psiClasses) {
             val fqn = psiClass.qualifiedName
