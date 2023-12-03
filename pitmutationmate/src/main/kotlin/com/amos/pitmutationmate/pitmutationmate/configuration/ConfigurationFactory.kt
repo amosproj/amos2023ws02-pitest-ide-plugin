@@ -9,16 +9,16 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.openapi.components.BaseState
 import com.intellij.openapi.project.Project
 
-class MutationMateConfigurationFactory(type: ConfigurationType?) : ConfigurationFactory(type!!) {
+class ConfigurationFactory(type: ConfigurationType?) : ConfigurationFactory(type!!) {
     override fun getId(): String {
-        return MutationMateRunConfigurationType.ID
+        return RunConfigurationType.ID
     }
 
     override fun createTemplateConfiguration(project: Project): RunConfiguration {
-        return MutationMateRunConfiguration(project, this, "PITmutationmate")
+        return RunConfiguration(project, this, "PITmutationmate")
     }
 
     override fun getOptionsClass(): Class<out BaseState?> {
-        return MutationMateRunConfigurationOptions::class.java
+        return RunConfigurationOptions::class.java
     }
 }
