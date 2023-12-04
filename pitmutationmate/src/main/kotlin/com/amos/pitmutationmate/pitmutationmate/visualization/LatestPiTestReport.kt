@@ -25,10 +25,12 @@ class LatestPiTestReport : JPanel() {
         val mutationCoverageBar = CustomProgressBar(50, "3000/30000")
         val testStrengthBar = CustomProgressBar(93, "200/2000")
 
-        val data = arrayOf(arrayOf(getLabel("Class Name"), getLabel("Test.java")),
-                    arrayOf(getLabel("Line Coverage"), lineCoverageBar),
-                    arrayOf(getLabel("Mutation Coverage"), mutationCoverageBar),
-                    arrayOf(getLabel("Test Strength"), testStrengthBar))
+        val data = arrayOf(
+            arrayOf(getLabel("Class Name"), getLabel("Test.java")),
+            arrayOf(getLabel("Line Coverage"), lineCoverageBar),
+            arrayOf(getLabel("Mutation Coverage"), mutationCoverageBar),
+            arrayOf(getLabel("Test Strength"), testStrengthBar)
+        )
 
         val columnNames = arrayOf("Pit Test Coverage Report", "")
         val model = DefaultTableModel(data, columnNames)
@@ -71,7 +73,7 @@ class LatestPiTestReport : JPanel() {
         ): Component {
             if (value is CustomProgressBar) {
                 return value
-            } else if(value is JBLabel) {
+            } else if (value is JBLabel) {
                 return value
             } else {
                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)

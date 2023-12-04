@@ -17,7 +17,6 @@ class MyMutationResultListener : MutationResultListener {
     }
 
     override fun handleMutationResult(results: ClassMutationResults) {
-
         for (result in results.mutations) {
             val details: MutationDetails = result.details
             val status: DetectionStatus = result.status
