@@ -1,6 +1,6 @@
-@rem
-@rem SPDX-License-Identifier: MIT
-@rem SPDX-FileCopyrightText: 2023
+REM SPDX-FileCopyrightText: the original authors
+REM
+REM SPDX-License-Identifier: Apache-2.0
 
 @rem Copyright 2015 the original author or authors.
 @rem

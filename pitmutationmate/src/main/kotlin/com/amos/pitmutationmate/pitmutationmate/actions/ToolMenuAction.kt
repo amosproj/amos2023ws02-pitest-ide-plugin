@@ -4,7 +4,7 @@
 package com.amos.pitmutationmate.pitmutationmate.actions
 
 import HighlightGutterRenderer
-import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
+import com.amos.pitmutationmate.pitmutationmate.execution.GradleTaskExecutor
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -39,7 +39,6 @@ class ToolMenuAction : AnAction() {
             }
         }
     }
-
 
     override fun update(e: AnActionEvent) {
         super.update(e)

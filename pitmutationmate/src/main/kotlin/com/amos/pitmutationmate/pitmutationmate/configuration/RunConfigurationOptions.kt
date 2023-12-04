@@ -6,7 +6,7 @@ package com.amos.pitmutationmate.pitmutationmate.configuration
 import com.intellij.execution.configurations.RunConfigurationOptions
 import com.intellij.openapi.components.StoredProperty
 
-class MutationMateRunConfigurationOptions : RunConfigurationOptions() {
+class RunConfigurationOptions : RunConfigurationOptions() {
     private var taskNameOption: StoredProperty<String?> = string("").provideDelegate(this, "gradle.task")
     var taskName: String?
         get() = taskNameOption.getValue(this)
