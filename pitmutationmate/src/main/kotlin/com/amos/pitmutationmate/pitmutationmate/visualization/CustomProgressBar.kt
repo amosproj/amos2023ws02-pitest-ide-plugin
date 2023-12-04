@@ -16,16 +16,16 @@ internal class CustomProgressBar(coveragePercentage: Int, ratioText: String) : J
     private val font = Font("Arial", Font.BOLD, 12) // You can adjust the font as needed
     private val barWidth = 150
     private val barHeight = 20
-    private val ratioTextStartX = 5
     private val spaceBetweenTextAndBar = 5
 
     override fun getWidth(): Int {
-        return barWidth + getTextWidth(ratioText) + ratioTextStartX + spaceBetweenTextAndBar
+        return barWidth + getTextWidth(ratioText) + spaceBetweenTextAndBar
     }
 
     override fun getHeight(): Int {
         return barHeight
     }
+
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
 
@@ -33,24 +33,24 @@ internal class CustomProgressBar(coveragePercentage: Int, ratioText: String) : J
         val redWidth = barWidth - greenWidth
 
         // add space between ratio Text and the bar
-        var barStartX = getTextWidth(ratioText) + ratioTextStartX + spaceBetweenTextAndBar
+        var ratioTextStartX = barWidth + spaceBetweenTextAndBar
 
         drawText(g, ratioText, ratioTextStartX)
 
         // Draw grey border
         g.color = Color(170, 170, 170)
-        g.drawRect(barStartX, 0, barWidth - 1, barHeight - 1)
+        g.drawRect(0, 0, barWidth - 1, barHeight - 1)
 
         // Draw green segment
         g.color = Color(221, 255, 221)
-        g.fillRect(barStartX + 1, 1, greenWidth, barHeight - 2)
+        g.fillRect(1, 1, greenWidth, barHeight - 2)
 
         // Draw red segment
         g.color = Color(255, 170, 170)
-        g.fillRect(barStartX + greenWidth + 1, 1, redWidth - 2, barHeight - 2)
+        g.fillRect(greenWidth + 1, 1, redWidth - 2, barHeight - 2)
 
         val percentageText = "$coveragePercentage%"
-        drawText(g, percentageText, barStartX + (barWidth - getTextWidth(percentageText)) / 2)
+        drawText(g, percentageText, (barWidth - getTextWidth(percentageText)) / 2)
     }
 
     private fun getTextWidth(text: String): Int {

@@ -7,9 +7,14 @@ package com.amos.pitmutationmate.pitmutationmate.visualization
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
-import java.awt.*
+import com.intellij.util.ui.JBUI
+import java.awt.BorderLayout
+import java.awt.Component
+import java.awt.Dimension
+import java.awt.Font
 import javax.swing.JPanel
 import javax.swing.JTable
+import javax.swing.ListSelectionModel
 import javax.swing.table.DefaultTableCellRenderer
 import javax.swing.table.DefaultTableModel
 
@@ -20,65 +25,38 @@ class LatestPiTestReport : JPanel() {
         val mutationCoverageBar = CustomProgressBar(50, "3000/30000")
         val testStrengthBar = CustomProgressBar(93, "200/2000")
 
-        val title = "Latest Pit Test Coverage Report"
-        val titleLabel = JBLabel(title)
-        titleLabel.font = Font("Arial", Font.BOLD, 18)
+        val data = arrayOf(arrayOf(getLabel("Class Name"), getLabel("Test.java")),
+                    arrayOf(getLabel("Line Coverage"), lineCoverageBar),
+                    arrayOf(getLabel("Mutation Coverage"), mutationCoverageBar),
+                    arrayOf(getLabel("Test Strength"), testStrengthBar))
 
-        val className = "Test.java"
-        val classNameLabel = JBLabel(className)
-        classNameLabel.font = Font("Arial", Font.BOLD, 12)
-
-        val data = arrayOf(arrayOf(classNameLabel, lineCoverageBar, mutationCoverageBar, testStrengthBar))
-        val columnNames = arrayOf("Class Name", "Line Coverage", "Mutation Coverage", "Test Strength")
+        val columnNames = arrayOf("Pit Test Coverage Report", "")
         val model = DefaultTableModel(data, columnNames)
         val table = JBTable(model)
 
-        table.setRowHeight(lineCoverageBar.height + 1)
+        table.setRowHeight(lineCoverageBar.height + 2)
         table.tableHeader.reorderingAllowed = false
+        table.tableHeader.resizingAllowed = false
+        table.tableHeader.font = Font("Arial", Font.BOLD, 16)
+
+        table.border = JBUI.Borders.empty()
         table.setShowGrid(false)
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
+        table.columnSelectionAllowed = false
         table.intercellSpacing = Dimension(0, 0)
-        table.tableHeader.font = Font("Arial", Font.BOLD, 12)
 
-        for (i in columnNames.indices) {
-            val progressCol = table.columnModel.getColumn(i)
-            val curr = data[0][i]
+        table.columnModel.getColumn(0).cellRenderer = CustomProgressBarRenderer()
+        table.columnModel.getColumn(1).cellRenderer = CustomProgressBarRenderer()
 
-            var newWidth = -1
-            if(curr is CustomProgressBar) {
-                newWidth = curr.width
-            } else if(curr is JBLabel) {
-                val tableHeaderFont = table.tableHeader.font
-                var columnNameWidth = table.tableHeader.getFontMetrics(tableHeaderFont).stringWidth(columnNames[i])
-                columnNameWidth += 14 // add some padding
-                newWidth = getLabelWidthDynamically(classNameLabel)
-                newWidth = if (newWidth < columnNameWidth) columnNameWidth else newWidth
-            }
-
-            if(newWidth != -1) {
-                progressCol.preferredWidth = newWidth + 2
-                progressCol.maxWidth = newWidth + 2
-                progressCol.minWidth = newWidth + 2
-                progressCol.cellRenderer = CustomProgressBarRenderer()
-            }
-        }
-
-        // Set up layout with FlowLayout
         layout = BorderLayout()
 
-        // Add title label to the North region
-        add(titleLabel, BorderLayout.NORTH)
-
-        // Create a panel for the table with FlowLayout
-        val tablePanel = JPanel(FlowLayout(FlowLayout.LEFT))
-        tablePanel.add(JBScrollPane(table))
-
-        // Add the table panel to the Center region
-        add(tablePanel, BorderLayout.CENTER)
+        add(JBScrollPane(table))
     }
 
-    private fun getLabelWidthDynamically(label: JBLabel) : Int {
-        val fontMetrics = label.getFontMetrics(label.font)
-        return fontMetrics.stringWidth(label.text)
+    private fun getLabel(text: String) : JBLabel {
+        val label = JBLabel(text)
+        label.font = Font("Arial", Font.BOLD, 12)
+        return label
     }
 
     private class CustomProgressBarRenderer : DefaultTableCellRenderer() {

@@ -16,7 +16,7 @@ import com.intellij.ui.content.ContentFactory
 internal class MutationTestToolWindowFactory : ToolWindowFactory, DumbAware {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
 
-        val latestPiTestReport = ContentFactory.getInstance().createContent(LatestPiTestReport(), "Progressbar", false)
+        val latestPiTestReport = ContentFactory.getInstance().createContent(LatestPiTestReport(), "Latest Result", false)
         val table = ContentFactory.getInstance().createContent(JTreeTable(), "Mutationtest Coverage", false)
         val lineChart = ContentFactory.getInstance().createContent(LineGraph(), "Line Chart", false)
         val barChart = ContentFactory.getInstance().createContent(BarGraph(), "Bar Chart", false)
