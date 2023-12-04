@@ -55,7 +55,7 @@ class LatestPiTestReport : JPanel() {
         add(JBScrollPane(table))
     }
 
-    private fun getLabel(text: String) : JBLabel {
+    private fun getLabel(text: String): JBLabel {
         val label = JBLabel(text)
         label.font = Font("Arial", Font.BOLD, 12)
         return label

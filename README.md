@@ -13,7 +13,7 @@ SPDX-FileCopyrightText: 2023
 ## About the Project
 
 [PIT (Pitest)](https://pitest.org/) is a popular mutation testing framework for Java / JVM-based languages.
-This project is to develop a plugin for the [IntelliJ](https://www.jetbrains.com/idea/) / [Android Studio (Jetbrains)](https://developer.android.com/studio) IDE so that mutation tests can be conveniently run from within the IDE, similar to the JUnit plugins available for most IDEs.
+This project is to develop a plugin for the [IntelliJ](https://www.jetbrains.com/idea/) / [Android Studio (JetBrains)](https://developer.android.com/studio) IDE so that mutation tests can be conveniently run from within the IDE, similar to the JUnit plugins available for most IDEs.
 Users of the IDE shall be able to
 
 - Start a Pitest run for a class directly in the code editor
