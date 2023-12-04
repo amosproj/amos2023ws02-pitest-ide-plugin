@@ -32,7 +32,7 @@ class XMLParser {
                     val mutatedClass = getTextContent(element, "mutatedClass")
                     val mutatedMethod = getTextContent(element, "mutatedMethod")
                     val methodDescription = getTextContent(element, "methodDescription")
-                    val lineNumber = getAttribute(element, "lineNumber", -1)
+                    val lineNumber = getTextContent(element, "lineNumber").toInt()
                     val mutator = getTextContent(element, "mutator")
                     val indexes = getListContent(element, "index")
                     val blocks = getListContent(element, "block")
@@ -112,8 +112,8 @@ class XMLParser {
         }
         fun displayResult(mutationResult: MutationResult) {
 //            val editor =
-            val color = if (mutationResult.detected) "green" else "red"
-            HighlightGutterRenderer.GutterHighlighter.addBar(editor, color, mutationResult.lineNumber)
+//            val color = if (mutationResult.detected) "green" else "red"
+//            HighlightGutterRenderer.GutterHighlighter.addBar(editor, color, mutationResult.lineNumber)
         }
     }
 

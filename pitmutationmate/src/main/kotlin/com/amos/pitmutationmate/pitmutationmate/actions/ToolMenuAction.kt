@@ -4,9 +4,11 @@
 package com.amos.pitmutationmate.pitmutationmate.actions
 
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
 
 class ToolMenuAction : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
-        updateAndExecuteRunConfig("", e.project!!)
+        val editor = e.getData(CommonDataKeys.EDITOR)
+        updateAndExecuteRunConfig("", e.project!!, editor)
     }
 }
