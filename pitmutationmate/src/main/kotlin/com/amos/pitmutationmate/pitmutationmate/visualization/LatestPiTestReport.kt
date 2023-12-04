@@ -48,6 +48,13 @@ class LatestPiTestReport : JPanel() {
         table.intercellSpacing = Dimension(0, 0)
 
         table.columnModel.getColumn(0).cellRenderer = CustomProgressBarRenderer()
+
+        val firstColumnWidth = table.tableHeader.getFontMetrics(table.tableHeader.font).stringWidth(" Pit Test Coverage Report ") + 5
+        table.columnModel.getColumn(0).maxWidth = firstColumnWidth
+        table.columnModel.getColumn(0).minWidth = firstColumnWidth
+        table.columnModel.getColumn(0).preferredWidth = firstColumnWidth
+        table.columnModel.getColumn(0).width = firstColumnWidth
+
         table.columnModel.getColumn(1).cellRenderer = CustomProgressBarRenderer()
 
         layout = BorderLayout()
