@@ -6,21 +6,50 @@ package com.amos.pitmutationmate.pitmutationmate.reporting
 import HighlightGutterRenderer
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser.ResultData
 import com.intellij.openapi.editor.Editor
-import java.nio.file.Paths
+import java.nio.file.*
 
-class XMLListener(private var dir: String, private var editor: Editor) {
+class XMLListener(private var dir: Path, private var editor: Editor) {
     private lateinit var result: ResultData
 
     fun listen() {
         val pwd: String? = editor.project?.basePath?.let { Paths.get(it).toAbsolutePath().toString() }
-        this.dir = pwd + "/build/reports/pitest/test/mutations.xml"
-        loadResults()
-        displayResults()
+        this.dir = Paths.get(pwd.toString(), this.dir.toString())
+
+        try {
+            val fileSystem = FileSystems.getDefault()
+            val watchService: WatchService = fileSystem.newWatchService()
+
+            dir.register(
+                watchService,
+                StandardWatchEventKinds.ENTRY_CREATE
+            )
+
+            println("Watching " + dir.toString())
+
+            while (true) {
+                val key = watchService.take()
+
+                for (event in key.pollEvents()) {
+                    val kind = event.kind()
+
+                    if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
+                        // This is temporary for demonstration purposes.
+                        this.dir = Paths.get(pwd.toString(), "build","reports","pitest", "test", "mutations.xml")
+                        loadResults()
+                        displayResults()
+
+                        break
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun loadResults() {
         val parser: XMLParser = XMLParser()
-        result = parser.loadResultsFromXmlReport(this.dir)
+        result = parser.loadResultsFromXmlReport(this.dir.toString())
     }
 
     fun displayResults() {

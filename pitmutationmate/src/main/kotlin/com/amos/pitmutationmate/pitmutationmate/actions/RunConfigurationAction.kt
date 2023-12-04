@@ -12,6 +12,7 @@ import com.intellij.execution.RunManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
+import java.nio.file.Paths
 
 abstract class RunConfigurationAction : AnAction() {
     fun updateAndExecuteRunConfig(classFQN: String?, project: Project, editor: Editor?) {
@@ -31,7 +32,7 @@ abstract class RunConfigurationAction : AnAction() {
         ProgramRunnerUtil.executeConfiguration(runConfig, executor!!)
 
         if (editor != null) {
-            val dir = "build/reports/pitest/" + classFQN
+            val dir = Paths.get("build","reports","pitest", classFQN)
             var xmlListener = XMLListener(dir, editor)
             xmlListener.listen()
         }
