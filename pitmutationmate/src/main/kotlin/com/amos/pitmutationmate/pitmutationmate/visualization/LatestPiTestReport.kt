@@ -33,7 +33,13 @@ class LatestPiTestReport : JPanel() {
         )
 
         val columnNames = arrayOf("Pit Test Coverage Report", "")
-        val model = DefaultTableModel(data, columnNames)
+
+        val model = object : DefaultTableModel(data, columnNames) {
+            override fun isCellEditable(row: Int, column: Int): Boolean {
+                return false
+            }
+        }
+
         val table = JBTable(model)
 
         table.setRowHeight(lineCoverageBar.height + 2)
