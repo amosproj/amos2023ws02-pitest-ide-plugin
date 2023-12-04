@@ -4,6 +4,7 @@
 package com.amos.pitmutationmate.pitmutationmate
 
 import HighlightGutterRenderer
+import com.amos.pitmutationmate.pitmutationmate.execution.GradleTaskExecutor
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
