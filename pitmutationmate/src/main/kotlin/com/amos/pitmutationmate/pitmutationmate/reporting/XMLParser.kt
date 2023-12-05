@@ -2,8 +2,6 @@
 // SPDX-FileCopyrightText: 2023
 
 package com.amos.pitmutationmate.pitmutationmate.reporting
-import HighlightGutterRenderer
-import com.intellij.openapi.editor.Editor
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import java.io.File
@@ -59,7 +57,6 @@ class XMLParser {
                     resultData.displayResult(mutationResult)
                 }
             }
-
         } catch (e: Exception) {
             // TODO: Handle Parser exceptions
             e.printStackTrace()

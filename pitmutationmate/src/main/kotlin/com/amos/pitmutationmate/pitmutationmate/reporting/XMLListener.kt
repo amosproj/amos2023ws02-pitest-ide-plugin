@@ -3,11 +3,10 @@
 
 package com.amos.pitmutationmate.pitmutationmate.reporting
 
-import HighlightGutterRenderer
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser.ResultData
 import com.intellij.openapi.editor.Editor
+import HighlightGutterRenderer
 import java.nio.file.*
-import kotlinx.coroutines.*
 
 class XMLListener(private var dir: Path, private var editor: Editor) {
     private lateinit var result: ResultData
@@ -15,7 +14,7 @@ class XMLListener(private var dir: Path, private var editor: Editor) {
     fun listen() {
         val pwd: String? = editor.project?.basePath?.let { Paths.get(it).toAbsolutePath().toString() }
         this.dir = Paths.get(pwd.toString(), this.dir.toString())
-        //TODO: implement listening to changes in report directory
+        // TODO: implement listening to changes in report directory
         loadResults()
         displayResults()
     }
@@ -30,7 +29,7 @@ class XMLListener(private var dir: Path, private var editor: Editor) {
             val color = if (r.detected) "dark-green" else "dark-pink"
             if (r.lineNumber > -1) {
                 println(r.toString())
-                HighlightGutterRenderer.GutterHighlighter.addBar(this.editor, color, r.lineNumber-1)
+                HighlightGutterRenderer.GutterHighlighter.addBar(this.editor, color, r.lineNumber - 1)
             }
         }
     }

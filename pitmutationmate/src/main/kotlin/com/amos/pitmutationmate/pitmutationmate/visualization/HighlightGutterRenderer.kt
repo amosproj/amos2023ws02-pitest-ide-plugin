@@ -11,7 +11,6 @@ import java.awt.Component
 import java.awt.Graphics
 import javax.swing.Icon
 
-
 class HighlightGutterRenderer(color: String): GutterIconRenderer() {
     private val toolTip = "PITest run"
     val toolTipProvider: (PsiElement) -> String = { _ -> toolTip }
@@ -40,11 +39,11 @@ class HighlightGutterRenderer(color: String): GutterIconRenderer() {
     override fun getIcon(): Icon {
         return if (this.color == "light-pink") {
             LightPinkBarIcon()
-        }else if (this.color == "dark-pink") {
+        } else if (this.color == "dark-pink") {
             DarkPinkBarIcon()
-        }else if (this.color == "light-green") {
+        } else if (this.color == "light-green") {
             LightGreenBarIcon()
-        }else {
+        } else {
             DarkGreenBarIcon()
         }
     }
@@ -109,5 +108,4 @@ class HighlightGutterRenderer(color: String): GutterIconRenderer() {
             return 16
         }
     }
-
 }

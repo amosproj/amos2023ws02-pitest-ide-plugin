@@ -3,7 +3,6 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
-import HighlightGutterRenderer
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
 import com.intellij.icons.AllIcons
 import com.intellij.psi.PsiClass

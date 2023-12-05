@@ -32,8 +32,8 @@ abstract class RunConfigurationAction : AnAction() {
         ProgramRunnerUtil.executeConfiguration(runConfig, executor!!)
 
         if (editor != null) {
-            //TODO: use actual XML report directories. This currently uses a placeholder test folder
-            val dir = Paths.get("build","reports","pitest","test", "mutations.xml")
+            // TODO: use actual XML report directories. This currently uses a placeholder test folder
+            val dir = Paths.get("build", "reports", "pitest", "test", "mutations.xml")
             var xmlListener = XMLListener(dir, editor)
             xmlListener.listen()
         }
