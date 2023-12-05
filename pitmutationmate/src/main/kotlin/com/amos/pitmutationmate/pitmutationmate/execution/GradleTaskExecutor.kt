@@ -17,7 +17,8 @@ class GradleTaskExecutor : BasePitestExecutor() {
         executable: String?,
         taskName: String?,
         projectDir: String,
-        classFQN: String?
+        classFQN: String?,
+        port: Int
     ): GeneralCommandLine {
         val commandLine = GeneralCommandLine()
 
@@ -40,18 +41,19 @@ class GradleTaskExecutor : BasePitestExecutor() {
             commandLine.addParameters("sh", this.gradleExecutable, this.taskName)
         }
 
-        commandLine.addParameters(getPitestOverrideParameters(classFQN))
+        commandLine.addParameters(getPitestOverrideParameters(classFQN, port))
 
         commandLine.workDirectory = File(projectDir)
         return commandLine
     }
 
-    private fun getPitestOverrideParameters(classFQN: String?): List<String> {
+    private fun getPitestOverrideParameters(classFQN: String?, port: Int): List<String> {
         val parameters = mutableListOf<String>()
         if (!classFQN.isNullOrEmpty()) {
             parameters.add("-Dpitmutationmate.override.targetClasses=$classFQN")
         }
         parameters.add("-Dpitmutationmate.override.verbose=true")
+        parameters.add("-Dpitmutationmate.override.port=$port")
         return parameters
     }
 }
