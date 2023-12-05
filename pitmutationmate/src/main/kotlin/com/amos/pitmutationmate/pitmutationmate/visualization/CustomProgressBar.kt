@@ -5,36 +5,70 @@
 package com.amos.pitmutationmate.pitmutationmate.visualization
 
 import java.awt.Color
+import java.awt.Font
+import java.awt.FontMetrics
 import java.awt.Graphics
 import javax.swing.JComponent
-import javax.swing.JPanel
-import javax.swing.JProgressBar
-import javax.swing.plaf.basic.BasicProgressBarUI
 
-internal class CustomProgressBar : JPanel() {
+internal class CustomProgressBar(coveragePercentage: Int, ratioText: String) : JComponent() {
+    private val coveragePercentage = coveragePercentage
+    private val ratioText = ratioText
+    private val font = Font("Arial", Font.BOLD, 12) // You can adjust the font as needed
+    private val barWidth = 150
+    private val barHeight = 20
+    private val spaceBetweenTextAndBar = 5
 
-    private val progressBar = JProgressBar(0, 100)
+    override fun getWidth(): Int {
+        return barWidth + getTextWidth(ratioText) + spaceBetweenTextAndBar
+    }
 
-    init {
-        //UIManager.put("ProgressBar.background", Color.ORANGE);
-        //UIManager.put("ProgressBar.foreground", Color.BLUE);
-        progressBar.setStringPainted(true)
-        //progressBar.setValue(0)
-        progressBar.setBackground(Color.RED)
-        progressBar.setForeground(Color.GREEN)
-        //progressBar.setString("49%")
-        progressBar.setValue(35)
-        progressBar.setUI(object : BasicProgressBarUI() {
-            override fun paint(g: Graphics, c: JComponent) {
-                c.foreground = Color.GREEN
-                c.background = Color.RED
-                g.color = Color.BLACK
-                super.paint(g, c)
-            }
-        })
-        this.add(progressBar)
-        //this.isVisible = true;
+    override fun getHeight(): Int {
+        return barHeight
+    }
 
-        //UIManager.put("nimbusOrange", Color(38, 139, 210))
+    override fun paintComponent(g: Graphics) {
+        super.paintComponent(g)
+
+        val greenWidth = (coveragePercentage * barWidth) / 100
+        val redWidth = barWidth - greenWidth
+
+        // add space between ratio Text and the bar
+        var ratioTextStartX = barWidth + spaceBetweenTextAndBar
+
+        drawText(g, ratioText, ratioTextStartX)
+
+        // Draw grey border
+        g.color = Color(170, 170, 170)
+        g.drawRect(0, 0, barWidth - 1, barHeight - 1)
+
+        // Draw green segment
+        g.color = Color(221, 255, 221)
+        g.fillRect(1, 1, greenWidth, barHeight - 2)
+
+        // Draw red segment
+        g.color = Color(255, 170, 170)
+        g.fillRect(greenWidth + 1, 1, redWidth - 2, barHeight - 2)
+
+        val percentageText = "$coveragePercentage%"
+        drawText(g, percentageText, (barWidth - getTextWidth(percentageText)) / 2)
+    }
+
+    private fun getTextWidth(text: String): Int {
+        return getFontMetrics(font).stringWidth(text)
+    }
+
+    private fun drawText(g: Graphics, text: String, x: Int): Int {
+        g.font = font
+
+        val fontMetrics: FontMetrics = g.fontMetrics
+        val textWidth: Int = fontMetrics.stringWidth(text)
+        val textHeight: Int = fontMetrics.height
+
+        val y = (barHeight - textHeight) / 2 + fontMetrics.ascent
+
+        g.color = Color.BLACK // Set the color for the text
+        g.drawString(text, x, y)
+
+        return textWidth
     }
 }

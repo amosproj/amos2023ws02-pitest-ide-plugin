@@ -8,8 +8,7 @@ import java.awt.Component
 import java.awt.Graphics
 import javax.swing.Icon
 
-
-class HighlightGutterRenderer(color: String): GutterIconRenderer() {
+class HighlightGutterRenderer(color: String) : GutterIconRenderer() {
     private val toolTip = "PITest run"
     val toolTipProvider: (PsiElement) -> String = { _ -> toolTip }
     val color: String = color
@@ -24,9 +23,9 @@ class HighlightGutterRenderer(color: String): GutterIconRenderer() {
     override fun getIcon(): Icon {
         return if (this.color == "red") {
             RedBarIcon()
-        }else if (this.color == "green") {
+        } else if (this.color == "green") {
             GreenBarIcon()
-        }else {
+        } else {
             YellowBarIcon()
         }
     }
@@ -34,7 +33,6 @@ class HighlightGutterRenderer(color: String): GutterIconRenderer() {
     override fun getAlignment(): Alignment {
         return Alignment.LEFT
     }
-
 
     private class RedBarIcon : Icon {
         override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
