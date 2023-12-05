@@ -32,7 +32,7 @@ abstract class RunConfigurationAction : AnAction() {
         ProgramRunnerUtil.executeConfiguration(runConfig, executor!!)
 
         if (editor != null) {
-            val dir = Paths.get("build","reports","pitest", classFQN)
+            val dir = Paths.get("build","reports","pitest") //, classFQN)
             var xmlListener = XMLListener(dir, editor)
             xmlListener.listen()
         }

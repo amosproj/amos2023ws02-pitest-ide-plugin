@@ -7,6 +7,7 @@ import HighlightGutterRenderer
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser.ResultData
 import com.intellij.openapi.editor.Editor
 import java.nio.file.*
+import kotlinx.coroutines.*
 
 class XMLListener(private var dir: Path, private var editor: Editor) {
     private lateinit var result: ResultData
@@ -15,36 +16,9 @@ class XMLListener(private var dir: Path, private var editor: Editor) {
         val pwd: String? = editor.project?.basePath?.let { Paths.get(it).toAbsolutePath().toString() }
         this.dir = Paths.get(pwd.toString(), this.dir.toString())
 
-        try {
-            val fileSystem = FileSystems.getDefault()
-            val watchService: WatchService = fileSystem.newWatchService()
-
-            dir.register(
-                watchService,
-                StandardWatchEventKinds.ENTRY_CREATE
-            )
-
-            println("Watching " + dir.toString())
-
-            while (true) {
-                val key = watchService.take()
-
-                for (event in key.pollEvents()) {
-                    val kind = event.kind()
-
-                    if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
-                        // This is temporary for demonstration purposes.
-                        this.dir = Paths.get(pwd.toString(), "build","reports","pitest", "test", "mutations.xml")
-                        loadResults()
-                        displayResults()
-
-                        break
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        this.dir = Paths.get(pwd.toString(), "build","reports","pitest", "test", "mutations.xml")
+        loadResults()
+        displayResults()
     }
 
     private fun loadResults() {
@@ -54,7 +28,7 @@ class XMLListener(private var dir: Path, private var editor: Editor) {
 
     fun displayResults() {
         for (r in result.mutationResults) {
-            val color = if (r.detected) "green" else "red"
+            val color = if (r.detected) "light-green" else "dark-pink"
             if (r.lineNumber > -1) {
                 println(r.toString())
                 HighlightGutterRenderer.GutterHighlighter.addBar(this.editor, color, r.lineNumber-1)

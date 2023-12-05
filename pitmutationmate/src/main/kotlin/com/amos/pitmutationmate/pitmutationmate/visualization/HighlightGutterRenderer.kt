@@ -38,12 +38,14 @@ class HighlightGutterRenderer(color: String): GutterIconRenderer() {
     }
 
     override fun getIcon(): Icon {
-        return if (this.color == "red") {
-            RedBarIcon()
-        }else if (this.color == "green") {
-            GreenBarIcon()
+        return if (this.color == "light-pink") {
+            LightPinkBarIcon()
+        }else if (this.color == "dark-pink") {
+            DarkPinkBarIcon()
+        }else if (this.color == "light-green") {
+            LightGreenBarIcon()
         }else {
-            YellowBarIcon()
+            DarkGreenBarIcon()
         }
     }
 
@@ -51,8 +53,21 @@ class HighlightGutterRenderer(color: String): GutterIconRenderer() {
         return Alignment.LEFT
     }
 
+    private class LightPinkBarIcon : Icon {
+        override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
+            g.setColor(Color.PINK)
+            g.fillRect(x, y, iconWidth, iconHeight)
+        }
 
-    private class RedBarIcon : Icon {
+        override fun getIconWidth(): Int {
+            return 10
+        }
+
+        override fun getIconHeight(): Int {
+            return 16
+        }
+    }
+    private class DarkPinkBarIcon : Icon {
         override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
             g.setColor(Color.RED)
             g.fillRect(x, y, iconWidth, iconHeight)
@@ -66,8 +81,21 @@ class HighlightGutterRenderer(color: String): GutterIconRenderer() {
             return 16
         }
     }
+    private class LightGreenBarIcon : Icon {
+        override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
+            g.setColor(Color.CYAN)
+            g.fillRect(x, y, iconWidth, iconHeight)
+        }
 
-    private class GreenBarIcon : Icon {
+        override fun getIconWidth(): Int {
+            return 10
+        }
+
+        override fun getIconHeight(): Int {
+            return 16
+        }
+    }
+    private class DarkGreenBarIcon : Icon {
         override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
             g.setColor(Color.GREEN)
             g.fillRect(x, y, iconWidth, iconHeight)
@@ -82,18 +110,4 @@ class HighlightGutterRenderer(color: String): GutterIconRenderer() {
         }
     }
 
-    private class YellowBarIcon : Icon {
-        override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
-            g.setColor(Color.YELLOW)
-            g.fillRect(x, y, iconWidth, iconHeight)
-        }
-
-        override fun getIconWidth(): Int {
-            return 10
-        }
-
-        override fun getIconHeight(): Int {
-            return 16
-        }
-    }
 }
