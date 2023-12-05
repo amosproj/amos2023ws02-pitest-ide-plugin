@@ -11,7 +11,7 @@ import java.awt.Component
 import java.awt.Graphics
 import javax.swing.Icon
 
-class HighlightGutterRenderer(color: String): GutterIconRenderer() {
+class HighlightGutterRenderer(color: String) : GutterIconRenderer() {
     private val toolTip = "PITest run"
     val toolTipProvider: (PsiElement) -> String = { _ -> toolTip }
     val color: String = color

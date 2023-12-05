@@ -3,13 +3,12 @@
 
 package com.amos.pitmutationmate.pitmutationmate.reporting
 
-import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser.ResultData
 import com.intellij.openapi.editor.Editor
-import HighlightGutterRenderer
-import java.nio.file.*
+import java.nio.file.Path
+import java.nio.file.Paths
 
 class XMLListener(private var dir: Path, private var editor: Editor) {
-    private lateinit var result: ResultData
+    private lateinit var result: XMLParser.ResultData
 
     fun listen() {
         val pwd: String? = editor.project?.basePath?.let { Paths.get(it).toAbsolutePath().toString() }
