@@ -33,7 +33,7 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
 
     override fun resetEditorFrom(runConfiguration: RunConfiguration) {
         gradleTaskField.text = runConfiguration.taskName
-        runConfiguration.gradleExecutable.also { gradleExecutableField.text = it }
+        runConfiguration.gradleExecutable.also { gradleExecutableField.text = it ?: "" }
     }
 
     override fun applyEditorTo(runConfiguration: RunConfiguration) {
