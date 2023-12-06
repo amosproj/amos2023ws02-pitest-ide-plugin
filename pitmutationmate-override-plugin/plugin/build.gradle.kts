@@ -28,7 +28,7 @@ dependencies {
     implementation("com.netflix.nebula:nebula-test:10.3.0")
 
     testImplementation("org.spockframework:spock-core:2.2-groovy-3.0")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")
 }
 
 group = "io.github.amosproj"
