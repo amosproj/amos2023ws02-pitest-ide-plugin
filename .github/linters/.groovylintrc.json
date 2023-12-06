@@ -1,17 +1,17 @@
 {
-    "extends": "recommended",
-    "rules": {
-        "BlankLineBeforePackage": {
-            "enabled": false
-        },
-        "JUnitPublicNonTestMethod": {
-            "enabled": false
-        },
-        "MethodName": {
-            "enabled": false
-        },
-        "CatchException": {
-            "enabled": false
-        }
+  "extends": "recommended",
+  "rules": {
+    "BlankLineBeforePackage": {
+      "enabled": false
+    },
+    "JUnitPublicNonTestMethod": {
+      "enabled": false
+    },
+    "MethodName": {
+      "enabled": false
+    },
+    "CatchException": {
+      "enabled": false
     }
+  }
 }
