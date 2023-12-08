@@ -7,13 +7,13 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiClassOwner
 import com.intellij.psi.PsiElement
 
 class ContextMenuAction : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
-        println(e.place)
         if (e.place == "EditorPopup") {
             println("ContextMenuAction: actionPerformed in EditorPopup for file $psiFile")
             val psiElement = psiFile?.findElementAt(editor?.caretModel!!.offset)
@@ -26,21 +26,18 @@ class ContextMenuAction : RunConfigurationAction() {
         }
         if (e.place == "ProjectViewPopup") {
             println("ContextMenuAction: actionPerformed in ProjectViewPopup for file $psiFile")
+            val psiClasses = (psiFile as PsiClassOwner).classes
+            var classFQNs: String = ""
+            for (psiClass in psiClasses) {
+                val fqn = psiClass.qualifiedName
+                println("$fqn")
+                if (fqn != null) {
+                    classFQNs = "$classFQNs$fqn "
+                }
+            }
+            println("ContextMenuAction: selected classes are $classFQNs.")
+            updateAndExecuteRunConfig(classFQNs, e.project!!, editor)
         }
-
-//        println("ContextMenuAction: actionPerformed for file $psiFile")
-//        val psiClasses = (psiFile as PsiClassOwner).classes
-//        val fqns = mutableListOf<String>()
-//        for (psiClass in psiClasses) {
-//            val fqn = psiClass.qualifiedName
-//            if (fqn != null) {
-//                fqns.add(fqn)
-//                println("ContextMenuAction: detected class '$fqn'")
-//            }
-//        }
-
-
-//        updateAndExecuteRunConfig(fqns.first(), e.project!!, editor)
     }
 
     override fun update(e: AnActionEvent) {
