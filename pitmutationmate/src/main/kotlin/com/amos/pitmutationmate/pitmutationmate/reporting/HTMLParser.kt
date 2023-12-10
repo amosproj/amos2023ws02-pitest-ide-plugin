@@ -4,8 +4,8 @@
 package com.amos.pitmutationmate.pitmutationmate.reporting
 
 import org.jsoup.Jsoup
-import java.io.File
 import org.jsoup.nodes.Element
+import java.io.File
 
 class HTMLParser {
     fun loadResultsFromHtml(htmlReportPath: String?): OverallResultData {

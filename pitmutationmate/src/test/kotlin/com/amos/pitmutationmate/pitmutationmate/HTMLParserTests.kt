@@ -1,15 +1,16 @@
 package com.amos.pitmutationmate.pitmutationmate
 
+import com.amos.pitmutationmate.pitmutationmate.reporting.HTMLParser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import com.amos.pitmutationmate.pitmutationmate.reporting.HTMLParser
 import java.io.File
 
-class HTMLParserTest {
+class HTMLParserTests {
     private fun getTestInputFilepath(filename: String): File {
         val path = "src/test/resources/$filename"
         return File(path)
     }
+
     @Test
     fun testParsing() {
         val htmlParser = HTMLParser()
