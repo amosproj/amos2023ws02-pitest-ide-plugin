@@ -14,7 +14,6 @@ class XMLParserTests {
 
     private fun getTestInputFilepath(filename: String): File {
         val path = "src/test/resources/$filename"
-
         return File(path)
     }
 
