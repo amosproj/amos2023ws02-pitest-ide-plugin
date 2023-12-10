@@ -1,13 +1,15 @@
-package com.amos.pitmutationmate.pitmutationmate.reporting
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023
 
+package com.amos.pitmutationmate.pitmutationmate.reporting
 import org.pitest.mutationtest.ClassMutationResults
 import org.pitest.mutationtest.DetectionStatus
 import org.pitest.mutationtest.MutationResultListener
 import org.pitest.mutationtest.engine.MutationDetails
-import java.util.Optional
+import java.util.*
 
 class MyMutationResultListener : MutationResultListener {
-    private  var resultData = ResultData()
+    private var resultData = ResultData()
 
     override fun runStart() {
         resultData = ResultData()
@@ -17,7 +19,6 @@ class MyMutationResultListener : MutationResultListener {
         for (result in results.mutations) {
             val details: MutationDetails = result.details
             val status: DetectionStatus = result.status
-
             resultData.addMutationResult(
                 MutationResult(
                     detected = status.isDetected,
@@ -39,7 +40,7 @@ class MyMutationResultListener : MutationResultListener {
     }
 
     override fun runEnd() {
-        // TODO If needed: Cleanup or final logic after the mutation test run
+        // TODO If needed: Cleanup or final logic after the mutation test run (could be removal of gutter icons?)
     }
 
     data class ResultData(

@@ -24,20 +24,21 @@
 
   <!-- Product and plugin compatibility requirements.
        Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
-  <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
 
   <!-- Extension points defined by the plugin.
        Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
   <extensions defaultExtensionNs="com.intellij">
 
-    <toolWindow id="Pitest Result" secondary="false" icon="AllIcons.Toolwindows.WebToolWindow" anchor="right"
+    <toolWindow id="Pitest" secondary="false" icon="AllIcons.Toolwindows.WebToolWindow" anchor="right"
                 factoryClass="com.amos.pitmutationmate.pitmutationmate.MutationTestToolWindowFactory"/>
 
       <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.actions.GutterMarker"
                                 language=""/>
 
       <configurationType
-          implementation="com.amos.pitmutationmate.pitmutationmate.configuration.MutationMateRunConfigurationType"/>
+          implementation="com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType"/>
   </extensions>
     <actions>
         <action id="com.amos.pitmutationmate.pitmutationmate.actions.ToolMenuAction"

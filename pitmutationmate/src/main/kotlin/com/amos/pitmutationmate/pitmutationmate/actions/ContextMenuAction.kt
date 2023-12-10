@@ -1,41 +1,37 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2023
+// SPDX-FileCopyrightText: 2023 Brianne Oberson <brianne.oberson@gmail.com>
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
-import com.amos.pitmutationmate.pitmutationmate.GradleTaskExecutor
-import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.project.Project
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiClassOwner
 
-class ContextMenuAction: AnAction() {
+class ContextMenuAction : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
-        val context = e.getDataContext()
-        val file: VirtualFile? = context.getData("virtualFile") as VirtualFile?
-        println("ContextMenuAction actionPerformed for file ${file}")
-
-        val project: Project? = e.project
-        val gradleTaskExecutor = GradleTaskExecutor()
-        if (project != null) {
-            project.basePath?.let { gradleTaskExecutor.executeTask(it, "", "pitest") }
+        val psiFile = e.getData(CommonDataKeys.PSI_FILE)
+        println("ContextMenuAction: actionPerformed for file $psiFile")
+        val psiClasses = (psiFile as PsiClassOwner).classes
+        val fqns = mutableListOf<String>()
+        for (psiClass in psiClasses) {
+            val fqn = psiClass.qualifiedName
+            if (fqn != null) {
+                fqns.add(fqn)
+                println("ContextMenuAction: detected class '$fqn'")
+            }
         }
+        val editor = e.getData(CommonDataKeys.EDITOR)
+        updateAndExecuteRunConfig(fqns.first(), e.project!!, editor)
     }
 
     override fun update(e: AnActionEvent) {
-        // Get the project and the file associated with the action event
-        val project: Project? = e.project
-        val file: VirtualFile? = e.getDataContext().getData("virtualFile") as VirtualFile?
-
-        // Check your condition to determine whether to enable or disable the action
+        val file: VirtualFile? = e.dataContext.getData("virtualFile") as VirtualFile?
         val shouldEnable: Boolean = checkCondition(file)
-
-        // Enable or disable the action based on the condition
         e.presentation.isEnabled = shouldEnable
     }
 
     private fun checkCondition(file: VirtualFile?): Boolean {
         return file != null && (file.name.endsWith(".java") || file.name.endsWith(".kt"))
     }
-
 }
