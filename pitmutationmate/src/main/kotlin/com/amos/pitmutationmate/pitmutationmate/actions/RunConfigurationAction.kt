@@ -11,7 +11,9 @@ import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.intellij.openapi.project.Project
+import com.intellij.util.ui.JBUI.CurrentTheme.Tree.Hover
 import java.nio.file.Paths
 
 abstract class RunConfigurationAction : AnAction() {
@@ -36,6 +38,8 @@ abstract class RunConfigurationAction : AnAction() {
             val dir = Paths.get("build", "reports", "pitest", "test", "mutations.xml")
             var xmlListener = XMLListener(dir, editor)
             xmlListener.listen()
+            val ha: HoverAction = HoverAction(editor)
+            ha.hoverActionExample(editor)
         }
     }
 }
