@@ -3,9 +3,11 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
+import com.amos.pitmutationmate.pitmutationmate.MutationTestToolWindowFactory
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfiguration
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLListener
+import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.intellij.execution.ExecutorRegistry
 import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
@@ -13,6 +15,9 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import java.nio.file.Paths
+import com.intellij.openapi.wm.ToolWindow
+import com.intellij.openapi.wm.ToolWindowManager
+import org.jetbrains.kotlin.idea.gradleTooling.get
 
 abstract class RunConfigurationAction : AnAction() {
     fun updateAndExecuteRunConfig(classFQN: String?, project: Project, editor: Editor?) {
@@ -37,5 +42,24 @@ abstract class RunConfigurationAction : AnAction() {
             var xmlListener = XMLListener(dir, editor)
             xmlListener.listen()
         }
+
+        val coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
+            lineCoveragePercentage = 80,
+            lineCoverageTextRatio = "160/200",
+            mutationCoveragePercentage = 50,
+            mutationCoverageTextRatio = "100/200",
+            testStrengthPercentage = 40,
+            testStrengthTextRatio = "80/200"
+        )
+
+        // Update visualisation
+        println("Updating visualisation...")
+        val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
+        val mutationTestToolWindowFactorySingleton = MutationTestToolWindowFactory()
+        if (toolWindow != null) {
+            println("Updating report...")
+            mutationTestToolWindowFactorySingleton.updateReport(toolWindow, coverageReport)
+        }
+        println("Visualisation updated.")
     }
 }

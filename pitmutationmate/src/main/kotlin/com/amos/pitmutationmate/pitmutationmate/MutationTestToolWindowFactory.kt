@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: 2023
 package com.amos.pitmutationmate.pitmutationmate
 
+import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.amos.pitmutationmate.pitmutationmate.visualization.BarGraph
 import com.amos.pitmutationmate.pitmutationmate.visualization.LatestPiTestReport
 import com.amos.pitmutationmate.pitmutationmate.visualization.LineGraph
@@ -12,7 +13,7 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
 
-internal class MutationTestToolWindowFactory : ToolWindowFactory, DumbAware {
+internal class MutationTestToolWindowFactory() : ToolWindowFactory, DumbAware {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val latestPiTestReport = ContentFactory.getInstance().createContent(LatestPiTestReport(), "Latest Result", false)
         val table = ContentFactory.getInstance().createContent(JTreeTable(), "Mutationtest Coverage", false)
@@ -23,5 +24,9 @@ internal class MutationTestToolWindowFactory : ToolWindowFactory, DumbAware {
         toolWindow.contentManager.addContent(table)
         toolWindow.contentManager.addContent(lineChart)
         toolWindow.contentManager.addContent(barChart)
+    }
+
+    fun updateReport(toolWindow: ToolWindow, coverageReport: XMLParser.CoverageReport) {
+        toolWindow.contentManager.getContent(0)?.component = LatestPiTestReport(coverageReport)
     }
 }
