@@ -8,6 +8,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiClassOwner
 import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.psi.KtClass
 
 class ContextMenuAction : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
@@ -18,7 +19,14 @@ class ContextMenuAction : RunConfigurationAction() {
             val psiElement = psiFile?.findElementAt(editor?.caretModel!!.offset)
             val selectedClass = findEnclosingClass(psiElement)
             if (selectedClass != null) {
-                val classFQN = selectedClass.qualifiedName
+                var classFQN = ""
+                if (selectedClass is PsiClass) {
+                    classFQN = selectedClass.qualifiedName.toString()
+                }
+                if (selectedClass is KtClass) {
+                    classFQN = selectedClass.fqName.toString()
+                }
+
                 println("ContextMenuAction: selected class is $classFQN.")
                 updateAndExecuteRunConfig(classFQN, e.project!!, editor)
             }
@@ -60,11 +68,11 @@ class ContextMenuAction : RunConfigurationAction() {
         return validFile
     }
 
-    private fun findEnclosingClass(psiElement: PsiElement?): PsiClass? {
+    private fun findEnclosingClass(psiElement: PsiElement?): PsiElement? {
         var currentElement: PsiElement? = psiElement
-        while (currentElement != null && currentElement !is PsiClass) {
+        while (currentElement != null && currentElement !is PsiClass && currentElement !is KtClass) {
             currentElement = currentElement.parent
         }
-        return currentElement as? PsiClass
+        return currentElement
     }
 }
