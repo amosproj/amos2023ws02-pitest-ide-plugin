@@ -21,10 +21,10 @@ assignees: ""
 ## Definition of done (DoD)
 
 - All acceptance criteria are met.
-- Work products are uploaded to the Github repository.
+- Work products are uploaded to the GitHub repository.
 - A pull request is created for each related branch.
 - The work products in the pull requests are reviewed.
-- Github CI Workflow passes for the branches
+- GitHub CI Workflow passes for the branches
 - The corresponding branches are merged and closed.
 - The bill of materials section of the planning documents is updated.
 - Tests are written for the added features, if suitable
