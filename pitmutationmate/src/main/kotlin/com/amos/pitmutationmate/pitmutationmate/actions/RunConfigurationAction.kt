@@ -38,8 +38,8 @@ abstract class RunConfigurationAction : AnAction() {
             val dir = Paths.get("build", "reports", "pitest", "test", "mutations.xml")
             var xmlListener = XMLListener(dir, editor)
             xmlListener.listen()
-            val ha: HoverAction = HoverAction(editor)
-            ha.hoverActionExample(editor)
+            val ha: HoverAction = HoverAction(editor, xmlListener.getResult())
+            ha.addHoverAction()
         }
     }
 }
