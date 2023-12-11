@@ -6,7 +6,6 @@ package io.github.amosproj.pitmutationmate.override.communication
 
 import io.github.amosproj.pitmutationmate.override.communicaiton.UdpMessagingService
 import spock.lang.Specification
-import spock.lang.Unroll
 
 /**
  * UdpMessagingServiceSpec
@@ -19,7 +18,7 @@ class UdpMessagingServiceSpec extends Specification {
 
     def "Test UDP client sends messages correctly"() {
         given:
-        def port = 50001
+        def port = findAvailablePort()
         def client = new UdpMessagingService(port: port)
         def mockServer = new MockUDPServer(port)
         mockServer.startServer()
@@ -50,15 +49,32 @@ Duis eget erat ipsum. V""".trim()
         when:
         for (message in testMessages) {
             client.sendMessage(message)
-            Thread.sleep(100)
         }
 
         then:
+        Thread.sleep(100)
         mockServer.stopServer()
         mockServer.thread.join()
         for (message in expectedMessages) {
             assert mockServer.receivedMessages.contains(message)
         }
+    }
+
+    private int findAvailablePort() {
+        def minPortNumber = 49152
+        def maxPortNumber = 65535
+
+        for (port in minPortNumber..maxPortNumber) {
+            try {
+                def socket = new DatagramSocket(port)
+                socket.close()
+                return port
+            } catch (Exception ignored) {
+                // Port is not available, continue searching
+            }
+        }
+
+        throw new IllegalStateException("No available port found in the dynamic range")
     }
 
 }
