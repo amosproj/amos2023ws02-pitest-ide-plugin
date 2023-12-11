@@ -32,7 +32,11 @@ class ContextMenuAction : RunConfigurationAction() {
                 val fqn = psiClass.qualifiedName
                 println("$fqn")
                 if (fqn != null) {
-                    classFQNs = "$classFQNs$fqn "
+                    classFQNs = if (classFQNs != "") {
+                        "$classFQNs,$fqn"
+                    } else {
+                        fqn
+                    }
                 }
             }
             println("ContextMenuAction: selected classes are $classFQNs.")
