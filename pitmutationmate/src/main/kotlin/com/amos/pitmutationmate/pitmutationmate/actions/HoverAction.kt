@@ -23,6 +23,7 @@ import javax.swing.JComponent
 class HoverAction(private val editor: Editor, private val result: XMLParser.ResultData) {
     fun addHoverAction() {
         this.editor.addEditorMouseListener(MouseClick())
+//        TODO: Decide on which action suits the plugin the best --> when choice is made refactor to only use one
 //        this.editor.addEditorMouseMotionListener(MouseMotion())
     }
 
