@@ -3,13 +3,11 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
-import com.amos.pitmutationmate.pitmutationmate.reporting.XMLListener
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.intellij.codeInsight.hint.HintManager
 import com.intellij.codeInsight.hint.HintManagerImpl
 import com.intellij.codeInsight.hint.HintUtil
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.editor.LogicalPosition
 import com.intellij.openapi.editor.event.EditorMouseEvent
 import com.intellij.openapi.editor.event.EditorMouseListener
 import com.intellij.openapi.editor.event.EditorMouseMotionListener
@@ -20,25 +18,22 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.LightweightHint
 import com.intellij.util.ui.accessibility.AccessibleContextUtil
 import java.awt.Point
-import java.util.*
 import javax.swing.JComponent
+
 
 class HoverAction(private val editor: Editor, private val result: XMLParser.ResultData) {
     fun addHoverAction() {
-//        this.editor.addEditorMouseMotionListener(MouseMotion())
         this.editor.addEditorMouseListener(MouseClick())
     }
 
     inner class MouseMotion() : EditorMouseMotionListener {
         override fun mouseMoved(event: EditorMouseEvent) {
-            println("Mouse moved")
             showHoverMessage(event.mouseEvent.point)
         }
     }
 
     inner class MouseClick() : EditorMouseListener {
         override fun mouseClicked(event: EditorMouseEvent) {
-            println("Mouse clicked at point: ${event.mouseEvent.point}")
             showHoverMessage(event.mouseEvent.point)
         }
     }
@@ -67,7 +62,6 @@ class HoverAction(private val editor: Editor, private val result: XMLParser.Resu
         val label: JComponent = HintUtil.createInformationLabel(message, null, null, null)
         AccessibleContextUtil.setName(label, "PiTest")
         val hint: LightweightHint = LightweightHint(label)
-//        val p: Point = HintManagerImpl.getHintPosition(hint, this.editor, this.editor.caretModel.visualPosition, 1)
         val p: Point = HintManagerImpl.getHintPosition(hint, this.editor, this.editor.xyToVisualPosition(point), 1)
         val flags: Int = HintManager.HIDE_BY_ANY_KEY or HintManager.HIDE_BY_TEXT_CHANGE or HintManager.HIDE_BY_SCROLLING
         hintManager.showEditorHint(hint, this.editor, p, flags, 0, true, 1)
