@@ -25,19 +25,20 @@ class HoverAction(private val editor: Editor, private val result: XMLParser.Resu
         this.editor.addEditorMouseListener(MouseClick())
     }
 
-    inner class MouseMotion() : EditorMouseMotionListener {
-        override fun mouseMoved(event: EditorMouseEvent) {
-            showHoverMessage(event.mouseEvent.point)
-        }
-    }
+//    Currently not in use, but could be used for hover behaviour
+//    inner class MouseMotion : EditorMouseMotionListener {
+//        override fun mouseMoved(event: EditorMouseEvent) {
+//            showHoverMessage(event.mouseEvent.point)
+//        }
+//    }
 
-    inner class MouseClick() : EditorMouseListener {
+    inner class MouseClick : EditorMouseListener {
         override fun mouseClicked(event: EditorMouseEvent) {
             showHoverMessage(event.mouseEvent.point)
         }
     }
 
-    fun buildHoverMessage(): String? {
+    private fun buildHoverMessage(): String? {
         val project: Project = this.editor.project ?: return null
         val psiFile: PsiFile = PsiDocumentManager.getInstance(project).getPsiFile(this.editor.document) ?: return null
 
@@ -61,7 +62,7 @@ class HoverAction(private val editor: Editor, private val result: XMLParser.Resu
         val hintManager: HintManagerImpl = HintManagerImpl.getInstanceImpl()
         val label: JComponent = HintUtil.createInformationLabel(message, null, null, null)
         AccessibleContextUtil.setName(label, "PiTest")
-        val hint: LightweightHint = LightweightHint(label)
+        val hint = LightweightHint(label)
         val p: Point = HintManagerImpl.getHintPosition(hint, this.editor, this.editor.xyToVisualPosition(point), 1)
         val flags: Int = HintManager.HIDE_BY_ANY_KEY or HintManager.HIDE_BY_TEXT_CHANGE or HintManager.HIDE_BY_SCROLLING
         hintManager.showEditorHint(hint, this.editor, p, flags, 0, true, 1)
