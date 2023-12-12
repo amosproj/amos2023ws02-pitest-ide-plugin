@@ -12,13 +12,12 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
-import com.intellij.ui.content.Content
 import com.intellij.ui.content.ContentFactory
 import javax.swing.JPanel
 
 internal class MutationTestToolWindowFactory : ToolWindowFactory, DumbAware {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        //TODO: fetch most recent results to display (e.g. when opening up the editor and previous Pitest runs are saved)
+        // TODO: fetch most recent results to display (e.g. when opening up the editor and previous Pitest runs are saved)
         val lastCoverageReport: XMLParser.CoverageReport? = null
         val latestPiTestReport = if (lastCoverageReport == null) {
             ContentFactory.getInstance().createContent(displayErrorMessage(), "Latest Result", false)

@@ -14,10 +14,10 @@ import com.intellij.execution.RunManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
-import java.nio.file.Paths
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
 import org.jetbrains.kotlin.idea.gradleTooling.get
+import java.nio.file.Paths
 
 abstract class RunConfigurationAction : AnAction() {
     fun updateAndExecuteRunConfig(classFQN: String?, project: Project, editor: Editor?) {
