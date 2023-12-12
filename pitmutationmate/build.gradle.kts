@@ -22,7 +22,6 @@ dependencies {
     implementation("org.jfree:jfreechart:1.0.19")
     // https://mvnrepository.com/artifact/jfree/jcommon
     implementation("org.jfree:jcommon:1.0.24")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
 }
 
 group = "com.amos.pitmutationmate"
@@ -35,9 +34,8 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2022.2.5")
+    version.set("2023.1")
     type.set("IC") // Target IDE Platform
-
     plugins.set(listOf("org.jetbrains.kotlin", "com.intellij.java"))
 }
 
