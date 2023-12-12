@@ -4,41 +4,47 @@
 package com.amos.pitmutationmate.pitmutationmate.execution
 
 import com.intellij.execution.configurations.GeneralCommandLine
-import com.intellij.openapi.util.SystemInfo
 import java.io.File
 
 class GradleTaskExecutor : BasePitestExecutor() {
-    private var taskName: String = "pitest"
-    private var gradleExecutable: String? = null
-    private val windowsGradleExecutable = "gradlew.bat"
-    private val unixGradleExecutable = "./gradlew"
+    companion object {
+        const val PITEST_TASK_NAME = "pitest"
+        const val WINDOWS_SHELL_EXECUTABLE = "cmd"
+        const val WINDOWS_FIRST_PARAMETER = "/c"
+        const val WINDOWS_GRADLE_EXECUTABLE = "gradlew.bat"
+        const val UNIX_SHELL_EXECUTABLE = "/usr/bin/env"
+        const val UNIX_FIRST_PARAMETER = "sh"
+        const val UNIX_GRADLE_EXECUTABLE = "./gradlew"
+    }
+    private var systemInfoProvider: SystemInfoProvider = SystemInfo()
 
     override fun buildCommandLine(
         executable: String?,
-        taskName: String?,
+        overrideTaskName: String?,
         projectDir: String,
         classFQN: String?,
         port: Int
     ): GeneralCommandLine {
         val commandLine = GeneralCommandLine()
+        var gradleExecutable: String? = executable
+        var taskName: String? = PITEST_TASK_NAME
 
-        this.gradleExecutable = executable
-        if (!taskName.isNullOrEmpty()) {
-            this.taskName = taskName!!
+        if (!overrideTaskName.isNullOrEmpty()) {
+            taskName = overrideTaskName
         }
 
-        if (SystemInfo.isWindows) {
-            if (this.gradleExecutable.isNullOrEmpty()) {
-                this.gradleExecutable = windowsGradleExecutable
+        if (systemInfoProvider.isWindows()) {
+            if (gradleExecutable.isNullOrEmpty()) {
+                gradleExecutable = WINDOWS_GRADLE_EXECUTABLE
             }
-            commandLine.exePath = "cmd"
-            commandLine.addParameters("/c", this.gradleExecutable, this.taskName)
+            commandLine.exePath = WINDOWS_SHELL_EXECUTABLE
+            commandLine.addParameters(WINDOWS_FIRST_PARAMETER, gradleExecutable, taskName)
         } else {
-            if (this.gradleExecutable.isNullOrEmpty()) {
-                this.gradleExecutable = unixGradleExecutable
+            if (gradleExecutable.isNullOrEmpty()) {
+                gradleExecutable = UNIX_GRADLE_EXECUTABLE
             }
-            commandLine.exePath = "/usr/bin/env"
-            commandLine.addParameters("sh", this.gradleExecutable, this.taskName)
+            commandLine.exePath = UNIX_SHELL_EXECUTABLE
+            commandLine.addParameters(UNIX_FIRST_PARAMETER, gradleExecutable, taskName)
         }
 
         commandLine.addParameters(getPitestOverrideParameters(classFQN, port))
