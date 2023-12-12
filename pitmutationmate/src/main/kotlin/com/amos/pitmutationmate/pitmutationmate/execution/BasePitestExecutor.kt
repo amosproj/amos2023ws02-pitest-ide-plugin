@@ -21,13 +21,13 @@ abstract class BasePitestExecutor {
     fun executeTask(
         project: Project,
         executable: String?,
-        taskName: String?,
+        overrideTaskName: String?,
         classFQN: String?
     ): ProcessHandler {
         val messagingServer = project.service<UdpMessagingServer>()
         messagingServer.startServer(classFQN) // Start the UDP server
 
-        val commandLine = buildCommandLine(executable, taskName, project.basePath!!, classFQN, messagingServer.port)
+        val commandLine = buildCommandLine(executable, overrideTaskName, project.basePath!!, classFQN, messagingServer.port)
         log.debug("BasePitestExecutor: executeTask: commandLine: $commandLine")
         val processHandler = createProcessHandler(commandLine)
         processHandler.addProcessListener(object : ProcessAdapter() {
@@ -42,7 +42,7 @@ abstract class BasePitestExecutor {
 
     abstract fun buildCommandLine(
         executable: String?,
-        taskName: String?,
+        overrideTaskName: String?,
         projectDir: String,
         classFQN: String?,
         port: Int

@@ -12,7 +12,7 @@ class MavenTaskExecutor : BasePitestExecutor() {
 
     override fun buildCommandLine(
         executable: String?,
-        taskName: String?,
+        overrideTaskName: String?,
         projectDir: String,
         classFQN: String?,
         port: Int
@@ -23,8 +23,8 @@ class MavenTaskExecutor : BasePitestExecutor() {
             this.mavenExecutable = executable!!
         }
 
-        if (!taskName.isNullOrEmpty()) {
-            this.taskName = taskName!!
+        if (!overrideTaskName.isNullOrEmpty()) {
+            this.taskName = overrideTaskName!!
         }
 
         commandLine.exePath = mavenExecutable
