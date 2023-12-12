@@ -18,7 +18,7 @@ class HTMLParser {
                 val rows = projectSummaryTable.select("tbody tr")
                 if (rows.isNotEmpty()) {
                     val overallRow = rows.first()
-                    overallResultData.overallMutationResult = extractMutationResultFromRow(overallRow)
+                    overallResultData.overallMutationResult = extractOverallMutationResultFromRow(overallRow)
                 }
             }
 
@@ -42,15 +42,27 @@ class HTMLParser {
         return overallResultData
     }
 
-    private fun extractMutationResultFromRow(row: Element?): MutationResult {
+    private fun extractOverallMutationResultFromRow(row: Element?): MutationResult {
         val cells = row?.select("td") ?: emptyList()
 
+        val numberOfClasses = cells.getOrNull(0)?.text() ?: "N/A"
         val lineCoverage = cells.getOrNull(1)?.text() ?: "N/A"
         val mutationCoverage = cells.getOrNull(2)?.text() ?: "N/A"
         val testStrength = cells.getOrNull(3)?.text() ?: "N/A"
         val coverageLegend = cells.getOrNull(4)?.text() ?: "N/A"
 
-        return MutationResult(lineCoverage, mutationCoverage, testStrength, coverageLegend)
+        return MutationResult(numberOfClasses, lineCoverage, mutationCoverage, testStrength)
+    }
+
+    private fun extractMutationResultFromRow(row: Element?): MutationResult {
+        val cells = row?.select("td") ?: emptyList()
+
+        val numberOfClasses = cells.getOrNull(1)?.text() ?: "N/A"
+        val lineCoverage = cells.getOrNull(2)?.text() ?: "N/A"
+        val mutationCoverage = cells.getOrNull(3)?.text() ?: "N/A"
+        val testStrength = cells.getOrNull(4)?.text() ?: "N/A"
+
+        return MutationResult(numberOfClasses, lineCoverage, mutationCoverage, testStrength)
     }
 
     private fun extractPackageNameFromRow(row: Element?): String {
@@ -73,10 +85,10 @@ class HTMLParser {
     }
 
     data class MutationResult(
+        val numberOfClasses: String,
         val lineCoverage: String,
         val mutationCoverage: String,
-        val testStrength: String,
-        val coverageLegend: String
+        val testStrength: String
     )
 
     data class PackageResult(
