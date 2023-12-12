@@ -49,7 +49,6 @@ class HTMLParser {
         val lineCoverage = cells.getOrNull(1)?.text() ?: "N/A"
         val mutationCoverage = cells.getOrNull(2)?.text() ?: "N/A"
         val testStrength = cells.getOrNull(3)?.text() ?: "N/A"
-        val coverageLegend = cells.getOrNull(4)?.text() ?: "N/A"
 
         return MutationResult(numberOfClasses, lineCoverage, mutationCoverage, testStrength)
     }
