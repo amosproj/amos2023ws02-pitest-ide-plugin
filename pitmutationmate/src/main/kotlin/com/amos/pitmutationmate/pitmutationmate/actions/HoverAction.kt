@@ -10,6 +10,7 @@ import com.intellij.codeInsight.hint.HintUtil
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.event.EditorMouseEvent
 import com.intellij.openapi.editor.event.EditorMouseListener
+import com.intellij.openapi.editor.event.EditorMouseMotionListener
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
@@ -22,14 +23,14 @@ import javax.swing.JComponent
 class HoverAction(private val editor: Editor, private val result: XMLParser.ResultData) {
     fun addHoverAction() {
         this.editor.addEditorMouseListener(MouseClick())
+//        this.editor.addEditorMouseMotionListener(MouseMotion())
     }
 
-//    Currently not in use, but could be used for hover behaviour
-//    inner class MouseMotion : EditorMouseMotionListener {
-//        override fun mouseMoved(event: EditorMouseEvent) {
-//            showHoverMessage(event.mouseEvent.point)
-//        }
-//    }
+    inner class MouseMotion : EditorMouseMotionListener {
+        override fun mouseMoved(event: EditorMouseEvent) {
+            showHoverMessage(event.mouseEvent.point)
+        }
+    }
 
     inner class MouseClick : EditorMouseListener {
         override fun mouseClicked(event: EditorMouseEvent) {
@@ -37,12 +38,12 @@ class HoverAction(private val editor: Editor, private val result: XMLParser.Resu
         }
     }
 
-    private fun buildHoverMessage(): String? {
+    private fun buildHoverMessage(point: Point): String? {
         val project: Project = this.editor.project ?: return null
         val psiFile: PsiFile = PsiDocumentManager.getInstance(project).getPsiFile(this.editor.document) ?: return null
 
-        val offset: Int = this.editor.caretModel.offset
-        val line: Int = this.editor.caretModel.visualPosition.getLine() + 1
+        val offset: Int = this.editor.visualPositionToOffset(this.editor.xyToVisualPosition(point))
+        val line: Int = this.editor.yToVisualLine(point.y) + 1
         PsiTreeUtil.findElementOfClassAtOffset(psiFile, offset, psiFile.javaClass, false)
 
         for (r in this.result.mutationResults) {
@@ -57,7 +58,7 @@ class HoverAction(private val editor: Editor, private val result: XMLParser.Resu
     }
 
     fun showHoverMessage(point: Point) {
-        val message: String = buildHoverMessage() ?: return
+        val message: String = buildHoverMessage(point) ?: return
         val hintManager: HintManagerImpl = HintManagerImpl.getInstanceImpl()
         val label: JComponent = HintUtil.createInformationLabel(message, null, null, null)
         AccessibleContextUtil.setName(label, "PiTest")
