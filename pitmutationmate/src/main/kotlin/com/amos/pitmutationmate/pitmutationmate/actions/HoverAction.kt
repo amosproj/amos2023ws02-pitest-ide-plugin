@@ -50,7 +50,7 @@ class HoverAction(private val editor: Editor, private val result: XMLParser.Resu
             if (r.lineNumber == line) {
                 val color: String = if (r.detected) "dark-green" else "dark-pink"
                 return "PiTest: selected offset: $offset, selected line: $line \n" +
-                        "The color of this line is $color"
+                    "The color of this line is $color"
             }
         }
 
