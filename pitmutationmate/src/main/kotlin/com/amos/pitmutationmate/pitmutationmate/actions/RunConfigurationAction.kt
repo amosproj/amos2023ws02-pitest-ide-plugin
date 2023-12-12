@@ -43,6 +43,9 @@ abstract class RunConfigurationAction : AnAction() {
             xmlListener.listen()
         }
 
+        // Update visualisation with mock results
+        val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
+        val mutationTestToolWindowFactorySingleton = MutationTestToolWindowFactory()
         val coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
             lineCoveragePercentage = 80,
             lineCoverageTextRatio = "160/200",
@@ -51,15 +54,8 @@ abstract class RunConfigurationAction : AnAction() {
             testStrengthPercentage = 40,
             testStrengthTextRatio = "80/200"
         )
-
-        // Update visualisation
-        println("Updating visualisation...")
-        val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
-        val mutationTestToolWindowFactorySingleton = MutationTestToolWindowFactory()
         if (toolWindow != null) {
-            println("Updating report...")
             mutationTestToolWindowFactorySingleton.updateReport(toolWindow, coverageReport)
         }
-        println("Visualisation updated.")
     }
 }
