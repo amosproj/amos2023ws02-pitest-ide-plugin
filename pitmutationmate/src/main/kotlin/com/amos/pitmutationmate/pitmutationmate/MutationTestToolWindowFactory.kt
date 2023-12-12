@@ -35,7 +35,7 @@ internal class MutationTestToolWindowFactory : ToolWindowFactory, DumbAware {
     }
 
     fun updateReport(toolWindow: ToolWindow, newCoverageReport: XMLParser.CoverageReport) {
-        toolWindow.contentManager.getContent(0)?.component = LatestPiTestReport(newCoverageReport)
+        toolWindow.contentManager.findContent("Latest Result").component = LatestPiTestReport(newCoverageReport)
     }
 
     private fun displayErrorMessage(): JPanel {
