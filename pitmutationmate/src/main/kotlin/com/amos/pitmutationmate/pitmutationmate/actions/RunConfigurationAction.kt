@@ -44,6 +44,7 @@ abstract class RunConfigurationAction : AnAction() {
         }
 
         // Update visualisation with mock results
+        // TODO: replace this by real results extracted by the HTMLParser
         val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
         val mutationTestToolWindowFactorySingleton = MutationTestToolWindowFactory()
         val coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
