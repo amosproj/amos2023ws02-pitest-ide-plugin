@@ -16,11 +16,13 @@ class PluginCeckerTest {
         val builder = AstBuilder()
         val testFile = File("src/test/resources/test_build_scripts/$testFile")
         val nodes = builder.buildFromString(
-            IOUtils.toString(FileInputStream(testFile),
-                "UTF-8")
+            IOUtils.toString(
+                FileInputStream(testFile),
+                "UTF-8"
+            )
         )
         val pluginCheck = PluginCheckerGroovy()
-        for(node in nodes) {
+        for (node in nodes) {
             node.visit(pluginCheck)
         }
         return pluginCheck

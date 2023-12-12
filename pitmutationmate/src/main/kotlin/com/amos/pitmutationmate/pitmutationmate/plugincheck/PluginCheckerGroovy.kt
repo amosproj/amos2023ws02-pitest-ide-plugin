@@ -13,15 +13,15 @@ class PluginCheckerGroovy : CodeVisitorSupport() {
 
     override fun visitMethodCallExpression(call: MethodCallExpression?) {
         val method = call?.methodAsString
-        if(method.equals("plugins") || method.equals("apply") || method.equals("version")) {
+        if (method.equals("plugins") || method.equals("apply") || method.equals("version")) {
             super.visitMethodCallExpression(call)
-        } else if(method.equals("id")) {
+        } else if (method.equals("id")) {
             if (call != null) {
                 val pluginName = call.arguments.text
-                if(pluginName.contains("pitest")) {
+                if (pluginName.contains("pitest")) {
                     pitestPluginAvailable = true
                 }
-                if(pluginName.contains("io.github.amosproj.pitmutationmate.override")) {
+                if (pluginName.contains("io.github.amosproj.pitmutationmate.override")) {
                     companionPluginAvailable = true
                 }
             }

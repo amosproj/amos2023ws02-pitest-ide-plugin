@@ -26,7 +26,7 @@ class StartupPluginChecker : ProjectActivity {
     private fun checkKotlinBuildFile(project: Project) {
         val buildFileName = "build.gradle.kts"
         val kotlinBuildFile = File(project.basePath + "/$buildFileName")
-        if(kotlinBuildFile.exists()) {
+        if (kotlinBuildFile.exists()) {
             val virtualFile = LocalFileSystem.getInstance().findFileByIoFile(kotlinBuildFile)
             if (virtualFile != null) {
                 val psiFile = PsiManager.getInstance(project).findFile(virtualFile)
@@ -49,14 +49,16 @@ class StartupPluginChecker : ProjectActivity {
     private fun checkGroovyBuildFile(project: Project) {
         val buildFileName = "build.gradle"
         val groovyBuildFile = File(project.basePath + "/$buildFileName")
-        if(groovyBuildFile.exists()) {
+        if (groovyBuildFile.exists()) {
             val builder = AstBuilder()
             val nodes = builder.buildFromString(
-                IOUtils.toString(FileInputStream(groovyBuildFile),
-                    "UTF-8")
+                IOUtils.toString(
+                    FileInputStream(groovyBuildFile),
+                    "UTF-8"
+                )
             )
             val pluginCheckerGroovy = PluginCheckerGroovy()
-            for(node in nodes) {
+            for (node in nodes) {
                 node.visit(pluginCheckerGroovy)
             }
             val pitestPluginText = "id 'info.solidsoft.pitest' version '1.15.0'"
@@ -103,9 +105,9 @@ class StartupPluginChecker : ProjectActivity {
     companion object {
         private const val ERROR_MESSAGE_TITLE = "Plugins for PITMutationPlugin are missing"
         private const val ERROR_MESSAGE_PITEST_PLUGIN_MISSING = "The pitest gradle Plugin is missing.\n" +
-                "Please add a Gradle Pitest Plugin to the %s file like the following:\n" +
-                "%s\nAnd see the pitest docs for missing configurations of pitest\n\n"
+            "Please add a Gradle Pitest Plugin to the %s file like the following:\n" +
+            "%s\nAnd see the pitest docs for missing configurations of pitest\n\n"
         private const val ERROR_MESSAGE_COMPANION_PLUGIN_MISSING = "The Companion Plugin is missing.\n" +
-                "Please add the following line to your %s file:\n%s\n\n"
+            "Please add the following line to your %s file:\n%s\n\n"
     }
 }
