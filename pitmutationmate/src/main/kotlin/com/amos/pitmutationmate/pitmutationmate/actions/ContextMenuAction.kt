@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiClass
@@ -54,6 +55,10 @@ class ContextMenuAction : RunConfigurationAction() {
     override fun update(e: AnActionEvent) {
         val shouldEnable: Boolean = checkCondition(e)
         e.presentation.isEnabled = shouldEnable
+    }
+
+    override fun getActionUpdateThread(): ActionUpdateThread {
+        return ActionUpdateThread.BGT
     }
 
     private fun checkCondition(e: AnActionEvent): Boolean {
