@@ -8,9 +8,9 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.MessageType
 import com.intellij.openapi.wm.ToolWindowManager
-import org.jetbrains.kotlin.idea.gradleTooling.get
 import java.net.DatagramPacket
 import java.net.DatagramSocket
+import java.util.*
 
 /**
  * A simple UDP server that listens on a given port and prints the received messages.
@@ -65,11 +65,21 @@ class UdpMessagingServer(private val project: Project) {
 
             if (overrideClassFQN != null && message.contains(overrideClassFQN)) {
                 // class was successfully overridden. Notify the user
-                ToolWindowManager.getInstance(project).notifyByBalloon(
-                    "Pitest Result",
+                val proj = this.project
+                ToolWindowManager.getInstance(proj).notifyByBalloon(
+                    "Pitest",
                     MessageType.INFO,
                     "<p>Successfully applied pitest target class</p><p>$overrideClassFQN.</p>"
                 )
+
+                val timer = Timer(true);
+                timer.schedule(object : TimerTask() {
+                    override fun run() {
+                        ToolWindowManager.getInstance(proj).getToolWindowBalloon("Pitest")?.hide()
+                        timer.cancel()
+                    }
+
+                }, 6000L)
             }
         }
     }
