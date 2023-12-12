@@ -39,8 +39,10 @@ abstract class RunConfigurationAction : AnAction() {
         if (editor != null) {
             // TODO: use actual XML report directories. This currently uses a placeholder test folder
             val dir = Paths.get("build", "reports", "pitest", "test", "mutations.xml")
-            var xmlListener = XMLListener(dir, editor)
+            val xmlListener = XMLListener(dir, editor)
             xmlListener.listen()
+            val ha: HoverAction = HoverAction(editor, xmlListener.getResult())
+            ha.addHoverAction()
         }
 
         // Update visualisation with mock results
