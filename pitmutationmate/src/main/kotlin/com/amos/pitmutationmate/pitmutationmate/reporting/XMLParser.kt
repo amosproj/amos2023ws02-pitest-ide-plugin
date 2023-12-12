@@ -103,14 +103,7 @@ class XMLParser {
 
     data class ResultData(
         // placeholder field for coverage report results to be displayed in visualisation
-        val coverageReport: CoverageReport = CoverageReport(
-            lineCoveragePercentage = 80,
-            lineCoverageTextRatio = "160/200",
-            mutationCoveragePercentage = 50,
-            mutationCoverageTextRatio = "100/200",
-            testStrengthPercentage = 40,
-            testStrengthTextRatio = "80/200"
-        ),
+        val coverageReport: CoverageReport? = null,
         val mutationResults: MutableList<MutationResult> = mutableListOf()
     ) {
         fun addMutationResult(mutationResult: MutationResult) {
