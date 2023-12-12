@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2023
 
-package com.amos.pitmutationmate.pitmutationmate.PluginCheck
+package com.amos.pitmutationmate.pitmutationmate.plugincheck
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
@@ -34,12 +34,14 @@ class StartupPluginChecker : ProjectActivity {
                 psiFile?.node?.psi?.accept(pluginCheckerKotlin)
                 val pitestPluginText = "id(\"info.solidsoft.pitest\") version \"1.15.0\""
                 val companionPluginText = "id(\"io.github.amosproj.pitmutationmate.override\") version \"1.0\""
-                throwErrorMessage(pluginCheckerKotlin.pitestPluginAvailable,
+                throwErrorMessage(
+                    pluginCheckerKotlin.pitestPluginAvailable,
                     pluginCheckerKotlin.companionPluginAvailable,
                     buildFileName,
                     project,
                     pitestPluginText,
-                    companionPluginText)
+                    companionPluginText
+                )
             }
         }
     }
@@ -49,19 +51,24 @@ class StartupPluginChecker : ProjectActivity {
         val groovyBuildFile = File(project.basePath + "/$buildFileName")
         if(groovyBuildFile.exists()) {
             val builder = AstBuilder()
-            val nodes = builder.buildFromString(IOUtils.toString(FileInputStream(groovyBuildFile), "UTF-8"))
+            val nodes = builder.buildFromString(
+                IOUtils.toString(FileInputStream(groovyBuildFile),
+                    "UTF-8")
+            )
             val pluginCheckerGroovy = PluginCheckerGroovy()
             for(node in nodes) {
                 node.visit(pluginCheckerGroovy)
             }
             val pitestPluginText = "id 'info.solidsoft.pitest' version '1.15.0'"
             val companionPluginText = "id 'io.github.amosproj.pitmutationmate.override' version '1.0'"
-            throwErrorMessage(pluginCheckerGroovy.pitestPluginAvailable,
+            throwErrorMessage(
+                pluginCheckerGroovy.pitestPluginAvailable,
                 pluginCheckerGroovy.companionPluginAvailable,
                 buildFileName,
                 project,
                 pitestPluginText,
-                companionPluginText)
+                companionPluginText
+            )
         }
     }
 
@@ -96,10 +103,9 @@ class StartupPluginChecker : ProjectActivity {
     companion object {
         private const val ERROR_MESSAGE_TITLE = "Plugins for PITMutationPlugin are missing"
         private const val ERROR_MESSAGE_PITEST_PLUGIN_MISSING = "The pitest gradle Plugin is missing.\n" +
-                                                                "Please add a Gradle Pitest Plugin to the %s file like the following:\n" +
-                                                                "%s\nAnd see the pitest docs for missing configurations of pitest\n\n"
+                "Please add a Gradle Pitest Plugin to the %s file like the following:\n" +
+                "%s\nAnd see the pitest docs for missing configurations of pitest\n\n"
         private const val ERROR_MESSAGE_COMPANION_PLUGIN_MISSING = "The Companion Plugin is missing.\n" +
-                                                                   "Please add the following line to your %s file:\n" +
-                                                                   "%s\n\n"
+                "Please add the following line to your %s file:\n%s\n\n"
     }
 }

@@ -72,14 +72,16 @@ class UdpMessagingServer(private val project: Project) {
                     "<p>Successfully applied pitest target class</p><p>$overrideClassFQN.</p>"
                 )
 
-                val timer = Timer(true);
-                timer.schedule(object : TimerTask() {
-                    override fun run() {
-                        ToolWindowManager.getInstance(proj).getToolWindowBalloon("Pitest")?.hide()
-                        timer.cancel()
-                    }
-
-                }, 6000L)
+                val timer = Timer(true)
+                timer.schedule(
+                    object : TimerTask() {
+                        override fun run() {
+                            ToolWindowManager.getInstance(proj).getToolWindowBalloon("Pitest")?.hide()
+                            timer.cancel()
+                        }
+                    },
+                    6000L
+                )
             }
         }
     }

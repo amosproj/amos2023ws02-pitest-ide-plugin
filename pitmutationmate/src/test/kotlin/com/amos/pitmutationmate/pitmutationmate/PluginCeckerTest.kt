@@ -3,7 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate
 
-import com.amos.pitmutationmate.pitmutationmate.PluginCheck.PluginCheckerGroovy
+import com.amos.pitmutationmate.pitmutationmate.plugincheck.PluginCheckerGroovy
 import org.apache.commons.io.IOUtils
 import org.codehaus.groovy.ast.builder.AstBuilder
 import org.junit.jupiter.api.Test
@@ -15,7 +15,10 @@ class PluginCeckerTest {
     private fun runPluginCheckerForTestFile(testFile: String): PluginCheckerGroovy {
         val builder = AstBuilder()
         val testFile = File("src/test/resources/test_build_scripts/$testFile")
-        val nodes = builder.buildFromString(IOUtils.toString( FileInputStream(testFile), "UTF-8"))
+        val nodes = builder.buildFromString(
+            IOUtils.toString(FileInputStream(testFile),
+                "UTF-8")
+        )
         val pluginCheck = PluginCheckerGroovy()
         for(node in nodes) {
             node.visit(pluginCheck)
@@ -50,5 +53,4 @@ class PluginCeckerTest {
         assert(!pluginCheck.pitestPluginAvailable)
         assert(!pluginCheck.companionPluginAvailable)
     }
-
 }
