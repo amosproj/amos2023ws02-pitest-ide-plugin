@@ -21,7 +21,8 @@ class ContextMenuAction : RunConfigurationAction() {
                 println("ContextMenuAction: detected class '$fqn'")
             }
         }
-        updateAndExecuteRunConfig(fqns.first(), e.project!!)
+        val editor = e.getData(CommonDataKeys.EDITOR)
+        updateAndExecuteRunConfig(fqns.first(), e.project!!, editor)
     }
 
     override fun update(e: AnActionEvent) {

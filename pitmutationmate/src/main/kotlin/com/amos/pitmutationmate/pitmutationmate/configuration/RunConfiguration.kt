@@ -14,6 +14,7 @@ import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.ExecutionEnvironment
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.externalSystem.ExternalSystemModulePropertyManager
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.options.SettingsEditor
@@ -25,11 +26,7 @@ class RunConfiguration(
     factory: ConfigurationFactory?,
     name: String?
 ) : RunConfigurationBase<RunConfigurationOptions?>(project, factory, name) {
-    private val projectDir: String
-
-    init {
-        projectDir = project.basePath!!
-    }
+    private val log: Logger = Logger.getInstance(RunConfiguration::class.java)
 
     override fun getOptions(): RunConfigurationOptions {
         return super.getOptions() as RunConfigurationOptions
@@ -39,19 +36,21 @@ class RunConfiguration(
         get() = options.taskName
         set(taskName) {
             options.taskName = taskName
+            log.debug("MutationMateRunConfiguration: taskName was updated to '$taskName'.")
         }
 
-    var gradleExecutable: String
-        get() = options.gradleExecutable ?: ""
+    var gradleExecutable: String?
+        get() = options.gradleExecutable
         set(gradleExecutable) {
             options.gradleExecutable = gradleExecutable
+            log.debug("MutationMateRunConfiguration: gradleExecutable was updated to '$gradleExecutable'.")
         }
 
-    var classFQN: String
-        get() = options.classFQN ?: ""
+    var classFQN: String?
+        get() = options.classFQN
         set(classFQN) {
             options.classFQN = classFQN
-            println("MutationMateRunConfiguration: classFQN was updated to '$classFQN'.")
+            log.debug("MutationMateRunConfiguration: classFQN was updated to '$classFQN'.")
         }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
@@ -70,13 +69,13 @@ class RunConfiguration(
                 if (buildSystem == null) {
                     throw ExecutionException("Could not determine build system.")
                 } else if (buildSystem == "Maven") {
-                    println("MutationMateRunConfiguration: executing maven task.")
+                    log.debug("MutationMateRunConfiguration: executing maven task.")
                     val mavenTaskExecutor = MavenTaskExecutor()
-                    return mavenTaskExecutor.executeTask(projectDir, gradleExecutable, taskName, classFQN)
+                    return mavenTaskExecutor.executeTask(project, gradleExecutable, taskName, classFQN)
                 }
-                println("MutationMateRunConfiguration: executing gradle task.")
+                log.debug("MutationMateRunConfiguration: executing gradle task.")
                 val gradleTaskExecutor = GradleTaskExecutor()
-                return gradleTaskExecutor.executeTask(projectDir, gradleExecutable, taskName, classFQN)
+                return gradleTaskExecutor.executeTask(project, gradleExecutable, taskName, classFQN)
             }
         }
     }
@@ -90,7 +89,7 @@ class RunConfiguration(
                 buildSystem = moduleBuildSystem
             }
         }
-        println("MutationMateRunConfiguration: buildSystem is '$buildSystem'.")
+        log.debug("MutationMateRunConfiguration: buildSystem is '$buildSystem'.")
         return buildSystem
     }
 

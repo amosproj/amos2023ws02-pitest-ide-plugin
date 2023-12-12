@@ -27,7 +27,7 @@ assignees: ""
 - Github CI Workflow passes for the branches
 - The corresponding branches are merged and closed.
 - The bill of materials section of the planning documents is updated.
-- Tests are written for the added features
+- Tests are written for the added features, if suitable
 
 ## DoD general criteria
 

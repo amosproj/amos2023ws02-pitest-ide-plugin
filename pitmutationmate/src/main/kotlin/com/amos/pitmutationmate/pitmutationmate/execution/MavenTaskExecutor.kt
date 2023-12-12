@@ -14,7 +14,8 @@ class MavenTaskExecutor : BasePitestExecutor() {
         executable: String?,
         taskName: String?,
         projectDir: String,
-        classFQN: String?
+        classFQN: String?,
+        port: Int
     ): GeneralCommandLine {
         val commandLine = GeneralCommandLine()
 

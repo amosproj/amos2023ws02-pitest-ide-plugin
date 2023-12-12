@@ -2,7 +2,6 @@
 // SPDX-FileCopyrightText: 2023
 
 package com.amos.pitmutationmate.pitmutationmate.reporting
-
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import java.io.File
@@ -31,7 +30,7 @@ class XMLParser {
                     val mutatedClass = getTextContent(element, "mutatedClass")
                     val mutatedMethod = getTextContent(element, "mutatedMethod")
                     val methodDescription = getTextContent(element, "methodDescription")
-                    val lineNumber = getAttribute(element, "lineNumber", -1)
+                    val lineNumber = getTextContent(element, "lineNumber").toInt()
                     val mutator = getTextContent(element, "mutator")
                     val indexes = getListContent(element, "index")
                     val blocks = getListContent(element, "block")
@@ -54,6 +53,8 @@ class XMLParser {
                         description
                     )
                     resultData.addMutationResult(mutationResult)
+                    // display color bars for mutation result
+                    resultData.displayResult(mutationResult)
                 }
             }
         } catch (e: Exception) {
@@ -105,6 +106,11 @@ class XMLParser {
     ) {
         fun addMutationResult(mutationResult: MutationResult) {
             mutationResults.add(mutationResult)
+        }
+        fun displayResult(mutationResult: MutationResult) {
+//            val editor =
+//            val color = if (mutationResult.detected) "green" else "red"
+//            HighlightGutterRenderer.GutterHighlighter.addBar(editor, color, mutationResult.lineNumber)
         }
     }
 
