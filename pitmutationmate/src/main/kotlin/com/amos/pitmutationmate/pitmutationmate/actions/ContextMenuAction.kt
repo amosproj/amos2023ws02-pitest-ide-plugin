@@ -6,17 +6,19 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiClassOwner
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtClass
 
 class ContextMenuAction : RunConfigurationAction() {
+    private val logger = Logger.getInstance(ContextMenuAction::class.java)
     override fun actionPerformed(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
         if (e.place == "EditorPopup") {
-            println("ContextMenuAction: actionPerformed in EditorPopup for file $psiFile")
+            logger.info("ContextMenuAction: actionPerformed in EditorPopup for file $psiFile")
             val psiElement = psiFile?.findElementAt(editor?.caretModel!!.offset)
             val selectedClass = findEnclosingClass(psiElement)
             if (selectedClass != null) {
@@ -28,17 +30,16 @@ class ContextMenuAction : RunConfigurationAction() {
                     classFQN = selectedClass.fqName.toString()
                 }
 
-                println("ContextMenuAction: selected class is $classFQN.")
+                logger.info("ContextMenuAction: selected class is $classFQN.")
                 updateAndExecuteRunConfig(classFQN, e.project!!, editor)
             }
         }
         if (e.place == "ProjectViewPopup") {
-            println("ContextMenuAction: actionPerformed in ProjectViewPopup for file $psiFile")
+            logger.info("ContextMenuAction: actionPerformed in ProjectViewPopup for file $psiFile")
             val psiClasses = (psiFile as PsiClassOwner).classes
             var classFQNs: String = ""
             for (psiClass in psiClasses) {
                 val fqn = psiClass.qualifiedName
-                println("$fqn")
                 if (fqn != null) {
                     classFQNs = if (classFQNs != "") {
                         "$classFQNs,$fqn"
@@ -47,7 +48,7 @@ class ContextMenuAction : RunConfigurationAction() {
                     }
                 }
             }
-            println("ContextMenuAction: selected classes are $classFQNs.")
+            logger.info("ContextMenuAction: selected classes are $classFQNs.")
             updateAndExecuteRunConfig(classFQNs, e.project!!, editor)
         }
     }
