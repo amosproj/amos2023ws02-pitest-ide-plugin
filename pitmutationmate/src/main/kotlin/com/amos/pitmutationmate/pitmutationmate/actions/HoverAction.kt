@@ -20,7 +20,6 @@ import com.intellij.util.ui.accessibility.AccessibleContextUtil
 import java.awt.Point
 import javax.swing.JComponent
 
-
 class HoverAction(private val editor: Editor, private val result: XMLParser.ResultData) {
     fun addHoverAction() {
         this.editor.addEditorMouseListener(MouseClick())
@@ -56,6 +55,7 @@ class HoverAction(private val editor: Editor, private val result: XMLParser.Resu
 
         return null
     }
+
     fun showHoverMessage(point: Point) {
         val message: String = buildHoverMessage() ?: return
         val hintManager: HintManagerImpl = HintManagerImpl.getInstanceImpl()
