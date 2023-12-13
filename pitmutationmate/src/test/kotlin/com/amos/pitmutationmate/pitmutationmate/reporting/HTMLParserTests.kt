@@ -1,6 +1,8 @@
-package com.amos.pitmutationmate.pitmutationmate
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023
 
-import com.amos.pitmutationmate.pitmutationmate.reporting.HTMLParser
+package com.amos.pitmutationmate.pitmutationmate.reporting
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
