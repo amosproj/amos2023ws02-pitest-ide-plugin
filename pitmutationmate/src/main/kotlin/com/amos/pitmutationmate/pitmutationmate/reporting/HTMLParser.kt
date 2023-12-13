@@ -8,7 +8,7 @@ import org.jsoup.nodes.Element
 import java.io.File
 
 class HTMLParser {
-    fun loadResultsFromHtml(htmlReportPath: String?): OverallResultData {
+    fun loadResultsFromHtml(htmlReportPath: String): OverallResultData {
         val overallResultData = OverallResultData()
         try {
             val document = Jsoup.parse(File(htmlReportPath), "UTF-8")
