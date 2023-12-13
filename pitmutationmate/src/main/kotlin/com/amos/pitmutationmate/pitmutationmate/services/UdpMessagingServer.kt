@@ -65,22 +65,10 @@ class UdpMessagingServer(private val project: Project) {
 
             if (overrideClassFQN != null && message.contains(overrideClassFQN)) {
                 // class was successfully overridden. Notify the user
-                val proj = this.project
-                ToolWindowManager.getInstance(proj).notifyByBalloon(
+                ToolWindowManager.getInstance(project).notifyByBalloon(
                     "Pitest",
                     MessageType.INFO,
                     "<p>Successfully applied pitest target class</p><p>$overrideClassFQN.</p>"
-                )
-
-                val timer = Timer(true)
-                timer.schedule(
-                    object : TimerTask() {
-                        override fun run() {
-                            ToolWindowManager.getInstance(proj).getToolWindowBalloon("Pitest")?.hide()
-                            timer.cancel()
-                        }
-                    },
-                    6000L
                 )
             }
         }
