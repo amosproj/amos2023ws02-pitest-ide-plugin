@@ -4,6 +4,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.visualization
 
+import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
@@ -18,12 +19,21 @@ import javax.swing.ListSelectionModel
 import javax.swing.table.DefaultTableCellRenderer
 import javax.swing.table.DefaultTableModel
 
-class LatestPiTestReport : JPanel() {
+class LatestPiTestReport(
+    coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
+        lineCoveragePercentage = 0,
+        lineCoverageTextRatio = "",
+        mutationCoveragePercentage = 0,
+        mutationCoverageTextRatio = "",
+        testStrengthPercentage = 0,
+        testStrengthTextRatio = ""
+    )
+) : JPanel() {
 
     init {
-        val lineCoverageBar = CustomProgressBar(30, "1/5")
-        val mutationCoverageBar = CustomProgressBar(50, "3000/30000")
-        val testStrengthBar = CustomProgressBar(93, "200/2000")
+        val lineCoverageBar = CustomProgressBar(coverageReport.lineCoveragePercentage, coverageReport.lineCoverageTextRatio)
+        val mutationCoverageBar = CustomProgressBar(coverageReport.mutationCoveragePercentage, coverageReport.mutationCoverageTextRatio)
+        val testStrengthBar = CustomProgressBar(coverageReport.testStrengthPercentage, coverageReport.testStrengthTextRatio)
 
         val data = arrayOf(
             arrayOf(getLabel("Class Name"), getLabel("Test.java")),
