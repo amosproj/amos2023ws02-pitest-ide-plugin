@@ -8,19 +8,24 @@ import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfiguration
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLListener
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
+import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.intellij.execution.ExecutorRegistry
 import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
 import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
-import org.jetbrains.kotlin.idea.gradleTooling.get
 import java.nio.file.Paths
 
 abstract class RunConfigurationAction : AnAction() {
     fun updateAndExecuteRunConfig(classFQN: String?, project: Project, editor: Editor?) {
+        val pluginChecker = project.service<PluginCheckerService>()
+        if (pluginChecker.checkGroovyBuildFile() || pluginChecker.checkKotlinBuildFile()) {
+            return
+        }
         val executor = ExecutorRegistry.getInstance().getExecutorById("Run")
 
         val runConfig = RunManager.getInstance(project).getConfigurationSettingsList(

@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2023
 
-package com.amos.pitmutationmate.pitmutationmate.plugincheck
+package com.amos.pitmutationmate.pitmutationmate.services
 
-import com.intellij.openapi.application.ApplicationManager
+import com.amos.pitmutationmate.pitmutationmate.plugincheck.PluginCheckerGroovy
+import com.amos.pitmutationmate.pitmutationmate.plugincheck.PluginCheckerKotlin
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.psi.PsiManager
@@ -14,16 +15,10 @@ import org.codehaus.groovy.ast.builder.AstBuilder
 import java.io.File
 import java.io.FileInputStream
 
-class StartupPluginChecker : ProjectActivity {
+@Service(Service.Level.PROJECT)
+class PluginCheckerService(private val project: Project) {
 
-    override suspend fun execute(project: Project) {
-        ApplicationManager.getApplication().invokeLater {
-            checkGroovyBuildFile(project)
-            checkKotlinBuildFile(project)
-        }
-    }
-
-    private fun checkKotlinBuildFile(project: Project) {
+    fun checkKotlinBuildFile(): Boolean {
         val buildFileName = "build.gradle.kts"
         val kotlinBuildFile = File(project.basePath + "/$buildFileName")
         if (kotlinBuildFile.exists()) {
@@ -34,19 +29,19 @@ class StartupPluginChecker : ProjectActivity {
                 psiFile?.node?.psi?.accept(pluginCheckerKotlin)
                 val pitestPluginText = "id(\"info.solidsoft.pitest\") version \"x.y.z\""
                 val companionPluginText = "id(\"io.github.amosproj.pitmutationmate.override\") version \"x.y.z\""
-                throwErrorMessage(
+                return throwErrorMessage(
                     pluginCheckerKotlin.pitestPluginAvailable,
                     pluginCheckerKotlin.companionPluginAvailable,
                     buildFileName,
-                    project,
                     pitestPluginText,
                     companionPluginText
                 )
             }
         }
+        return false
     }
 
-    private fun checkGroovyBuildFile(project: Project) {
+    fun checkGroovyBuildFile(): Boolean {
         val buildFileName = "build.gradle"
         val groovyBuildFile = File(project.basePath + "/$buildFileName")
         if (groovyBuildFile.exists()) {
@@ -63,25 +58,24 @@ class StartupPluginChecker : ProjectActivity {
             }
             val pitestPluginText = "id 'info.solidsoft.pitest' version 'x.y.z'"
             val companionPluginText = "id 'io.github.amosproj.pitmutationmate.override' version 'x.y.z'"
-            throwErrorMessage(
+            return throwErrorMessage(
                 pluginCheckerGroovy.pitestPluginAvailable,
                 pluginCheckerGroovy.companionPluginAvailable,
                 buildFileName,
-                project,
                 pitestPluginText,
                 companionPluginText
             )
         }
+        return false
     }
 
     private fun throwErrorMessage(
         pitestPluginAvailable: Boolean,
         companionPluginAvailable: Boolean,
         buildFileName: String,
-        project: Project,
         pitestPluginText: String,
         companionPluginText: String
-    ) {
+    ): Boolean {
         var errorMessage = ""
         if (!pitestPluginAvailable) {
             errorMessage += String.format(
@@ -99,7 +93,9 @@ class StartupPluginChecker : ProjectActivity {
         }
         if (errorMessage.isNotEmpty()) {
             Messages.showErrorDialog(project, errorMessage, ERROR_MESSAGE_TITLE)
+            return true
         }
+        return false
     }
 
     companion object {
