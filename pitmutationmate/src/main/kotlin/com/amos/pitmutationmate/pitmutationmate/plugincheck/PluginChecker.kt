@@ -3,9 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.plugincheck
 
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.psi.PsiManager
@@ -16,7 +14,7 @@ import java.io.FileInputStream
 
 class PluginChecker {
 
-    fun checkKotlinBuildFile(project: Project) : Boolean {
+    fun checkKotlinBuildFile(project: Project): Boolean {
         val buildFileName = "build.gradle.kts"
         val kotlinBuildFile = File(project.basePath + "/$buildFileName")
         if (kotlinBuildFile.exists()) {
@@ -40,7 +38,7 @@ class PluginChecker {
         return false
     }
 
-    fun checkGroovyBuildFile(project: Project) : Boolean {
+    fun checkGroovyBuildFile(project: Project): Boolean {
         val buildFileName = "build.gradle"
         val groovyBuildFile = File(project.basePath + "/$buildFileName")
         if (groovyBuildFile.exists()) {
@@ -76,7 +74,7 @@ class PluginChecker {
         project: Project,
         pitestPluginText: String,
         companionPluginText: String
-    ) : Boolean {
+    ): Boolean {
         var errorMessage = ""
         if (!pitestPluginAvailable) {
             errorMessage += String.format(
@@ -102,9 +100,9 @@ class PluginChecker {
     companion object {
         private const val ERROR_MESSAGE_TITLE = "Plugins for PITMutationPlugin are missing"
         private const val ERROR_MESSAGE_PITEST_PLUGIN_MISSING = "The pitest gradle Plugin is missing.\n" +
-                "Please add a Gradle Pitest Plugin to the %s file like the following:\n" +
-                "%s\nAnd see the pitest docs for missing configurations of pitest\n\n"
+            "Please add a Gradle Pitest Plugin to the %s file like the following:\n" +
+            "%s\nAnd see the pitest docs for missing configurations of pitest\n\n"
         private const val ERROR_MESSAGE_COMPANION_PLUGIN_MISSING = "The Companion Plugin is missing.\n" +
-                "Please add the following line to your %s file:\n%s\n\n"
+            "Please add the following line to your %s file:\n%s\n\n"
     }
 }
