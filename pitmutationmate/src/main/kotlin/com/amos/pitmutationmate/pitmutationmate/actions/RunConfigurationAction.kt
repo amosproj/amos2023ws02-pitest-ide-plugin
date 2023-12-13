@@ -6,24 +6,24 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 import com.amos.pitmutationmate.pitmutationmate.MutationTestToolWindowFactory
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfiguration
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType
-import com.amos.pitmutationmate.pitmutationmate.plugincheck.PluginChecker
+import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLListener
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.intellij.execution.ExecutorRegistry
 import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
 import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
-import org.jetbrains.kotlin.idea.gradleTooling.get
 import java.nio.file.Paths
 
 abstract class RunConfigurationAction : AnAction() {
     fun updateAndExecuteRunConfig(classFQN: String?, project: Project, editor: Editor?) {
-        val pluginChecker = PluginChecker()
-        if (pluginChecker.checkGroovyBuildFile(project) || pluginChecker.checkKotlinBuildFile(project)) {
+        val pluginChecker = project.service<PluginCheckerService>()
+        if (pluginChecker.checkGroovyBuildFile() || pluginChecker.checkKotlinBuildFile()) {
             return
         }
         val executor = ExecutorRegistry.getInstance().getExecutorById("Run")

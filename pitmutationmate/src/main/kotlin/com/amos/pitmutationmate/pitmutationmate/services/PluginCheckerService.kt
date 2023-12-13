@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2023
 
-package com.amos.pitmutationmate.pitmutationmate.plugincheck
+package com.amos.pitmutationmate.pitmutationmate.services
 
+import com.amos.pitmutationmate.pitmutationmate.plugincheck.PluginCheckerGroovy
+import com.amos.pitmutationmate.pitmutationmate.plugincheck.PluginCheckerKotlin
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.LocalFileSystem
@@ -12,9 +15,10 @@ import org.codehaus.groovy.ast.builder.AstBuilder
 import java.io.File
 import java.io.FileInputStream
 
-class PluginChecker {
+@Service(Service.Level.PROJECT)
+class PluginCheckerService(private val project: Project) {
 
-    fun checkKotlinBuildFile(project: Project): Boolean {
+    fun checkKotlinBuildFile(): Boolean {
         val buildFileName = "build.gradle.kts"
         val kotlinBuildFile = File(project.basePath + "/$buildFileName")
         if (kotlinBuildFile.exists()) {
@@ -29,7 +33,6 @@ class PluginChecker {
                     pluginCheckerKotlin.pitestPluginAvailable,
                     pluginCheckerKotlin.companionPluginAvailable,
                     buildFileName,
-                    project,
                     pitestPluginText,
                     companionPluginText
                 )
@@ -38,7 +41,7 @@ class PluginChecker {
         return false
     }
 
-    fun checkGroovyBuildFile(project: Project): Boolean {
+    fun checkGroovyBuildFile(): Boolean {
         val buildFileName = "build.gradle"
         val groovyBuildFile = File(project.basePath + "/$buildFileName")
         if (groovyBuildFile.exists()) {
@@ -59,7 +62,6 @@ class PluginChecker {
                 pluginCheckerGroovy.pitestPluginAvailable,
                 pluginCheckerGroovy.companionPluginAvailable,
                 buildFileName,
-                project,
                 pitestPluginText,
                 companionPluginText
             )
@@ -71,7 +73,6 @@ class PluginChecker {
         pitestPluginAvailable: Boolean,
         companionPluginAvailable: Boolean,
         buildFileName: String,
-        project: Project,
         pitestPluginText: String,
         companionPluginText: String
     ): Boolean {
