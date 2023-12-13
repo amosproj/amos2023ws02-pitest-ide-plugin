@@ -32,8 +32,8 @@ class StartupPluginChecker : ProjectActivity {
                 val psiFile = PsiManager.getInstance(project).findFile(virtualFile)
                 val pluginCheckerKotlin = PluginCheckerKotlin()
                 psiFile?.node?.psi?.accept(pluginCheckerKotlin)
-                val pitestPluginText = "id(\"info.solidsoft.pitest\") version \"1.15.0\""
-                val companionPluginText = "id(\"io.github.amosproj.pitmutationmate.override\") version \"1.0\""
+                val pitestPluginText = "id(\"info.solidsoft.pitest\") version \"x.y.z\""
+                val companionPluginText = "id(\"io.github.amosproj.pitmutationmate.override\") version \"x.y.z\""
                 throwErrorMessage(
                     pluginCheckerKotlin.pitestPluginAvailable,
                     pluginCheckerKotlin.companionPluginAvailable,
@@ -61,8 +61,8 @@ class StartupPluginChecker : ProjectActivity {
             for (node in nodes) {
                 node.visit(pluginCheckerGroovy)
             }
-            val pitestPluginText = "id 'info.solidsoft.pitest' version '1.15.0'"
-            val companionPluginText = "id 'io.github.amosproj.pitmutationmate.override' version '1.0'"
+            val pitestPluginText = "id 'info.solidsoft.pitest' version 'x.y.z'"
+            val companionPluginText = "id 'io.github.amosproj.pitmutationmate.override' version 'x.y.z'"
             throwErrorMessage(
                 pluginCheckerGroovy.pitestPluginAvailable,
                 pluginCheckerGroovy.companionPluginAvailable,
