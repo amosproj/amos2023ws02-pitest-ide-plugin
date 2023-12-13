@@ -6,6 +6,7 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 import com.amos.pitmutationmate.pitmutationmate.MutationTestToolWindowFactory
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfiguration
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType
+import com.amos.pitmutationmate.pitmutationmate.plugincheck.PluginChecker
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLListener
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.intellij.execution.ExecutorRegistry
@@ -21,6 +22,10 @@ import java.nio.file.Paths
 
 abstract class RunConfigurationAction : AnAction() {
     fun updateAndExecuteRunConfig(classFQN: String?, project: Project, editor: Editor?) {
+        val pluginChecker = PluginChecker()
+        if (pluginChecker.checkGroovyBuildFile(project) || pluginChecker.checkKotlinBuildFile(project)) {
+            return
+        }
         val executor = ExecutorRegistry.getInstance().getExecutorById("Run")
 
         val runConfig = RunManager.getInstance(project).getConfigurationSettingsList(
