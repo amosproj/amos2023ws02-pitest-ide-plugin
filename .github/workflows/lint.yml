@@ -3,13 +3,13 @@
 # SPDX-License-Identifier: MIT
 
 ---
-name: ktlint
+name: super-linter
 
 on:
   pull_request:
 
 jobs:
-  lint:
+  super-linter:
     runs-on: ubuntu-latest
 
     permissions:
@@ -31,3 +31,5 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_HTML: false
+          FILTER_REGEX_EXCLUDE: ".*src/test/resources.*"
