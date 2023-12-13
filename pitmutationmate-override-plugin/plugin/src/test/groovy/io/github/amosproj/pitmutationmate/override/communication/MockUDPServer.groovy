@@ -31,7 +31,7 @@ class MockUDPServer {
                     receivedMessages.add(message)
                 } catch (Exception e) {
                     // Ignore
-                    break;
+                    break
                 }
             }
         }

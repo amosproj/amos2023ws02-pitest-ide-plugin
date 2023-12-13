@@ -21,7 +21,7 @@ class DataModel(rootNode: DataNode) : AbstractTreeTableModel(rootNode) {
     override val columnCount: Int
         get() = columnNames.size
 
-    override fun getColumnName(column: Int): String? {
+    override fun getColumnName(column: Int): String {
         return columnNames[column]
     }
 

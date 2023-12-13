@@ -4,6 +4,8 @@
 
 package com.amos.pitmutationmate.pitmutationmate.visualization
 
+import com.intellij.ui.Gray
+import com.intellij.ui.JBColor
 import java.awt.Color
 import java.awt.Font
 import java.awt.FontMetrics
@@ -38,7 +40,7 @@ internal class CustomProgressBar(coveragePercentage: Int, ratioText: String) : J
         drawText(g, ratioText, ratioTextStartX)
 
         // Draw grey border
-        g.color = Color(170, 170, 170)
+        g.color = Gray._170
         g.drawRect(0, 0, barWidth - 1, barHeight - 1)
 
         // Draw green segment
@@ -66,7 +68,7 @@ internal class CustomProgressBar(coveragePercentage: Int, ratioText: String) : J
 
         val y = (barHeight - textHeight) / 2 + fontMetrics.ascent
 
-        g.color = Color.BLACK // Set the color for the text
+        g.color = JBColor.BLACK // Set the color for the text
         g.drawString(text, x, y)
 
         return textWidth
