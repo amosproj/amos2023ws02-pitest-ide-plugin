@@ -4,16 +4,14 @@
 
 package com.amos.pitmutationmate.pitmutationmate.visualization
 
-import java.awt.Color
-import java.awt.Font
+import com.intellij.ui.JBColor
+import com.intellij.util.ui.UIUtil
 import java.awt.FontMetrics
 import java.awt.Graphics
 import javax.swing.JComponent
 
-internal class CustomProgressBar(coveragePercentage: Int, ratioText: String) : JComponent() {
-    private val coveragePercentage = coveragePercentage
-    private val ratioText = ratioText
-    private val font = Font("Arial", Font.BOLD, 12) // You can adjust the font as needed
+internal class CustomProgressBar(private val coveragePercentage: Int, private val ratioText: String) : JComponent() {
+    private val font = UIUtil.getLabelFont()
     private val barWidth = 150
     private val barHeight = 20
     private val spaceBetweenTextAndBar = 5
@@ -33,20 +31,16 @@ internal class CustomProgressBar(coveragePercentage: Int, ratioText: String) : J
         val redWidth = barWidth - greenWidth
 
         // add space between ratio Text and the bar
-        var ratioTextStartX = barWidth + spaceBetweenTextAndBar
+        val ratioTextStartX = barWidth + spaceBetweenTextAndBar
 
         drawText(g, ratioText, ratioTextStartX)
 
-        // Draw grey border
-        g.color = Color(170, 170, 170)
-        g.drawRect(0, 0, barWidth - 1, barHeight - 1)
-
         // Draw green segment
-        g.color = Color(221, 255, 221)
+        g.color = JBColor.GREEN
         g.fillRect(1, 1, greenWidth, barHeight - 2)
 
         // Draw red segment
-        g.color = Color(255, 170, 170)
+        g.color = JBColor.RED
         g.fillRect(greenWidth + 1, 1, redWidth - 2, barHeight - 2)
 
         val percentageText = "$coveragePercentage%"
@@ -66,7 +60,7 @@ internal class CustomProgressBar(coveragePercentage: Int, ratioText: String) : J
 
         val y = (barHeight - textHeight) / 2 + fontMetrics.ascent
 
-        g.color = Color.BLACK // Set the color for the text
+        g.color = JBColor.BLACK // Set the color for the text
         g.drawString(text, x, y)
 
         return textWidth
