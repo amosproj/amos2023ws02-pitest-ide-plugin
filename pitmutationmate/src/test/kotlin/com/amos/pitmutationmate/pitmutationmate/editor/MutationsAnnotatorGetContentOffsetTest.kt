@@ -10,7 +10,6 @@ import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase5
 import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
-
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 

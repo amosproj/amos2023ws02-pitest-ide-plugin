@@ -63,7 +63,9 @@ class MutationsAnnotator :
     }
 
     override fun apply(
-        file: PsiFile, annotationResult: Map<Int, List<XMLParser.MutationResult>>, holder: AnnotationHolder
+        file: PsiFile,
+        annotationResult: Map<Int, List<XMLParser.MutationResult>>,
+        holder: AnnotationHolder
     ) {
         log.debug("apply")
         val document: Document = PsiDocumentManager.getInstance(file.project).getDocument(file) ?: return

@@ -11,11 +11,11 @@ import com.intellij.openapi.project.Project
 @Service(Service.Level.PROJECT)
 class MutationResultService(private val project: Project) {
 
-        fun getMutationResult(): XMLParser.ResultData {
-            val reportPathGenerator = project.service<ReportPathGeneratorService>()
-            val dir = reportPathGenerator.getReportMutationsFile()
+    fun getMutationResult(): XMLParser.ResultData {
+        val reportPathGenerator = project.service<ReportPathGeneratorService>()
+        val dir = reportPathGenerator.getReportMutationsFile()
 
-            val parser = XMLParser()
-            return parser.loadResultsFromXmlReport(dir.toString())
-        }
+        val parser = XMLParser()
+        return parser.loadResultsFromXmlReport(dir.toString())
+    }
 }

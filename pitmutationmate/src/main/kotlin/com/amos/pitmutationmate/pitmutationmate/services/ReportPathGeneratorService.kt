@@ -49,7 +49,7 @@ class ReportPathGeneratorService(private val project: Project) {
      * Creates the report path if it does not exist yet.
      * @return the report path
      */
-    fun createReportPath(reportPath: Path) : Path {
+    fun createReportPath(reportPath: Path): Path {
         if (!reportPath.exists()) {
             try {
                 reportPath.toFile().mkdirs()
