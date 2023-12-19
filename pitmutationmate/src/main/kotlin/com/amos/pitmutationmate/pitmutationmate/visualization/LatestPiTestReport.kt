@@ -9,10 +9,10 @@ import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
 import com.intellij.util.ui.JBUI
+import com.intellij.util.ui.UIUtil
 import java.awt.BorderLayout
 import java.awt.Component
 import java.awt.Dimension
-import java.awt.Font
 import javax.swing.JPanel
 import javax.swing.JTable
 import javax.swing.ListSelectionModel
@@ -55,7 +55,7 @@ class LatestPiTestReport(
         table.setRowHeight(lineCoverageBar.height + 2)
         table.tableHeader.reorderingAllowed = false
         table.tableHeader.resizingAllowed = false
-        table.tableHeader.font = Font("Arial", Font.BOLD, 16)
+        table.tableHeader.font = UIUtil.getLabelFont()
 
         table.border = JBUI.Borders.empty()
         table.setShowGrid(false)
@@ -80,7 +80,7 @@ class LatestPiTestReport(
 
     private fun getLabel(text: String): JBLabel {
         val label = JBLabel(text)
-        label.font = Font("Arial", Font.BOLD, 12)
+        label.font = UIUtil.getLabelFont()
         return label
     }
 
