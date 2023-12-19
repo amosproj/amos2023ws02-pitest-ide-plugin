@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.execution
 
+import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorService
 import com.amos.pitmutationmate.pitmutationmate.services.UdpMessagingServer
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.ProcessAdapter
@@ -13,6 +14,7 @@ import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
+import java.nio.file.Path
 
 abstract class BasePitestExecutor {
 
@@ -27,7 +29,9 @@ abstract class BasePitestExecutor {
         val messagingServer = project.service<UdpMessagingServer>()
         messagingServer.startServer(classFQN) // Start the UDP server
 
-        val commandLine = buildCommandLine(executable, overrideTaskName, project.basePath!!, classFQN, messagingServer.port)
+        val reportDir = project.service<ReportPathGeneratorService>().getReportPath()
+
+        val commandLine = buildCommandLine(executable, overrideTaskName, project.basePath!!, classFQN, reportDir, messagingServer.port)
         log.debug("BasePitestExecutor: executeTask: commandLine: $commandLine")
         val processHandler = createProcessHandler(commandLine)
         processHandler.addProcessListener(object : ProcessAdapter() {
@@ -45,6 +49,7 @@ abstract class BasePitestExecutor {
         overrideTaskName: String?,
         projectDir: String,
         classFQN: String?,
+        reportDir: Path,
         port: Int
     ): GeneralCommandLine
 

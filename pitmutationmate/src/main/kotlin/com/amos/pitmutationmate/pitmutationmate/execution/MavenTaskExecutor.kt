@@ -5,6 +5,7 @@ package com.amos.pitmutationmate.pitmutationmate.execution
 
 import com.intellij.execution.configurations.GeneralCommandLine
 import java.io.File
+import java.nio.file.Path
 
 class MavenTaskExecutor : BasePitestExecutor() {
     private var taskName: String = "org.pitest:pitest-maven:mutationCoverage"
@@ -15,6 +16,7 @@ class MavenTaskExecutor : BasePitestExecutor() {
         overrideTaskName: String?,
         projectDir: String,
         classFQN: String?,
+        reportDir: Path,
         port: Int
     ): GeneralCommandLine {
         val commandLine = GeneralCommandLine()
