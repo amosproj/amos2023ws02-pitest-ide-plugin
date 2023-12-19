@@ -5,7 +5,7 @@ package com.amos.pitmutationmate.pitmutationmate.execution
 
 import com.intellij.openapi.util.SystemInfo
 
-interface SystemInfoProvider {
+fun interface SystemInfoProvider {
     fun isWindows(): Boolean
 }
 
