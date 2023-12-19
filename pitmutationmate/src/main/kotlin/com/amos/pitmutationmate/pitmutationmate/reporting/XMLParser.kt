@@ -8,7 +8,7 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 class XMLParser {
-    fun loadResultsFromXmlReport(xmlReportPath: String?): ResultData {
+    fun loadResultsFromXmlReport(xmlReportPath: String): ResultData {
         val resultData = ResultData()
         try {
             val documentBuilderFactory = DocumentBuilderFactory.newInstance()
@@ -110,9 +110,7 @@ class XMLParser {
             mutationResults.add(mutationResult)
         }
         fun displayResult(mutationResult: MutationResult) {
-//            val editor =
-//            val color = if (mutationResult.detected) "green" else "red"
-//            HighlightGutterRenderer.GutterHighlighter.addBar(editor, color, mutationResult.lineNumber)
+            // removed in favor of MutationsAnnotator
         }
     }
 

@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.reporting
 
+import com.amos.pitmutationmate.pitmutationmate.visualization.HighlightGutterRenderer
 import com.intellij.openapi.editor.Editor
 import java.nio.file.Path
 import java.nio.file.Paths

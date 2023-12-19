@@ -6,22 +6,20 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 import com.amos.pitmutationmate.pitmutationmate.MutationTestToolWindowFactory
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfiguration
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType
-import com.amos.pitmutationmate.pitmutationmate.reporting.XMLListener
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
+import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.execution.ExecutorRegistry
 import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.components.service
-import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
-import java.nio.file.Paths
 
 abstract class RunConfigurationAction : AnAction() {
-    fun updateAndExecuteRunConfig(classFQN: String?, project: Project, editor: Editor?) {
+    fun updateAndExecuteRunConfig(classFQN: String?, project: Project) {
         val pluginChecker = project.service<PluginCheckerService>()
         if (pluginChecker.checkGroovyBuildFile() || pluginChecker.checkKotlinBuildFile()) {
             return
@@ -41,14 +39,9 @@ abstract class RunConfigurationAction : AnAction() {
 
         ProgramRunnerUtil.executeConfiguration(runConfig, executor!!)
 
-        if (editor != null) {
-            // TODO: use actual XML report directories. This currently uses a placeholder test folder
-            val dir = Paths.get("build", "reports", "pitest", "test", "mutations.xml")
-            val xmlListener = XMLListener(dir, editor)
-            xmlListener.listen()
-            val ha: HoverAction = HoverAction(editor, xmlListener.getResult())
-            ha.addHoverAction()
-        }
+        // restart code highlighting upon new pitest results
+        // TODO: ensure only the external annotator is rerun
+        DaemonCodeAnalyzer.getInstance(project).restart()
 
         // Update visualisation with mock results
         // TODO: replace this by real results extracted by the HTMLParser
