@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023 Lennart Heimbs
+
 package com.amos.pitmutationmate.pitmutationmate.utils
 
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
