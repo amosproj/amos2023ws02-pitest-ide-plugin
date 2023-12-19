@@ -9,6 +9,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 class ToolMenuAction : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR)
-        updateAndExecuteRunConfig("", e.project!!, editor)
+        updateAndExecuteRunConfig("", e.project!!)
     }
 }

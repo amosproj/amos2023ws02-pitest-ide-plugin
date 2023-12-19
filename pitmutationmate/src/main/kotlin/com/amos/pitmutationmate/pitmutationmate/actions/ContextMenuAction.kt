@@ -31,7 +31,7 @@ class ContextMenuAction : RunConfigurationAction() {
                 }
 
                 logger.info("ContextMenuAction: selected class is $classFQN.")
-                updateAndExecuteRunConfig(classFQN, e.project!!, editor)
+                updateAndExecuteRunConfig(classFQN, e.project!!)
             }
         }
         if (e.place == "ProjectViewPopup") {
@@ -49,7 +49,7 @@ class ContextMenuAction : RunConfigurationAction() {
                 }
             }
             logger.info("ContextMenuAction: selected classes are $classFQNs.")
-            updateAndExecuteRunConfig(classFQNs, e.project!!, editor)
+            updateAndExecuteRunConfig(classFQNs, e.project!!)
         }
     }
 

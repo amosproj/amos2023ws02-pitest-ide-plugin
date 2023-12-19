@@ -1,26 +1,28 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2023 Tim Herzig <tim.herzig@hotmail.com>
 
+package com.amos.pitmutationmate.pitmutationmate.visualization
+
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.openapi.editor.markup.RangeHighlighter
-import com.intellij.psi.PsiElement
-import java.awt.Color
+import com.intellij.ui.JBColor
 import java.awt.Component
 import java.awt.Graphics
 import javax.swing.Icon
 
-class HighlightGutterRenderer(color: String) : GutterIconRenderer() {
-    private val toolTip = "PITest run"
-    val toolTipProvider: (PsiElement) -> String = { _ -> toolTip }
-    val color: String = color
+class HighlightGutterRenderer(val color: String) : GutterIconRenderer() {
+
     override fun equals(other: Any?): Boolean {
-        TODO("Not yet implemented")
+        if (other is HighlightGutterRenderer) {
+            return other.color == this.color
+        }
+        return false
     }
 
     override fun hashCode(): Int {
-        TODO("Not yet implemented")
+        return color.hashCode()
     }
 
     object GutterHighlighter {
@@ -37,14 +39,16 @@ class HighlightGutterRenderer(color: String) : GutterIconRenderer() {
     }
 
     override fun getIcon(): Icon {
-        return if (this.color == "light-pink") {
-            LightPinkBarIcon()
-        } else if (this.color == "dark-pink") {
-            DarkPinkBarIcon()
-        } else if (this.color == "light-green") {
-            LightGreenBarIcon()
-        } else {
-            DarkGreenBarIcon()
+        return when (this.color) {
+            "light-pink" -> {
+                LightPinkBarIcon()
+            }
+            "dark-pink" -> {
+                DarkPinkBarIcon()
+            }
+            else -> {
+                GreenBarIcon()
+            }
         }
     }
 
@@ -54,7 +58,7 @@ class HighlightGutterRenderer(color: String) : GutterIconRenderer() {
 
     private class LightPinkBarIcon : Icon {
         override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
-            g.setColor(Color(252, 218, 217))
+            g.color = JBColor.PINK
             g.fillRect(x, y, iconWidth, iconHeight)
         }
 
@@ -68,7 +72,7 @@ class HighlightGutterRenderer(color: String) : GutterIconRenderer() {
     }
     private class DarkPinkBarIcon : Icon {
         override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
-            g.setColor(Color(253, 161, 159))
+            g.color = JBColor.RED
             g.fillRect(x, y, iconWidth, iconHeight)
         }
 
@@ -80,23 +84,9 @@ class HighlightGutterRenderer(color: String) : GutterIconRenderer() {
             return 16
         }
     }
-    private class LightGreenBarIcon : Icon {
+    private class GreenBarIcon : Icon {
         override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
-            g.setColor(Color(215, 255, 214))
-            g.fillRect(x, y, iconWidth, iconHeight)
-        }
-
-        override fun getIconWidth(): Int {
-            return 10
-        }
-
-        override fun getIconHeight(): Int {
-            return 16
-        }
-    }
-    private class DarkGreenBarIcon : Icon {
-        override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
-            g.setColor(Color(161, 255, 161))
+            g.color = JBColor.GREEN
             g.fillRect(x, y, iconWidth, iconHeight)
         }
 

@@ -12,6 +12,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
+import java.nio.file.Path
 
 /**
  * Tests for GradleTaskExecutor
@@ -39,6 +40,7 @@ class GradleTaskExecutorTest {
             "clean",
             "/path/to/project",
             "com.example.Class",
+            Path.of("/path/to/report"),
             8080
         )
 
@@ -56,6 +58,7 @@ class GradleTaskExecutorTest {
             "clean",
             "/path/to/project",
             "com.example.Class",
+            Path.of("/path/to/report"),
             8080
         )
 
@@ -73,6 +76,7 @@ class GradleTaskExecutorTest {
             null,
             "/path/to/project",
             "com.example.Class",
+            Path.of("/path/to/report"),
             8080
         )
 
@@ -89,6 +93,7 @@ class GradleTaskExecutorTest {
             taskName,
             "/path/to/project",
             "com.example.Class",
+            Path.of("/path/to/report"),
             8080
         )
 
@@ -104,6 +109,7 @@ class GradleTaskExecutorTest {
             "clean",
             "/path/to/project",
             null,
+            Path.of("/path/to/report"),
             8080
         )
 
@@ -122,6 +128,7 @@ class GradleTaskExecutorTest {
             "clean",
             "/path/to/project",
             classFQN,
+            Path.of("/path/to/report"),
             8080
         )
 

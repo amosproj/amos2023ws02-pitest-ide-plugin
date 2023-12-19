@@ -5,6 +5,7 @@ package com.amos.pitmutationmate.pitmutationmate.execution
 
 import com.intellij.execution.configurations.GeneralCommandLine
 import java.io.File
+import java.nio.file.Path
 
 class GradleTaskExecutor : BasePitestExecutor() {
     companion object {
@@ -23,6 +24,7 @@ class GradleTaskExecutor : BasePitestExecutor() {
         overrideTaskName: String?,
         projectDir: String,
         classFQN: String?,
+        reportDir: Path,
         port: Int
     ): GeneralCommandLine {
         val commandLine = GeneralCommandLine()
@@ -47,19 +49,20 @@ class GradleTaskExecutor : BasePitestExecutor() {
             commandLine.addParameters(UNIX_FIRST_PARAMETER, gradleExecutable, taskName)
         }
 
-        commandLine.addParameters(getPitestOverrideParameters(classFQN, port))
+        commandLine.addParameters(getPitestOverrideParameters(classFQN, port, reportDir))
 
         commandLine.workDirectory = File(projectDir)
         return commandLine
     }
 
-    private fun getPitestOverrideParameters(classFQN: String?, port: Int): List<String> {
+    private fun getPitestOverrideParameters(classFQN: String?, port: Int, reportDir: Path): List<String> {
         val parameters = mutableListOf<String>()
         if (!classFQN.isNullOrEmpty()) {
             parameters.add("-Dpitmutationmate.override.targetClasses=$classFQN")
         }
         parameters.add("-Dpitmutationmate.override.verbose=true")
         parameters.add("-Dpitmutationmate.override.port=$port")
+        parameters.add("-Dpitmutationmate.override.reportDir=${reportDir.toAbsolutePath()}")
         return parameters
     }
 }
