@@ -4,8 +4,10 @@
 
 package com.amos.pitmutationmate.pitmutationmate.visualization
 
+import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.ui.JBColor
 import com.intellij.util.ui.UIUtil
+import java.awt.Color
 import java.awt.FontMetrics
 import java.awt.Graphics
 import javax.swing.JComponent
@@ -33,7 +35,7 @@ internal class CustomProgressBar(private val coveragePercentage: Int, private va
         // add space between ratio Text and the bar
         val ratioTextStartX = barWidth + spaceBetweenTextAndBar
 
-        drawText(g, ratioText, ratioTextStartX)
+        drawText(g, JBColor.black, ratioText, ratioTextStartX)
 
         // Draw green segment
         g.color = JBColor.GREEN
@@ -44,14 +46,14 @@ internal class CustomProgressBar(private val coveragePercentage: Int, private va
         g.fillRect(greenWidth + 1, 1, redWidth - 2, barHeight - 2)
 
         val percentageText = "$coveragePercentage%"
-        drawText(g, percentageText, (barWidth - getTextWidth(percentageText)) / 2)
+        drawText(g, Color(0,0,0), percentageText, (barWidth - getTextWidth(percentageText)) / 2)
     }
 
     private fun getTextWidth(text: String): Int {
         return getFontMetrics(font).stringWidth(text)
     }
 
-    private fun drawText(g: Graphics, text: String, x: Int): Int {
+    private fun drawText(g: Graphics, c: Color, text: String, x: Int): Int {
         g.font = font
 
         val fontMetrics: FontMetrics = g.fontMetrics
@@ -60,7 +62,7 @@ internal class CustomProgressBar(private val coveragePercentage: Int, private va
 
         val y = (barHeight - textHeight) / 2 + fontMetrics.ascent
 
-        g.color = JBColor.BLACK // Set the color for the text
+        g.color = c // Set the color for the text
         g.drawString(text, x, y)
 
         return textWidth
