@@ -1,10 +1,8 @@
-// SPDX-FileCopyrightText: 2023 2023
-//
+// SPDX-FileCopyrightText: 2023
 // SPDX-License-Identifier: MIT
 
 package com.amos.pitmutationmate.pitmutationmate.visualization
 
-import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.ui.JBColor
 import com.intellij.util.ui.UIUtil
 import java.awt.Color
