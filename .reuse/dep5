@@ -2,6 +2,6 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: amos2023ws02-pitest-ide-plugin
 Source: https://github.com/amosproj/amos2023ws02-pitest-ide-plugin
 
-Files: Deliverables/*
+Files: Deliverables/* MarketplacePage/*
 Copyright: 2023
 License: MIT
