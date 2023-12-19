@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.0"
     id("org.jetbrains.intellij") version "1.15.0"
     id("info.solidsoft.pitest") version "1.15.0"
+    id("com.gradle.plugin-publish") version "1.2.1"
 }
 
 tasks.test {
@@ -27,7 +28,21 @@ dependencies {
 }
 
 group = "com.amos.pitmutationmate"
-version = "1.0-SNAPSHOT"
+version = "1.0"
+
+gradlePlugin {
+    website = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin"
+    vcsUrl = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin"
+    plugins {
+        create("pitmutationmatePlugin") {
+            id = "com.amos.pitmutationmate"
+            displayName = "pitmutationmate"
+            description = "Pitest Plugin for the IntelliJ (JetBrains) IDE"
+            tags = listOf("testing", "mutationTesting")
+            implementationClass = "com.amos.pitmutationmate.pitmutationmate.actions.RunConfigurationAction"
+        }
+    }
+}
 
 repositories {
     mavenCentral()
