@@ -44,7 +44,7 @@ internal class CustomProgressBar(private val coveragePercentage: Int, private va
         g.fillRect(greenWidth + 1, 1, redWidth - 2, barHeight - 2)
 
         val percentageText = "$coveragePercentage%"
-        drawText(g, Color(0,0,0), percentageText, (barWidth - getTextWidth(percentageText)) / 2)
+        drawText(g, Color(0, 0, 0), percentageText, (barWidth - getTextWidth(percentageText)) / 2)
     }
 
     private fun getTextWidth(text: String): Int {
