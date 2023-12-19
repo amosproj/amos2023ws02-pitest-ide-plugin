@@ -1,10 +1,10 @@
 <p>Use the <code>pitest</code> plugin, such as "solidsoft", in the config file.</p>
-<p>Utilize our Gradle plugin <code>pitmutationmate-override-plugin</code> in the config file.</p>
+<p>Utilize our Gradle plugin <code>pitmutationmate-override-plugin</code> in the config file.</p><br/>
 <p>Add the run configuration to initiate the <code>pitest</code> run:</p>
-<ol>
-  <li>Run → Edit Configurations → Add new configuration → <q>PITmutationmate</q></li>
-</ol>
-<p>The default options in the run configuration should be used.</p><br>
+<blockquote>
+<p>Run → Edit Configurations → Add new configuration → PITmutationmate</p>
+<p>The default options in the run configuration should be used.</p>
+</blockquote><br/>
 <p>To start a <code>pitest</code> run, you have several options:</p>
 <ol>
   <li>Click on the play button next to the class.</li>
