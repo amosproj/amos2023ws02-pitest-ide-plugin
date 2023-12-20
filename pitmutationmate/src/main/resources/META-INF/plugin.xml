@@ -21,7 +21,7 @@
     <p><a href="https://pitest.org/">PIT (Pitest)</a> is a popular mutation testing framework for Java / JVM-based languages.</p>
     <p>This plugin assists users in analyzing PITest reports in IntelliJ IDEA.</p>
     <p>Mutation tests can be conveniently run from within the IDE, similar to the JUnit plugins available for most IDEs.</p>
-    <p>Users of the IDE should be able to:</p>
+    <p>Users of the IDE are able to:</p>
     <ul>
         <li>Start a Pitest run for a class directly in the code editor</li>
         <li>Control (rerun, stop, ...) the execution</li>
