@@ -17,8 +17,18 @@
        Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
 
   <description><![CDATA[
-    Pit Mutation Mate.<br>
-    This Plugin helps the user analyzing PITest reports in the IDEA ide
+    <p><strong>Pit Mutation Mate.</strong></p>
+    <p><a href="https://pitest.org/">PIT (Pitest)</a> is a popular mutation testing framework for Java / JVM-based languages.</p>
+    <p>This plugin assists users in analyzing PITest reports in IntelliJ IDEA.</p>
+    <p>Mutation tests can be conveniently run from within the IDE, similar to the JUnit plugins available for most IDEs.</p>
+    <p>Users of the IDE are able to:</p>
+    <ul>
+        <li>Start a Pitest run for a class directly in the code editor</li>
+        <li>Control (rerun, stop, ...) the execution</li>
+        <li>Configure (verbosity, mutators, targeting tests, ...) the execution</li>
+        <li>Receive results as inline annotations of the code</li>
+        <li>Inspect the results, particularly any surviving mutations</li>
+    </ul>
   ]]></description>
 
 
