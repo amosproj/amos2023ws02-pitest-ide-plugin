@@ -83,7 +83,7 @@ class XMLParser {
 
                 val fileName = if (totals) "totals" else getTextContent(element, "FileName")
                 val packageName = if (totals) "totals" else getTextContent(element, "PackageName")
-                val mutatedClass = if (totals) "totals" else  getTextContent(element, "MutatedClass")
+                val mutatedClass = if (totals) "totals" else getTextContent(element, "MutatedClass")
                 val lineCoveragePercentage = getTextContent(element, "LineCoveragePercentage").toInt()
                 val lineCoverageTextRatio = getTextContent(element, "LineCoverage")
                 val mutationCoveragePercentage = getTextContent(element, "MutationCoveragePercentage").toInt()
