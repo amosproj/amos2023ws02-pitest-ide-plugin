@@ -19,7 +19,6 @@ class XMLParser {
             extractMutationResults(document, resultData)
             extractCoverageReports(document, resultData, false)
             extractCoverageReports(document, resultData, true)
-
         } catch (e: Exception) {
             // TODO: Handle Parser exceptions
             e.printStackTrace()
@@ -74,7 +73,7 @@ class XMLParser {
     }
 
     private fun extractCoverageReports(document: Document, resultData: ResultData, totals: Boolean) {
-        val mutationsNodeList = document.getElementsByTagName(if(totals) "totalMetaData" else "coverageInformation")
+        val mutationsNodeList = document.getElementsByTagName(if (totals) "totalMetaData" else "coverageInformation")
 
         for (i in 0 until mutationsNodeList.length) {
             val mutationNode = mutationsNodeList.item(i)
@@ -82,15 +81,15 @@ class XMLParser {
             if (mutationNode.nodeType == Node.ELEMENT_NODE) {
                 val element = mutationNode as Element
 
-                val fileName = if(totals) "totals" else getTextContent(element, "fileName")
-                val packageName = if(totals) "totals" else getTextContent(element, "packageName")
-                val mutatedClass = if(totals) "totals" else  getTextContent(element, "mutatedClass")
-                val lineCoveragePercentage = getTextContent(element, "lineCoveragePercentage").toInt()
-                val lineCoverageTextRatio = getTextContent(element, "lineCoverage")
-                val mutationCoveragePercentage = getTextContent(element, "mutationCoveragePercentage").toInt()
-                val mutationCoverageTextRatio = getTextContent(element, "mutationCoverage")
-                val testStrengthPercentage = getTextContent(element, "testStrengthPercentage").toInt()
-                val testStrengthTextRatio = getTextContent(element, "testStrength")
+                val fileName = if (totals) "totals" else getTextContent(element, "FileName")
+                val packageName = if (totals) "totals" else getTextContent(element, "PackageName")
+                val mutatedClass = if (totals) "totals" else  getTextContent(element, "MutatedClass")
+                val lineCoveragePercentage = getTextContent(element, "LineCoveragePercentage").toInt()
+                val lineCoverageTextRatio = getTextContent(element, "LineCoverage")
+                val mutationCoveragePercentage = getTextContent(element, "MutationCoveragePercentage").toInt()
+                val mutationCoverageTextRatio = getTextContent(element, "MutationCoverage")
+                val testStrengthPercentage = getTextContent(element, "TestStrengthPercentage").toInt()
+                val testStrengthTextRatio = getTextContent(element, "TestStrength")
 
                 val coverageReport = CoverageReport(
                     fileName,
@@ -103,7 +102,7 @@ class XMLParser {
                     testStrengthPercentage,
                     testStrengthTextRatio
                 )
-                if(totals) resultData.totalResult = coverageReport else resultData.addCoverageReport(coverageReport)
+                if (totals) resultData.totalResult = coverageReport else resultData.addCoverageReport(coverageReport)
             }
         }
     }
@@ -154,7 +153,7 @@ class XMLParser {
             mutationResults.add(mutationResult)
         }
 
-        fun addCoverageReport(coverageReport: CoverageReport){
+        fun addCoverageReport(coverageReport: CoverageReport) {
             coverageReports.add(coverageReport)
         }
 

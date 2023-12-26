@@ -9,7 +9,7 @@ import org.pitest.mutationtest.MutationResultListenerFactory
 import org.pitest.mutationtest.report.html.HtmlReportFactory
 import java.util.*
 
-class CoverageResultListenerFactory : MutationResultListenerFactory{
+class CoverageResultListenerFactory : MutationResultListenerFactory {
     override fun description(): String {
         return "Coverage Report writer for PIT"
     }

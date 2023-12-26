@@ -39,8 +39,8 @@ gradlePlugin {
             id = "io.github.amosproj.pitmutationmate.coverage"
             displayName = "PITMutationMate Coverage Pitest Plugin"
             description = "A plugin that implements the MutationResultListener class from pitest " +
-                    "The custom MutationResultListener provides the coverage information in a handy way " +
-                    "for the PITMutationMate  Intellij plugin."
+                "The custom MutationResultListener provides the coverage information in a handy way " +
+                "for the PITMutationMate  Intellij plugin."
             tags =
                 listOf(
                     "pitmutationmate", "pitest", "mutation", "mutation testing", "mutation testing tool",

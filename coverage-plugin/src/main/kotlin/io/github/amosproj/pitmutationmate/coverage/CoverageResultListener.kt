@@ -15,15 +15,15 @@ import java.io.IOException
 import java.io.Writer
 
 internal enum class Tag {
-    fileName, packageName, mutatedClass, lineCoverage, lineCoveragePercentage, mutationCoverage,
-    mutationCoveragePercentage, testStrengthPercentage, testStrength
+    FileName, PackageName, MutatedClass, LineCoverage, LineCoveragePercentage, MutationCoverage,
+    MutationCoveragePercentage, TestStrengthPercentage, TestStrength
 }
 
 class CoverageResultListener(
     private var htmlListener: MutationResultListener,
     private var coverage: ReportCoverage?,
     outputStrategy: ResultOutputStrategy?
-) : MutationResultListener{
+) : MutationResultListener {
 
     private var out: Writer? = null
     private var totals: MutationTotals? = null
@@ -34,17 +34,17 @@ class CoverageResultListener(
     }
 
     private fun writeMetaDataNode(classTotals: MutationTotals) {
-        write(makeNode(clean(classTotals.lineCoverage.toString()), Tag.lineCoveragePercentage))
+        write(makeNode(clean(classTotals.lineCoverage.toString()), Tag.LineCoveragePercentage))
         val lineCoverageTextRatio = classTotals.numberOfLinesCovered.toString() + "/" + classTotals.numberOfLines
-        write(makeNode(clean(lineCoverageTextRatio), Tag.lineCoverage))
+        write(makeNode(clean(lineCoverageTextRatio), Tag.LineCoverage))
 
-        write(makeNode(clean(classTotals.mutationCoverage.toString()), Tag.mutationCoveragePercentage))
+        write(makeNode(clean(classTotals.mutationCoverage.toString()), Tag.MutationCoveragePercentage))
         val mutationCoverageTextRatio = classTotals.numberOfMutationsDetected.toString() + "/" + classTotals.numberOfMutations
-        write(makeNode(clean(mutationCoverageTextRatio), Tag.mutationCoverage))
+        write(makeNode(clean(mutationCoverageTextRatio), Tag.MutationCoverage))
 
-        write(makeNode(clean(classTotals.testStrength.toString()), Tag.testStrengthPercentage))
+        write(makeNode(clean(classTotals.testStrength.toString()), Tag.TestStrengthPercentage))
         val testStrengthTextRatio = classTotals.numberOfMutationsDetected.toString() + "/" + classTotals.numberOfMutationsWithCoverage
-        write(makeNode(clean(testStrengthTextRatio), Tag.testStrength))
+        write(makeNode(clean(testStrengthTextRatio), Tag.TestStrength))
     }
 
     private fun clean(value: String): String {
@@ -67,20 +67,20 @@ class CoverageResultListener(
     }
 
     override fun runStart() {
-        write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
         write("<coverageInformation>\n")
     }
 
     override fun handleMutationResult(results: ClassMutationResults?) {
-        if(htmlListener is MutationHtmlReportListener) {
+        if (htmlListener is MutationHtmlReportListener) {
             val testMetaData = (htmlListener as MutationHtmlReportListener).createSummaryData(coverage, results)
             val classTotals = testMetaData.totals
             totals?.add(classTotals)
             write("<testMetaData>")
             if (results != null) {
-                write(makeNode(results.fileName, Tag.fileName))
-                write(makeNode(results.packageName, Tag.packageName))
-                write(makeNode(results.mutatedClass.toString(), Tag.mutatedClass))
+                write(makeNode(results.fileName, Tag.FileName))
+                write(makeNode(results.packageName, Tag.PackageName))
+                write(makeNode(results.mutatedClass.toString(), Tag.MutatedClass))
             }
             writeMetaDataNode(classTotals)
             write("</testMetaData>\n")

@@ -36,9 +36,9 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
 
         def pitestExtension = project.extensions.findByName(OVERRIDE_SECTION)
 
-        def proj_iter = project.subprojects.iterator()
-        while(pitestExtension == null && proj_iter.hasNext()){
-            def subproject = proj_iter.next()
+        def projIter = project.subprojects.iterator()
+        while(pitestExtension == null && projIter.hasNext()) {
+            def subproject = projIter.next()
             pitestExtension = subproject.extensions.findByName(OVERRIDE_SECTION)
         }
 
