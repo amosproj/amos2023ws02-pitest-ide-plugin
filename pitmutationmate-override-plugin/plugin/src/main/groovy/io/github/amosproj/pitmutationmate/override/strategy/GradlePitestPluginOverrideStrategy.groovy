@@ -35,6 +35,13 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
         log.debug("Overriding property '$propertyName' with '$overrideValue'.")
 
         def pitestExtension = project.extensions.findByName(OVERRIDE_SECTION)
+
+        def proj_iter = project.subprojects.iterator()
+        while(pitestExtension == null && proj_iter.hasNext()){
+            def subproject = proj_iter.next()
+            pitestExtension = subproject.extensions.findByName(OVERRIDE_SECTION)
+        }
+
         if (pitestExtension == null) {
             throw new GradleException("PITest extension not found. Please apply the PITest plugin first.")
         }
