@@ -41,13 +41,13 @@ class HighlightGutterRenderer(val color: String) : GutterIconRenderer() {
     override fun getIcon(): Icon {
         return when (this.color) {
             "light-pink" -> {
-                LightPinkBarIcon()
+                BarIcon(JBColor.PINK)
             }
             "dark-pink" -> {
-                DarkPinkBarIcon()
+                BarIcon(JBColor.RED)
             }
             else -> {
-                GreenBarIcon()
+                BarIcon(JBColor.GREEN)
             }
         }
     }
@@ -56,46 +56,20 @@ class HighlightGutterRenderer(val color: String) : GutterIconRenderer() {
         return Alignment.LEFT
     }
 
-    private class LightPinkBarIcon : Icon {
+    private class BarIcon(val color: JBColor) : Icon {
         override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
-            g.color = JBColor.PINK
+            g.color = this.color
             g.fillRect(x, y, iconWidth, iconHeight)
         }
 
         override fun getIconWidth(): Int {
-            return 10
+            return 5
         }
 
         override fun getIconHeight(): Int {
             return 16
         }
     }
-    private class DarkPinkBarIcon : Icon {
-        override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
-            g.color = JBColor.RED
-            g.fillRect(x, y, iconWidth, iconHeight)
-        }
 
-        override fun getIconWidth(): Int {
-            return 10
-        }
 
-        override fun getIconHeight(): Int {
-            return 16
-        }
-    }
-    private class GreenBarIcon : Icon {
-        override fun paintIcon(c: Component?, g: Graphics, x: Int, y: Int) {
-            g.color = JBColor.GREEN
-            g.fillRect(x, y, iconWidth, iconHeight)
-        }
-
-        override fun getIconWidth(): Int {
-            return 10
-        }
-
-        override fun getIconHeight(): Int {
-            return 16
-        }
-    }
 }
