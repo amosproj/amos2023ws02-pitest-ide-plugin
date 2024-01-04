@@ -40,11 +40,11 @@ class HighlightGutterRenderer(val color: String) : GutterIconRenderer() {
 
     override fun getIcon(): Icon {
         return when (this.color) {
-            "light-pink" -> {
-                BarIcon(JBColor.PINK)
-            }
-            "dark-pink" -> {
+            "red" -> {
                 BarIcon(JBColor.RED)
+            }
+            "yellow" -> {
+                BarIcon(JBColor.YELLOW)
             }
             else -> {
                 BarIcon(JBColor.GREEN)
@@ -70,6 +70,4 @@ class HighlightGutterRenderer(val color: String) : GutterIconRenderer() {
             return 16
         }
     }
-
-
 }

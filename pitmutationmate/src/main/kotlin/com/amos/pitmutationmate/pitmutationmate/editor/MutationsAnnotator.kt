@@ -41,6 +41,17 @@ class MutationsAnnotator :
             return mutationResults.mapIndexed { index, it -> "${index + 1}. ${it.description} → ${it.status}" }
                 .joinToString(separator)
         }
+
+        fun formatTooltipMessage(message: String): String {
+            return """
+                <html>
+                     <body style="font-family: 'Arial', sans-serif; font-size: 12px;">
+                        <h3>PiTest:</h3>
+                        <p>$message</p>
+                    </body>
+                </html>
+            """.trimIndent()
+        }
     }
 
     companion object {
@@ -73,9 +84,14 @@ class MutationsAnnotator :
         for (r in annotationResult) {
             val lineRange = Util.getContentOffset(document, r.key - 1)
             val severity = PitestSeverity.fromMutationResults(r.value)
-            holder.newAnnotation(severity.highlightSeverity(), Util.getMessage(r.value, false)).range(lineRange)
-                .tooltip(Util.getMessage(r.value, true)).highlightType(severity.highlightType())
-                .gutterIconRenderer(HighlightGutterRenderer(severity.gutterIcon())).create()
+            holder.newAnnotation(
+                severity.highlightSeverity(),
+                Util.getMessage(r.value, false)
+            ).range(lineRange)
+                .tooltip(Util.formatTooltipMessage(Util.getMessage(r.value, true)))
+                .highlightType(severity.highlightType())
+                .gutterIconRenderer(HighlightGutterRenderer(severity.gutterIcon()))
+                .create()
         }
     }
 }
