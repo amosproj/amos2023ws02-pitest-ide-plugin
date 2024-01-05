@@ -6,6 +6,7 @@ import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.amos.pitmutationmate.pitmutationmate.visualization.BarGraph
 import com.amos.pitmutationmate.pitmutationmate.visualization.LatestPiTestReport
 import com.amos.pitmutationmate.pitmutationmate.visualization.LineGraph
+import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.MyTreeTable
 import com.amos.pitmutationmate.pitmutationmate.visualization.treetable.JTreeTable
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
@@ -25,11 +26,13 @@ internal class MutationTestToolWindowFactory : ToolWindowFactory, DumbAware {
             ContentFactory.getInstance().createContent(LatestPiTestReport(lastCoverageReport), "Latest Result", false)
         }
         val table = ContentFactory.getInstance().createContent(JTreeTable(), "Mutationtest Coverage", false)
+        val myTable = ContentFactory.getInstance().createContent(MyTreeTable(), "Bamboozle", false)
         val lineChart = ContentFactory.getInstance().createContent(LineGraph(), "Line Chart", false)
         val barChart = ContentFactory.getInstance().createContent(BarGraph(), "Bar Chart", false)
 
         toolWindow.contentManager.addContent(latestPiTestReport)
         toolWindow.contentManager.addContent(table)
+        toolWindow.contentManager.addContent(myTable)
         toolWindow.contentManager.addContent(lineChart)
         toolWindow.contentManager.addContent(barChart)
     }
