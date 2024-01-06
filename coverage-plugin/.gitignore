@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2023 Lennart Heimbs
+#
+# SPDX-License-Identifier: MIT
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
