@@ -5,3 +5,7 @@ Source: https://github.com/amosproj/amos2023ws02-pitest-ide-plugin
 Files: Deliverables/* MarketplacePage/*
 Copyright: 2023
 License: MIT
+
+Files: coverage-plugin/src/main/resources/META-INF/services/org.pitest.mutationtest.MutationResultListenerFactory
+Copyright: 2024
+License: MIT

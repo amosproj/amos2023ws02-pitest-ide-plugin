@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--SPDX-License-Identifier: MIT-->
+<!--SPDX-FileCopyrightText: 2023-->
+<coverageInformation>
+<testMetaData><fileName>Presenter.java</fileName><packageName>de.esolutions.pitest.showcase</packageName><mutatedClass>de.esolutions.pitest.showcase.Presenter</mutatedClass><lineCoveragePercentage>100</lineCoveragePercentage><lineCoverage>19/19</lineCoverage><mutationCoveragePercentage>23</mutationCoveragePercentage><mutationCoverage>3/13</mutationCoverage><testStrengthPercentage>25</testStrengthPercentage><testStrength>3/12</testStrength></testMetaData>
+<totalMetaData><lineCoveragePercentage>100</lineCoveragePercentage><lineCoverage>19/19</lineCoverage><mutationCoveragePercentage>23</mutationCoveragePercentage><mutationCoverage>3/13</mutationCoverage><testStrengthPercentage>25</testStrengthPercentage><testStrength>3/12</testStrength></totalMetaData>
+</coverageInformation>
