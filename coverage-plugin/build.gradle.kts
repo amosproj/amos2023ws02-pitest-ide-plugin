@@ -3,11 +3,7 @@
 
 plugins {
     kotlin("jvm") version "1.9.21"
-    `java-gradle-plugin`
-    `maven-publish`
     idea
-
-    id("com.gradle.plugin-publish") version "1.2.1"
 }
 
 group = "io.github.amosproj"
@@ -26,28 +22,28 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
-kotlin {
-    jvmToolchain(17)
+
+sourceSets {
+    main {
+        // Define your Kotlin source directory for the extension
+        kotlin.srcDirs("src/main/kotlin")
+        resources.srcDirs("src/main/resources") // Include resources explicitly
+    }
 }
 
-gradlePlugin {
-    website = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin"
-    vcsUrl = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin.git"
+tasks.jar {
+    dependsOn("compileKotlin") // Ensure compilation is done before JAR creation
 
-    plugins {
-        create("pitmutationmate-coverage-plugin") {
-            id = "io.github.amosproj.pitmutationmate.coverage"
-            displayName = "PITMutationMate Coverage Pitest Plugin"
-            description = "A plugin that implements the MutationResultListener class from pitest " +
-                "The custom MutationResultListener provides the coverage information in a handy way " +
-                "for the PITMutationMate  Intellij plugin."
-            tags =
-                listOf(
-                    "pitmutationmate", "pitest", "mutation", "mutation testing", "mutation testing tool",
-                    "mutation testing framework", "mutation testing gradle plugin", "mutation testing ide plugin",
-                    "mutation testing intellij plugin", "mutation testing intellij idea plugin"
-                )
-            implementationClass = "io.github.amosproj.pitmutationmate.coverage.CoverageResultListenerFactory"
-        }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes["Main-Class"] = "your.package.MainClass" // Specify your main class
+        // Add other attributes if needed
     }
+
+    from(sourceSets.main.get().output)
+
+    // Include dependencies
+    val runtimeClasspath = configurations.runtimeClasspath.get()
+    from({ runtimeClasspath.map { file -> zipTree(file) } })
 }
