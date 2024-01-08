@@ -9,7 +9,6 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
-import javaslang.Tuple
 import java.awt.BorderLayout
 import java.awt.Component
 import java.awt.Dimension
@@ -155,7 +154,7 @@ class PiTestReports : JPanel() {
         var heights = emptyArray<Int>()
 
         for (i in this.reports.indices) {
-            if (i < 5){
+            if (i < 5) {
                 this.reports[i].renderer(compact = false)
             } else {
                 this.reports[i].renderer(compact = true)
