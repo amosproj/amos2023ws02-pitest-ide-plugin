@@ -20,6 +20,66 @@ import javax.swing.ListSelectionModel
 import javax.swing.table.DefaultTableCellRenderer
 import javax.swing.table.DefaultTableModel
 
+private class cellRenderer : DefaultTableCellRenderer() {
+
+    override fun getTableCellRendererComponent(
+        table: JTable?,
+        value: Any?,
+        isSelected: Boolean,
+        hasFocus: Boolean,
+        row: Int,
+        column: Int
+    ): Component {
+        if (value is PiTestClassReport) {
+            return value
+        } else if (value is CustomProgressBar) {
+            return value
+        } else if (value is JBLabel) {
+            return value
+        } else {
+            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
+        }
+    }
+}
+
+fun createTable(data: Array<Array<out JComponent>>, columnNames: Array<String>): JBTable {
+    val model = object : DefaultTableModel(data, columnNames) {
+        override fun isCellEditable(row: Int, column: Int): Boolean {
+            return false
+        }
+    }
+
+    val table = JBTable(model)
+
+//    table.setRowHeight(lineCoverageBar.height + 2)
+    table.tableHeader.reorderingAllowed = false
+    table.tableHeader.resizingAllowed = false
+    table.tableHeader.font = UIUtil.getLabelFont()
+
+    table.border = JBUI.Borders.empty()
+    table.setShowGrid(false)
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
+    table.columnSelectionAllowed = false
+    table.intercellSpacing = Dimension(0, 0)
+
+    val firstColumnWidth = table.tableHeader.getFontMetrics(table.tableHeader.font).stringWidth(" Pit Test Coverage Report ") + 5
+    table.columnModel.getColumn(0).maxWidth = firstColumnWidth
+    table.columnModel.getColumn(0).minWidth = firstColumnWidth
+    table.columnModel.getColumn(0).preferredWidth = firstColumnWidth
+    table.columnModel.getColumn(0).width = firstColumnWidth
+
+    table.columnModel.getColumn(0).cellRenderer = cellRenderer()
+    table.columnModel.getColumn(1).cellRenderer = cellRenderer()
+
+    return table
+}
+
+fun getLabel(text: String): JBLabel {
+    val label = JBLabel(text)
+    label.font = UIUtil.getLabelFont()
+    return label
+}
+
 class PiTestClassReport(
     private val coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
         lineCoveragePercentage = 0,
@@ -33,96 +93,28 @@ class PiTestClassReport(
 
     private var height: Int = 0
 
-    fun largeRenderer() {
+    fun renderer(compact: Boolean = false) {
         this.removeAll() // To assure an empty block
         val lineCoverageBar = CustomProgressBar(this.coverageReport.lineCoveragePercentage, this.coverageReport.lineCoverageTextRatio)
         val mutationCoverageBar = CustomProgressBar(this.coverageReport.mutationCoveragePercentage, this.coverageReport.mutationCoverageTextRatio)
         val testStrengthBar = CustomProgressBar(this.coverageReport.testStrengthPercentage, this.coverageReport.testStrengthTextRatio)
 
-        val data = arrayOf(
-            arrayOf(getLabel("Class Name"), getLabel("Test.java")),
-            arrayOf(getLabel("Line Coverage"), lineCoverageBar),
-            arrayOf(getLabel("Mutation Coverage"), mutationCoverageBar),
-            arrayOf(getLabel("Test Strength"), testStrengthBar)
-        )
-
+        val data = if (!compact) {
+            arrayOf(
+                arrayOf(getLabel("Class Name"), getLabel("Test.java")),
+                arrayOf(getLabel("Line Coverage"), lineCoverageBar),
+                arrayOf(getLabel("Mutation Coverage"), mutationCoverageBar),
+                arrayOf(getLabel("Test Strength"), testStrengthBar)
+            )
+        } else {
+            arrayOf(
+                arrayOf(getLabel("Class Name"), getLabel("Test.java")),
+                arrayOf(getLabel("Line Coverage"), lineCoverageBar)
+            )
+        }
         val columnNames = arrayOf("Pit Test Coverage Report", "")
 
-        val model = object : DefaultTableModel(data, columnNames) {
-            override fun isCellEditable(row: Int, column: Int): Boolean {
-                return false
-            }
-        }
-
-        val table = JBTable(model)
-
-        table.setRowHeight(lineCoverageBar.height + 2)
-        table.tableHeader.reorderingAllowed = false
-        table.tableHeader.resizingAllowed = false
-        table.tableHeader.font = UIUtil.getLabelFont()
-
-        table.border = JBUI.Borders.empty()
-        table.setShowGrid(false)
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
-        table.columnSelectionAllowed = false
-        table.intercellSpacing = Dimension(0, 0)
-
-        table.columnModel.getColumn(0).cellRenderer = CustomProgressBarRenderer()
-
-        val firstColumnWidth = table.tableHeader.getFontMetrics(table.tableHeader.font).stringWidth(" Pit Test Coverage Report ") + 5
-        table.columnModel.getColumn(0).maxWidth = firstColumnWidth
-        table.columnModel.getColumn(0).minWidth = firstColumnWidth
-        table.columnModel.getColumn(0).preferredWidth = firstColumnWidth
-        table.columnModel.getColumn(0).width = firstColumnWidth
-
-        table.columnModel.getColumn(1).cellRenderer = CustomProgressBarRenderer()
-
-        layout = BorderLayout()
-
-        add(JBScrollPane(table))
-        this.height = (table.rowCount + 2) * table.rowHeight
-    }
-
-    fun smallRenderer() {
-        this.removeAll() // To assure an empty block
-        val lineCoverageBar = CustomProgressBar(this.coverageReport.lineCoveragePercentage, this.coverageReport.lineCoverageTextRatio)
-
-        val data = arrayOf(
-            arrayOf(getLabel("Class Name"), getLabel("Test.java")),
-            arrayOf(getLabel("Line Coverage"), lineCoverageBar)
-        )
-
-        val columnNames = arrayOf("Pit Test Coverage Report", "")
-
-        val model = object : DefaultTableModel(data, columnNames) {
-            override fun isCellEditable(row: Int, column: Int): Boolean {
-                return false
-            }
-        }
-
-        val table = JBTable(model)
-
-        table.setRowHeight(lineCoverageBar.height + 2)
-        table.tableHeader.reorderingAllowed = false
-        table.tableHeader.resizingAllowed = false
-        table.tableHeader.font = UIUtil.getLabelFont()
-
-        table.border = JBUI.Borders.empty()
-        table.setShowGrid(false)
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
-        table.columnSelectionAllowed = false
-        table.intercellSpacing = Dimension(0, 0)
-
-        table.columnModel.getColumn(0).cellRenderer = CustomProgressBarRenderer()
-
-        val firstColumnWidth = table.tableHeader.getFontMetrics(table.tableHeader.font).stringWidth(" Pit Test Coverage Report ") + 5
-        table.columnModel.getColumn(0).maxWidth = firstColumnWidth
-        table.columnModel.getColumn(0).minWidth = firstColumnWidth
-        table.columnModel.getColumn(0).preferredWidth = firstColumnWidth
-        table.columnModel.getColumn(0).width = firstColumnWidth
-
-        table.columnModel.getColumn(1).cellRenderer = CustomProgressBarRenderer()
-
+        val table = createTable(data, columnNames)
         layout = BorderLayout()
 
         add(JBScrollPane(table))
@@ -131,32 +123,6 @@ class PiTestClassReport(
 
     fun getCustomHeight(): Int {
         return this.height
-    }
-
-    private fun getLabel(text: String): JBLabel {
-        val label = JBLabel(text)
-        label.font = UIUtil.getLabelFont()
-        return label
-    }
-
-    private class CustomProgressBarRenderer : DefaultTableCellRenderer() {
-
-        override fun getTableCellRendererComponent(
-            table: JTable?,
-            value: Any?,
-            isSelected: Boolean,
-            hasFocus: Boolean,
-            row: Int,
-            column: Int
-        ): Component {
-            if (value is CustomProgressBar) {
-                return value
-            } else if (value is JBLabel) {
-                return value
-            } else {
-                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
-            }
-        }
     }
 }
 
@@ -178,12 +144,6 @@ class PiTestReports : JPanel() {
         return panel
     }
 
-    private fun getLabel(text: String): JBLabel {
-        val label = JBLabel(text)
-        label.font = UIUtil.getLabelFont()
-        return label
-    }
-
     fun visualizeReports() {
         this.removeAll()
         if (this.reports.isEmpty()) {
@@ -192,36 +152,21 @@ class PiTestReports : JPanel() {
         }
 
         var rows = emptyArray<Array<out JComponent>>()
-        val cols = arrayOf("Class", "Result")
+        val colNames = arrayOf("Class", "Result")
 
         var heights = emptyArray<Int>()
 
         for (i in this.reports.indices) {
             if (i < 5){
-                this.reports[i].largeRenderer()
+                this.reports[i].renderer(compact = false)
             } else {
-                this.reports[i].smallRenderer()
+                this.reports[i].renderer(compact = true)
             }
             heights += this.reports[i].getCustomHeight()
             rows += arrayOf(getLabel("Test_Report"), this.reports[i])
         }
 
-        val model = object : DefaultTableModel(rows, cols) {
-            override fun isCellEditable(row: Int, column: Int): Boolean {
-                return false
-            }
-        }
-
-        val table = JBTable(model)
-
-        table.columnModel.getColumn(0).cellRenderer = cellRenderer()
-        table.columnModel.getColumn(1).cellRenderer = cellRenderer()
-
-        val firstColumnWidth = table.tableHeader.getFontMetrics(table.tableHeader.font).stringWidth(" Pit Test Coverage Report ") + 5
-        table.columnModel.getColumn(0).maxWidth = firstColumnWidth
-        table.columnModel.getColumn(0).minWidth = firstColumnWidth
-        table.columnModel.getColumn(0).preferredWidth = firstColumnWidth
-        table.columnModel.getColumn(0).width = firstColumnWidth
+        val table = createTable(rows, colNames)
 
         for (i in heights.indices) {
             table.setRowHeight(i, heights[i])
@@ -230,25 +175,5 @@ class PiTestReports : JPanel() {
         layout = BorderLayout()
 
         add(JBScrollPane(table))
-    }
-
-    private class cellRenderer : DefaultTableCellRenderer() {
-
-        override fun getTableCellRendererComponent(
-            table: JTable?,
-            value: Any?,
-            isSelected: Boolean,
-            hasFocus: Boolean,
-            row: Int,
-            column: Int
-        ): Component {
-            if (value is PiTestClassReport) {
-                return value
-            } else if (value is JBLabel) {
-                return value
-            } else {
-                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
-            }
-        }
     }
 }

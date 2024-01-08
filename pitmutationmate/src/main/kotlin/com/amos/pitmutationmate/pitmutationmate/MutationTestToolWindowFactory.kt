@@ -2,7 +2,6 @@
 // SPDX-FileCopyrightText: 2023
 package com.amos.pitmutationmate.pitmutationmate
 
-import com.amos.pitmutationmate.pitmutationmate.actions.ResultSwitchAction
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.amos.pitmutationmate.pitmutationmate.visualization.*
 import com.amos.pitmutationmate.pitmutationmate.visualization.treetable.JTreeTable
