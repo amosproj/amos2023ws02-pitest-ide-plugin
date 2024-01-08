@@ -4,7 +4,6 @@
 
 package com.amos.pitmutationmate.pitmutationmate.visualization.treestructure
 
-import com.amos.pitmutationmate.pitmutationmate.visualization.treetable.DataNode
 import com.intellij.ui.treeStructure.treetable.TreeTableModel
 import javax.swing.JTree
 import javax.swing.event.EventListenerList
@@ -12,7 +11,7 @@ import javax.swing.event.TreeModelEvent
 import javax.swing.event.TreeModelListener
 import javax.swing.tree.TreePath
 
-class MyTreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
+class TreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
     protected var listenerList = EventListenerList()
 
     override fun getRoot(): Any {
@@ -130,7 +129,7 @@ class MyTreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
     companion object {
         protected var columnNames = arrayOf("Class", "Line Coverage", "Mutation Coverage", "Test Strength")
         protected var columnTypes = arrayOf(
-            com.amos.pitmutationmate.pitmutationmate.visualization.treetable.TreeTableModel::class.java,
+            TreeTableModel::class.java,
             String::class.java,
             String::class.java,
             String::class.java

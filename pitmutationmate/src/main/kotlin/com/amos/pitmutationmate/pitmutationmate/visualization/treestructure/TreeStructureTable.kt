@@ -4,23 +4,28 @@
 
 package com.amos.pitmutationmate.pitmutationmate.visualization.treestructure
 
-import com.amos.pitmutationmate.pitmutationmate.visualization.treetable.DataNode
+import com.intellij.ui.ColoredTreeCellRenderer
 import com.intellij.ui.treeStructure.treetable.TreeTable
 import java.awt.GridLayout
 import javax.swing.JPanel
 import javax.swing.JScrollPane
+import javax.swing.JTree
 
-class MyTreeTable : JPanel() {
+class TreeStructureTable : JPanel() {
 
     init {
         layout = GridLayout(0, 1)
-        val treeModel = MyTreeTableModel(createDataStructure())
-        val treeTable = TreeTable(treeModel)
+        val treeTableModel = TreeTableModel(createDataStructure())
+        val treeTable = TreeTable(treeTableModel)
         treeTable.setRootVisible(true)
-
+        treeTable.apply{
+            tree.apply{
+                showsRootHandles = true
+                isRootVisible = true
+            }
+        }
         this.add(JScrollPane(treeTable))
         setSize(1000, 800)
-
     }
     companion object {
         private fun createDataStructure(): DataNode {
@@ -55,4 +60,18 @@ class MyTreeTable : JPanel() {
         }
     }
 
+}
+
+class CellRenderer : ColoredTreeCellRenderer() {
+    override fun customizeCellRenderer(
+            tree: JTree,
+            value: Any?,
+            selected: Boolean,
+            expanded: Boolean,
+            leaf: Boolean,
+            row: Int,
+            hasFocus: Boolean
+    ) {
+        append("liam")
+    }
 }

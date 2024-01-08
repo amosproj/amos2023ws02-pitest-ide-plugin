@@ -20,7 +20,7 @@ class DataNode(
     }
 
     /**
-     * Knotentext vom JTree.
+     * Node text from the JTree.
      */
     override fun toString(): String {
         return name
