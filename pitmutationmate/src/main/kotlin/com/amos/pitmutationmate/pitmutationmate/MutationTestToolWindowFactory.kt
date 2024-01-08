@@ -25,12 +25,12 @@ internal class MutationTestToolWindowFactory : ToolWindowFactory, DumbAware {
 //            ContentFactory.getInstance().createContent(LatestPiTestReport(lastCoverageReport), "Latest Result", false)
 //        }
         val coverageReport = ContentFactory.getInstance().createContent(PiTestReports(), "Reports", false)
-        val options = ContentFactory.getInstance().createContent(ResultSwitchAction(), "Options", false)
+//        val options = ContentFactory.getInstance().createContent(ResultSwitchAction(), "Options", false)
         val table = ContentFactory.getInstance().createContent(JTreeTable(), "Mutationtest Coverage", false)
         val lineChart = ContentFactory.getInstance().createContent(LineGraph(), "Line Chart", false)
         val barChart = ContentFactory.getInstance().createContent(BarGraph(), "Bar Chart", false)
 
-        toolWindow.contentManager.addContent(options)
+//        toolWindow.contentManager.addContent(options)
 //        toolWindow.contentManager.addContent(latestPiTestReport)
         toolWindow.contentManager.addContent(coverageReport)
         toolWindow.contentManager.addContent(table)
