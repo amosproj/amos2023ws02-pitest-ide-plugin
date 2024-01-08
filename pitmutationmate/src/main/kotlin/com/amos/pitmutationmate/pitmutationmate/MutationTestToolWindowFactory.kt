@@ -5,6 +5,7 @@ package com.amos.pitmutationmate.pitmutationmate
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.amos.pitmutationmate.pitmutationmate.visualization.BarGraph
 import com.amos.pitmutationmate.pitmutationmate.visualization.LineGraph
+import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestClassReport
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestReports
 import com.amos.pitmutationmate.pitmutationmate.visualization.treetable.JTreeTable
 import com.intellij.openapi.project.DumbAware
