@@ -109,11 +109,10 @@ class PiTestClassReport(
         } else {
             arrayOf(
                 arrayOf(getLabel("Class Name"), getLabel("Test.java")),
-                arrayOf(getLabel("Line Coverage"), lineCoverageBar)
+                arrayOf(getLabel("Test Strength"), testStrengthBar)
             )
         }
         val columnNames = arrayOf("Pit Test Coverage Report", "")
-
         val table = createTable(data, columnNames)
         layout = BorderLayout()
 
@@ -153,7 +152,6 @@ class PiTestReports : JPanel() {
 
         var rows = emptyArray<Array<out JComponent>>()
         val colNames = arrayOf("Class", "Result")
-
         var heights = emptyArray<Int>()
 
         for (i in this.reports.indices) {
@@ -163,7 +161,7 @@ class PiTestReports : JPanel() {
                 this.reports[i].renderer(compact = true)
             }
             heights += this.reports[i].getCustomHeight()
-            rows += arrayOf(getLabel("Test_Report"), this.reports[i])
+            rows += arrayOf(getLabel("Placeholder Class"), this.reports[i])
         }
 
         val table = createTable(rows, colNames)
@@ -173,7 +171,6 @@ class PiTestReports : JPanel() {
         }
 
         layout = BorderLayout()
-
         add(JBScrollPane(table))
     }
 }
