@@ -4,7 +4,6 @@
 package com.amos.pitmutationmate.pitmutationmate.actions
 
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
 
 class GutterAction(private val fqn: String) : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
