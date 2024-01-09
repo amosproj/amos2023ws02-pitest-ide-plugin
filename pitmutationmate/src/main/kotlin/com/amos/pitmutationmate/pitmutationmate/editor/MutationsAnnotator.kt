@@ -15,6 +15,7 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
+import com.intellij.util.ui.UIUtil
 
 class MutationsAnnotator :
     ExternalAnnotator<List<XMLParser.MutationResult>, Map<Int, List<XMLParser.MutationResult>>>() {
@@ -43,9 +44,10 @@ class MutationsAnnotator :
         }
 
         fun formatTooltipMessage(message: String): String {
+            val font = UIUtil.getLabelFont()
             return """
                 <html>
-                     <body style="font-family: 'Arial', sans-serif; font-size: 12px;">
+                     <body style="font-family: '$font'; font-size: 12px;">
                         <h3>PiTest:</h3>
                         <p>$message</p>
                     </body>
