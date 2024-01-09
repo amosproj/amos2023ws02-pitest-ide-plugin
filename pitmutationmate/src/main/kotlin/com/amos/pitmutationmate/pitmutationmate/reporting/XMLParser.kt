@@ -136,6 +136,7 @@ class XMLParser {
         val mutationCoveragePercentage: Int,
         val mutationCoverageTextRatio: String,
         val testStrengthPercentage: Int,
-        val testStrengthTextRatio: String
+        val testStrengthTextRatio: String,
+        val numberOfClasses: Int
     )
 }

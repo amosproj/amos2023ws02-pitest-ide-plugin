@@ -61,7 +61,7 @@ fun createTable(data: Array<Array<out JComponent>>, columnNames: Array<String>):
     table.columnSelectionAllowed = false
     table.intercellSpacing = Dimension(0, 0)
 
-    val firstColumnWidth = table.tableHeader.getFontMetrics(table.tableHeader.font).stringWidth(" Pit Test Coverage Report ") + 5
+    val firstColumnWidth = table.tableHeader.getFontMetrics(table.tableHeader.font).stringWidth(" Pit Test Coverage Report ") + 10
     table.columnModel.getColumn(0).maxWidth = firstColumnWidth
     table.columnModel.getColumn(0).minWidth = firstColumnWidth
     table.columnModel.getColumn(0).preferredWidth = firstColumnWidth
@@ -86,7 +86,8 @@ class PiTestClassReport(
         mutationCoveragePercentage = 0,
         mutationCoverageTextRatio = "",
         testStrengthPercentage = 0,
-        testStrengthTextRatio = ""
+        testStrengthTextRatio = "",
+        numberOfClasses = 0
     )
 ) : JPanel() {
 
@@ -98,19 +99,12 @@ class PiTestClassReport(
         val mutationCoverageBar = CustomProgressBar(this.coverageReport.mutationCoveragePercentage, this.coverageReport.mutationCoverageTextRatio)
         val testStrengthBar = CustomProgressBar(this.coverageReport.testStrengthPercentage, this.coverageReport.testStrengthTextRatio)
 
-        val data = if (!compact) {
-            arrayOf(
-                arrayOf(getLabel("Class Name"), getLabel("Test.java")),
-                arrayOf(getLabel("Line Coverage"), lineCoverageBar),
-                arrayOf(getLabel("Mutation Coverage"), mutationCoverageBar),
-                arrayOf(getLabel("Test Strength"), testStrengthBar)
-            )
-        } else {
-            arrayOf(
-                arrayOf(getLabel("Class Name"), getLabel("Test.java")),
-                arrayOf(getLabel("Test Strength"), testStrengthBar)
-            )
-        }
+        val data = arrayOf(
+            arrayOf(getLabel("Number of Classes"), getLabel(this.coverageReport.numberOfClasses.toString())),
+            arrayOf(getLabel("Line Coverage"), lineCoverageBar),
+            arrayOf(getLabel("Mutation Coverage"), mutationCoverageBar),
+            arrayOf(getLabel("Test Strength"), testStrengthBar)
+        )
         val columnNames = arrayOf("Pit Test Coverage Report", "")
         val table = createTable(data, columnNames)
         layout = BorderLayout()
@@ -126,9 +120,14 @@ class PiTestClassReport(
 
 class PiTestReports : JPanel() {
     private var reports: ArrayList<PiTestClassReport> = ArrayList()
+    private var summary: PiTestClassReport = PiTestClassReport()
 
     fun addReport(report: PiTestClassReport) {
         this.reports.add(report)
+    }
+
+    fun addSummary(summary: PiTestClassReport) {
+        this.summary = summary
     }
 
     private fun displayErrorMessage(): JPanel {
@@ -155,12 +154,15 @@ class PiTestReports : JPanel() {
 
         for (i in this.reports.indices) {
             if (i < 5) {
-                this.reports[i].renderer(compact = false)
+                this.reports[i].renderer()
+                heights += this.reports[i].getCustomHeight()
+                rows += arrayOf(getLabel("Placeholder Class"), this.reports[i])
             } else {
-                this.reports[i].renderer(compact = true)
+                this.summary.renderer()
+                heights += this.summary.getCustomHeight()
+                rows += arrayOf(getLabel("Summary"), this.summary)
+                break
             }
-            heights += this.reports[i].getCustomHeight()
-            rows += arrayOf(getLabel("Placeholder Class"), this.reports[i])
         }
 
         val table = createTable(rows, colNames)

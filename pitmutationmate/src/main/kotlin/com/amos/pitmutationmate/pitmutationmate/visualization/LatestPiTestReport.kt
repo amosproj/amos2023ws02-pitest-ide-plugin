@@ -26,7 +26,8 @@ class LatestPiTestReport(
         mutationCoveragePercentage = 0,
         mutationCoverageTextRatio = "",
         testStrengthPercentage = 0,
-        testStrengthTextRatio = ""
+        testStrengthTextRatio = "",
+        numberOfClasses = 0
     )
 ) : JPanel() {
 
