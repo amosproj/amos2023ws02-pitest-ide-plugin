@@ -8,7 +8,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 
 class GutterAction(private val fqn: String) : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
-        val editor = e.getData(CommonDataKeys.EDITOR)
         updateAndExecuteRunConfig(fqn, e.project!!)
     }
 }
