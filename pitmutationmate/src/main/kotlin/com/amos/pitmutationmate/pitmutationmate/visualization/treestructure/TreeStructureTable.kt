@@ -22,6 +22,7 @@ class TreeStructureTable : JPanel() {
             tree.apply{
                 showsRootHandles = true
                 isRootVisible = true
+//                cellRenderer = CellRenderer()
             }
         }
         this.add(JScrollPane(treeTable))
