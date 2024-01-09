@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023 Lennart Heimbs
+
 package com.amos.pitmutationmate.pitmutationmate.icons
 
 import com.intellij.openapi.util.IconLoader
