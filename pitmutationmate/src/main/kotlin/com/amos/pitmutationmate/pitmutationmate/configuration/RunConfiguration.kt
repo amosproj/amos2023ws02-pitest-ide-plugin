@@ -5,6 +5,8 @@ package com.amos.pitmutationmate.pitmutationmate.configuration
 
 import com.amos.pitmutationmate.pitmutationmate.execution.GradleTaskExecutor
 import com.amos.pitmutationmate.pitmutationmate.execution.MavenTaskExecutor
+import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
+import com.amos.pitmutationmate.pitmutationmate.ui.ToolWindowFactory
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.CommandLineState
@@ -14,11 +16,14 @@ import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.ExecutionEnvironment
+import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.externalSystem.ExternalSystemModulePropertyManager
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.wm.ToolWindowManager
 import org.jetbrains.annotations.NotNull
 
 class RunConfiguration(
@@ -60,7 +65,21 @@ class RunConfiguration(
     override fun getState(
         executor: Executor,
         environment: ExecutionEnvironment
-    ): RunProfileState {
+    ): RunProfileState? {
+        val pluginChecker = project.service<PluginCheckerService>()
+        val errorMessage = pluginChecker.getErrorMessage(withHeader = false)
+        val toolWindow = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowFactory.ID)
+        if (errorMessage != null) {
+            if (toolWindow != null) {
+                ToolWindowFactory.Util.initiateWithConfigError(errorMessage, toolWindow)
+            }
+            Messages.showErrorDialog(project, errorMessage, PluginCheckerService.ERROR_MESSAGE_TITLE)
+            return null
+        }
+        if (toolWindow != null) {
+            ToolWindowFactory.Util.initiateWithData(toolWindow)
+        }
+
         return object : CommandLineState(environment) {
             @NotNull
             @Throws(ExecutionException::class)
