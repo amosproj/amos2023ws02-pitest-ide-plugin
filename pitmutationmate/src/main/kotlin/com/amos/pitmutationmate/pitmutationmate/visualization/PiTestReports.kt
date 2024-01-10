@@ -81,6 +81,9 @@ fun getLabel(text: String): JBLabel {
 
 class PiTestClassReport(
     private val coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
+        fileName = "Test",
+        packageName = "Test",
+        mutatedClass = "Test",
         lineCoveragePercentage = 0,
         lineCoverageTextRatio = "",
         mutationCoveragePercentage = 0,
