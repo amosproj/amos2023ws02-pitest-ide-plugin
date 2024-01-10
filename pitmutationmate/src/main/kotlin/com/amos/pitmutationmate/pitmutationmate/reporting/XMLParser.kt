@@ -100,7 +100,8 @@ class XMLParser {
                     mutationCoveragePercentage,
                     mutationCoverageTextRatio,
                     testStrengthPercentage,
-                    testStrengthTextRatio
+                    testStrengthTextRatio,
+                    0
                 )
                 if (totals) resultData.totalResult = coverageReport else resultData.addCoverageReport(coverageReport)
             }
