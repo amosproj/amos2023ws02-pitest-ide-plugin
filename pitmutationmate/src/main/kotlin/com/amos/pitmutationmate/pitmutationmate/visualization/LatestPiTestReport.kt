@@ -21,6 +21,9 @@ import javax.swing.table.DefaultTableModel
 
 class LatestPiTestReport(
     coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
+        "Test",
+        "Test",
+        "Test",
         lineCoveragePercentage = 0,
         lineCoverageTextRatio = "",
         mutationCoveragePercentage = 0,
