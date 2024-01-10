@@ -24,12 +24,14 @@ enum class PitestSeverity(
 
     companion object {
         fun fromMutationResults(mutationResults: List<XMLParser.MutationResult>): PitestSeverity {
-            if (mutationResults.any { it.status == "SURVIVED" }) {
-                return HIGH
-            } else if (mutationResults.any { it.status == "NO_COVERAGE" }) {
-                return MEDIUM
+            val allSurvived = mutationResults.all { it.status == "SURVIVED" }
+            val someSurvived = mutationResults.any { it.status == "SURVIVED" }
+
+            return when {
+                allSurvived -> HIGH
+                someSurvived -> MEDIUM
+                else -> LOW
             }
-            return LOW
         }
     }
 
@@ -47,9 +49,9 @@ enum class PitestSeverity(
 
     fun gutterIcon(): String {
         return when (this) {
-            HIGH -> "dark-pink"
-            MEDIUM -> "light-pink"
-            LOW -> "light-green"
+            HIGH -> "red"
+            MEDIUM -> "yellow"
+            LOW -> "green"
         }
     }
 }

@@ -15,6 +15,7 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
+import com.intellij.util.ui.UIUtil
 
 class MutationsAnnotator :
     ExternalAnnotator<List<XMLParser.MutationResult>, Map<Int, List<XMLParser.MutationResult>>>() {
@@ -40,6 +41,18 @@ class MutationsAnnotator :
             val separator = if (isTooltip) "<br/>" else ", "
             return mutationResults.mapIndexed { index, it -> "${index + 1}. ${it.description} → ${it.status}" }
                 .joinToString(separator)
+        }
+
+        fun formatTooltipMessage(message: String): String {
+            val font = UIUtil.getLabelFont()
+            return """
+                <html>
+                     <body style="font-family: '$font'; font-size: 12px;">
+                        <h3>PiTest:</h3>
+                        <p>$message</p>
+                    </body>
+                </html>
+            """.trimIndent()
         }
     }
 
@@ -73,9 +86,14 @@ class MutationsAnnotator :
         for (r in annotationResult) {
             val lineRange = Util.getContentOffset(document, r.key - 1)
             val severity = PitestSeverity.fromMutationResults(r.value)
-            holder.newAnnotation(severity.highlightSeverity(), Util.getMessage(r.value, false)).range(lineRange)
-                .tooltip(Util.getMessage(r.value, true)).highlightType(severity.highlightType())
-                .gutterIconRenderer(HighlightGutterRenderer(severity.gutterIcon())).create()
+            holder.newAnnotation(
+                severity.highlightSeverity(),
+                Util.getMessage(r.value, false)
+            ).range(lineRange)
+                .tooltip(Util.formatTooltipMessage(Util.getMessage(r.value, true)))
+                .highlightType(severity.highlightType())
+                .gutterIconRenderer(HighlightGutterRenderer(severity.gutterIcon()))
+                .create()
         }
     }
 }
