@@ -53,7 +53,8 @@ abstract class RunConfigurationAction : AnAction() {
             mutationCoveragePercentage = 50,
             mutationCoverageTextRatio = "100/200",
             testStrengthPercentage = 40,
-            testStrengthTextRatio = "80/200"
+            testStrengthTextRatio = "80/200",
+            numberOfClasses = 1
         )
         if (toolWindow != null) {
             mutationTestToolWindowFactorySingleton.updateReport(toolWindow, coverageReport)
