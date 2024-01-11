@@ -14,42 +14,62 @@ import org.jetbrains.kotlin.psi.KtClass
 
 class ContextMenuAction : RunConfigurationAction() {
     private val logger = Logger.getInstance(ContextMenuAction::class.java)
-    override fun actionPerformed(e: AnActionEvent) {
+
+    fun actionEditorPopup(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
-        if (e.place == "EditorPopup") {
-            logger.info("ContextMenuAction: actionPerformed in EditorPopup for file $psiFile")
-            val psiElement = psiFile?.findElementAt(editor?.caretModel!!.offset)
-            val selectedClass = findEnclosingClass(psiElement)
-            if (selectedClass != null) {
-                var classFQN = ""
-                if (selectedClass is PsiClass) {
-                    classFQN = selectedClass.qualifiedName.toString()
-                }
-                if (selectedClass is KtClass) {
-                    classFQN = selectedClass.fqName.toString()
-                }
 
-                logger.info("ContextMenuAction: selected class is $classFQN.")
-                updateAndExecuteRunConfig(classFQN, e.project!!)
+        logger.info("ContextMenuAction: actionPerformed in EditorPopup for file $psiFile")
+        val psiElement = psiFile?.findElementAt(editor?.caretModel!!.offset)
+        val selectedClass = findEnclosingClass(psiElement)
+        if (selectedClass != null) {
+            var classFQN = ""
+            if (selectedClass is PsiClass) {
+                classFQN = selectedClass.qualifiedName.toString()
+            }
+            if (selectedClass is KtClass) {
+                classFQN = selectedClass.fqName.toString()
+            }
+
+            logger.info("ContextMenuAction: selected class is $classFQN.")
+            updateAndExecuteRunConfig(classFQN, e.project!!)
+        }
+    }
+
+    fun actionProjectViewPopupFile(e: AnActionEvent) {
+        val editor = e.getData(CommonDataKeys.EDITOR)
+        val psiFile = e.getData(CommonDataKeys.PSI_FILE)
+
+        logger.info("ContextMenuAction: actionPerformed in ProjectViewPopup for file $psiFile")
+        val psiClasses = (psiFile as PsiClassOwner).classes
+        var classFQNs: String = ""
+        for (psiClass in psiClasses) {
+            val fqn = psiClass.qualifiedName
+            if (fqn != null) {
+                classFQNs = if (classFQNs != "") {
+                    "$classFQNs,$fqn"
+                } else {
+                    fqn
+                }
             }
         }
-        if (e.place == "ProjectViewPopup") {
-            logger.info("ContextMenuAction: actionPerformed in ProjectViewPopup for file $psiFile")
-            val psiClasses = (psiFile as PsiClassOwner).classes
-            var classFQNs: String = ""
-            for (psiClass in psiClasses) {
-                val fqn = psiClass.qualifiedName
-                if (fqn != null) {
-                    classFQNs = if (classFQNs != "") {
-                        "$classFQNs,$fqn"
-                    } else {
-                        fqn
-                    }
-                }
+        logger.info("ContextMenuAction: selected classes are $classFQNs.")
+        updateAndExecuteRunConfig(classFQNs, e.project!!)
+    }
+
+    fun actionProjectViewPopupDir(e: AnActionEvent) {
+
+    }
+
+    override fun actionPerformed(e: AnActionEvent) {
+        if (e.place == "EditorPopup") {
+            actionEditorPopup(e)
+        }else if (e.place == "ProjectViewPopup") {
+            if (e.getData(CommonDataKeys.PSI_ELEMENT).toString().startsWith("PsiDirectory")) {
+                actionProjectViewPopupDir(e)
+            }else {
+                actionProjectViewPopupFile(e)
             }
-            logger.info("ContextMenuAction: selected classes are $classFQNs.")
-            updateAndExecuteRunConfig(classFQNs, e.project!!)
         }
     }
 
@@ -70,6 +90,11 @@ class ContextMenuAction : RunConfigurationAction() {
             val psiElement = psiFile?.findElementAt(editor?.caretModel!!.offset)
             val validClass = (findEnclosingClass(psiElement) != null)
             return validFile && validClass
+        }
+        if (e.place == "ProjectViewPopup") {
+            if (e.getData(CommonDataKeys.PSI_ELEMENT).toString().startsWith("PsiDirectory")) {
+                return true
+            }
         }
         return validFile
     }
