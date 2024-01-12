@@ -48,7 +48,7 @@ abstract class RunConfigurationAction : AnAction() {
         val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
         val mutationTestToolWindowFactorySingleton = MutationTestToolWindowFactory()
         val coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
-            "Test",
+            classFQN.toString(),
             "Test",
             "Test",
             lineCoveragePercentage = 80,
