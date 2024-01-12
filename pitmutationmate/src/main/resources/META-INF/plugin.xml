@@ -42,7 +42,7 @@
        Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
   <extensions defaultExtensionNs="com.intellij">
       <toolWindow id="Pitest" secondary="false" icon="com.amos.pitmutationmate.pitmutationmate.icons.Icons.Logo13" anchor="right"
-                factoryClass="com.amos.pitmutationmate.pitmutationmate.MutationTestToolWindowFactory"/>
+                factoryClass="com.amos.pitmutationmate.pitmutationmate.ui.ToolWindowFactory"/>
       <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.actions.GutterMarker"
                                 language=""/>
       <configurationType implementation="com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType"/>
