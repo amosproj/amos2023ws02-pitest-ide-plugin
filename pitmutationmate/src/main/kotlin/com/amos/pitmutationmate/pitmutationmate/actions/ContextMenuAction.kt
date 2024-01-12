@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2023 Brianne Oberson <brianne.oberson@gmail.com>
+// SPDX-FileCopyrightText: 2023 Brianne Oberson <brianne.oberson@gmail.com>, Tim Herzig <tim.herzig@hotmail.com>
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
@@ -7,15 +7,46 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiClassOwner
+import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiManager
 import org.jetbrains.kotlin.psi.KtClass
+import java.io.File
 
 class ContextMenuAction : RunConfigurationAction() {
     private val logger = Logger.getInstance(ContextMenuAction::class.java)
 
-    fun actionEditorPopup(e: AnActionEvent) {
+    private fun updateAndExecuteForFile(psiFile: PsiFile, project: Project) {
+        logger.info("ContextMenuAction: actionPerformed in ProjectViewPopup for file $psiFile")
+        val psiClasses = (psiFile as PsiClassOwner).classes
+        var classFQNs: String = ""
+        for (psiClass in psiClasses) {
+            val fqn = psiClass.qualifiedName
+            if (fqn != null) {
+                classFQNs = if (classFQNs != "") {
+                    "$classFQNs,$fqn"
+                } else {
+                    fqn
+                }
+            }
+        }
+        logger.info("ContextMenuAction: selected classes are $classFQNs.")
+        updateAndExecuteRunConfig(classFQNs, project)
+    }
+
+    private fun getPsiFileFromPath(project: Project, filePath: String): PsiFile? {
+        return LocalFileSystem.getInstance().findFileByPath(filePath)
+            ?.let { PsiManager.getInstance(project).findFile(it) }
+    }
+
+
+    private fun actionEditorPopup(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
 
@@ -36,29 +67,27 @@ class ContextMenuAction : RunConfigurationAction() {
         }
     }
 
-    fun actionProjectViewPopupFile(e: AnActionEvent) {
-        val editor = e.getData(CommonDataKeys.EDITOR)
+    private fun actionProjectViewPopupFile(e: AnActionEvent) {
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
 
-        logger.info("ContextMenuAction: actionPerformed in ProjectViewPopup for file $psiFile")
-        val psiClasses = (psiFile as PsiClassOwner).classes
-        var classFQNs: String = ""
-        for (psiClass in psiClasses) {
-            val fqn = psiClass.qualifiedName
-            if (fqn != null) {
-                classFQNs = if (classFQNs != "") {
-                    "$classFQNs,$fqn"
-                } else {
-                    fqn
-                }
-            }
+        if (psiFile != null) {
+            updateAndExecuteForFile(psiFile, e.project!!)
         }
-        logger.info("ContextMenuAction: selected classes are $classFQNs.")
-        updateAndExecuteRunConfig(classFQNs, e.project!!)
     }
 
-    fun actionProjectViewPopupDir(e: AnActionEvent) {
+    private fun actionProjectViewPopupDir(e: AnActionEvent) {
+        val psiElement = e.getData(CommonDataKeys.PSI_ELEMENT)
 
+        if (psiElement != null) {
+            if (psiElement is PsiDirectory) {
+                val path = psiElement.virtualFile.path.toString()
+                val directory: File = File(path)
+
+                directory.walk()
+                    .filter { it.isFile && (it.extension == "kt" || it.extension == "java") }
+                    .forEach { getPsiFileFromPath(e.project!!, it.toString())?.let { it1 -> updateAndExecuteForFile(it1, e.project!!) } }
+            }
+        }
     }
 
     override fun actionPerformed(e: AnActionEvent) {
