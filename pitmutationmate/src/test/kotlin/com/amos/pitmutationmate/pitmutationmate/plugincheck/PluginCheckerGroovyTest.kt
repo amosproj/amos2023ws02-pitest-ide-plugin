@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2023
 
-package com.amos.pitmutationmate.pitmutationmate
+package com.amos.pitmutationmate.pitmutationmate.plugincheck
 
 import org.apache.commons.io.IOUtils
 import org.codehaus.groovy.ast.builder.AstBuilder
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.io.FileInputStream
 
-class PluginCheckerTest {
+class PluginCheckerGroovyTest {
 
     private fun runPluginCheckerForTestFile(testFile: String): PluginCheckerGroovy {
         val builder = AstBuilder()
