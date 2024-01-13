@@ -12,6 +12,7 @@ import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.execution.ExecutorRegistry
 import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
+import com.intellij.execution.RunnerAndConfigurationSettings
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -26,10 +27,17 @@ abstract class RunConfigurationAction : AnAction() {
         }
         val executor = ExecutorRegistry.getInstance().getExecutorById("Run")
 
-        val runConfig = RunManager.getInstance(project).getConfigurationSettingsList(
+        val runManager = RunManager.getInstance(project)
+        val runConfigs = runManager.getConfigurationSettingsList(
             RunConfigurationType::class.java
-        ).first()
+        )
 
+        val runConfig: RunnerAndConfigurationSettings = if (runConfigs.isEmpty()) {
+            // create a new default run configuration
+            runManager.createConfiguration("Pitest", RunConfigurationType::class.java)
+        } else {
+            getRunConfig(runConfigs)
+        }
         runConfig.configuration.let {
             val rc = it as RunConfiguration
             if (classFQN != null) {
@@ -62,5 +70,9 @@ abstract class RunConfigurationAction : AnAction() {
         if (toolWindow != null) {
             mutationTestToolWindowFactorySingleton.updateReport(toolWindow, coverageReport)
         }
+    }
+
+    private fun getRunConfig(runConfigs: List<RunnerAndConfigurationSettings>): RunnerAndConfigurationSettings {
+        return runConfigs[0]
     }
 }
