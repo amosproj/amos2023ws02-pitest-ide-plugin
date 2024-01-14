@@ -51,11 +51,7 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
                 }
                 catch (Exception e) {
                     try {
-                        it.subprojects {
-                            buildscript {
-                                dependencies.add('pitest', overrideValue)
-                            }
-                        }
+                        it.subprojects { buildscript { dependencies.add('pitest', overrideValue) } }
                     }
                     catch (Exception ex) {
                         println('Inner catch ' + ex)
