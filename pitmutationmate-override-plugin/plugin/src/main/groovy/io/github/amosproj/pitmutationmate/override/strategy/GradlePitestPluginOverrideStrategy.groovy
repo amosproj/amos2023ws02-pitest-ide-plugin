@@ -33,9 +33,7 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
     @Override
     void apply(Project project, String propertyName, String overrideValue) {
         log.debug("Overriding property '$propertyName' with '$overrideValue'.")
-
         def pitestExtension = project.extensions.findByName(OVERRIDE_SECTION)
-
         def projIter = project.subprojects.iterator()
         def subproject = project
         while (pitestExtension == null && projIter.hasNext()) {
@@ -50,7 +48,8 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
             project.gradle.allprojects {
                 try {
                     it.dependencies.add('pitest', overrideValue)
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     try {
                         it.subprojects {
                             buildscript {
