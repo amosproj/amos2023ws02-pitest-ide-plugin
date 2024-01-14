@@ -47,22 +47,23 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
             throw new GradleException("PITest extension not found. Please apply the PITest plugin first.")
         }
         if(propertyName == "addCoverageListenerDependency"){
-            project.gradle.allprojects {it ->
-                try {
-                    it.dependencies.add("pitest", overrideValue)
-                } catch(Exception e) {
+            project.gradle.allprojects {
+                it ->
                     try {
-                        it.subprojects {
-                            buildscript {
-                                dependencies.add("pitest", overrideValue)
+                        it.dependencies.add('pitest', overrideValue)
+                    } catch (Exception e) {
+                        try {
+                            it.subprojects {
+                                buildscript {
+                                    dependencies.add('pitest', overrideValue)
+                                }
                             }
                         }
+                        catch (Exception ex) {
+                            println('Inner catch ' + ex)
+                        }
+                        println('Outer catch ' + e)
                     }
-                    catch (Exception ex) {
-                        println("Inner catch " + ex.toString())
-                    }
-                    println("Outer catch " + e.toString())
-                }
             }
             return
         }
