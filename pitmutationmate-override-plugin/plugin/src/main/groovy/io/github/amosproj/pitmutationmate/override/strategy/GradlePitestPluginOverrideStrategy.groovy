@@ -33,9 +33,7 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
     @Override
     void apply(Project project, String propertyName, String overrideValue) {
         log.debug("Overriding property '$propertyName' with '$overrideValue'.")
-
         def pitestExtension = project.extensions.findByName(OVERRIDE_SECTION)
-
         def projIter = project.subprojects.iterator()
         def subproject = project
         while (pitestExtension == null && projIter.hasNext()) {
@@ -45,6 +43,23 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
 
         if (pitestExtension == null) {
             throw new GradleException("PITest extension not found. Please apply the PITest plugin first.")
+        }
+
+        println("BUILD PATH: " + subproject.projectDir.toString())
+
+        /*subproject.extensions.getByName("buildOutputs").properties.each {
+            it -> println("BUILDOUT: " + it.value + " : " + it.key)
+        }*/
+
+        pitestExtension.properties.each { it ->
+            println("PITEST PROPS: " + it.value + " : " + it.key)
+        }
+        def repDir = pitestExtension.properties.find {
+            it -> it.key == "reportDir"
+        }
+        repDir.value.properties.each {
+            it ->
+                println("REPORTDIR: " + it.value + " : " + it.key)
         }
         if(propertyName == "addCoverageListenerDependency"){
             project.gradle.allprojects {it ->
@@ -74,8 +89,7 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
         PITConfigurationValues overrideFields = new PITConfigurationValues()
         def overrideProperty = overrideFields.properties.find { it.key == propertyName }
         if (overrideProperty == null) {
-            throw new GradleException(
-                "Cannot override property '$propertyName' for pitest extension: Unknown Property.")
+            throw new GradleException("Cannot override property '$propertyName' for pitest extension: Unknown Property.")
         }
 
         Class clazz = overrideProperty.value.getClass()
