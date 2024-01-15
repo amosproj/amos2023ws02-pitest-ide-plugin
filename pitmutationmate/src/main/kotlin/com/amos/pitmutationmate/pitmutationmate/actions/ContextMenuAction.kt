@@ -123,7 +123,7 @@ class ContextMenuAction : RunConfigurationAction() {
             return validFile && validClass
         }
         if (e.place == "ProjectViewPopup") {
-            if (e.getData(CommonDataKeys.PSI_ELEMENT).toString().startsWith("PsiDirectory")) {
+            if (e.getData(CommonDataKeys.PSI_ELEMENT).toString().startsWith("PsiDirectory") && e.getData(CommonDataKeys.PSI_ELEMENT).toString().contains("main")) {
                 return true
             }
         }
