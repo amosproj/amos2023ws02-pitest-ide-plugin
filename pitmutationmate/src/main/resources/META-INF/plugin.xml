@@ -72,6 +72,11 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
         </action>
+        <action id="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
+                class="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
+                text="Enable MutationMate Annotations" description="Show MutationMate editor annotations">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
     </actions>
 
 </idea-plugin>
