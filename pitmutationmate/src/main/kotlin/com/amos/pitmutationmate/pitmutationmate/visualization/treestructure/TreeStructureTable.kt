@@ -26,6 +26,8 @@ class TreeStructureTable : JPanel() {
 //                cellRenderer = CellRenderer()
             }
         }
+        treeTable.tableHeader.reorderingAllowed = false
+        treeTable.tableHeader.resizingAllowed = false
         this.add(JScrollPane(treeTable))
         setSize(1000, 800)
     }
@@ -81,13 +83,13 @@ class TreeStructureTable : JPanel() {
                 if (packageNode != null) {
                     packageNode.children = packageNode.children?.plus(
                         DataNode(
-                            report.fileName,
-                            report.numberOfClasses,
-                            report.lineCoverageTextRatio,
-                            report.mutationCoverageTextRatio,
-                            report.testStrengthTextRatio,
-                            emptyList()
-                            )
+                        report.fileName,
+                        report.numberOfClasses,
+                        report.lineCoverageTextRatio,
+                        report.mutationCoverageTextRatio,
+                        report.testStrengthTextRatio,
+                        emptyList()
+                        )
                         )
                 } else {
                     packageNode = DataNode(
@@ -100,13 +102,13 @@ class TreeStructureTable : JPanel() {
                         )
                     packageNode.children = packageNode.children?.plus(
                         DataNode(
-                            report.fileName,
-                            report.numberOfClasses,
-                            report.lineCoverageTextRatio,
-                            report.mutationCoverageTextRatio,
-                            report.testStrengthTextRatio,
-                            emptyList()
-                            )
+                        report.fileName,
+                        report.numberOfClasses,
+                        report.lineCoverageTextRatio,
+                        report.mutationCoverageTextRatio,
+                        report.testStrengthTextRatio,
+                        emptyList()
+                        )
                         )
                     rootNode = rootNode.plus(packageNode).toMutableList()
                 }
