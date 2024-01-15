@@ -67,9 +67,10 @@ class TreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
     override fun getValueAt(node: Any?, column: Int): Any? {
         when (column) {
             0 -> return (node as DataNode?)?.name
-            1 -> return (node as DataNode?)?.lineCoverage
-            2 -> return (node as DataNode?)?.mutationCoverage
-            3 -> return (node as DataNode?)?.testStrength
+            1 -> return (node as DataNode?)?.nbClasses
+            2 -> return (node as DataNode?)?.lineCoverage
+            3 -> return (node as DataNode?)?.mutationCoverage
+            4 -> return (node as DataNode?)?.testStrength
             else -> {}
         }
         return null
@@ -127,9 +128,10 @@ class TreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
     }
 
     companion object {
-        protected var columnNames = arrayOf("Class", "Line Coverage", "Mutation Coverage", "Test Strength")
+        protected var columnNames = arrayOf("Name", "Number of Classes", "Line Coverage", "Mutation Coverage", "Test Strength")
         protected var columnTypes = arrayOf(
             TreeTableModel::class.java,
+            Integer::class.java,
             String::class.java,
             String::class.java,
             String::class.java
