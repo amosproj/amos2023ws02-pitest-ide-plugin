@@ -65,4 +65,8 @@ tasks {
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
+
+    register<org.jetbrains.intellij.tasks.RunIdeTask>("androidRunIde") {
+        ideDir.set(file("C:/Program Files/Android/Android Studio"))
+    }
 }
