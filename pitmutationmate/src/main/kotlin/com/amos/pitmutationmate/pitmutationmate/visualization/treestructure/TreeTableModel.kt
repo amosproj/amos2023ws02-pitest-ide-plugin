@@ -55,6 +55,7 @@ class TreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
         println("Not yet implemented")
     }
 
+
     override fun getColumnName(column: Int): String? {
         return columnNames[column]
     }
@@ -76,7 +77,7 @@ class TreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
     }
 
     override fun isCellEditable(node: Any?, column: Int): Boolean {
-        return true // Important to activate TreeExpandListener
+        return false
     }
 
     override fun setValueAt(aValue: Any?, node: Any?, column: Int) {}
