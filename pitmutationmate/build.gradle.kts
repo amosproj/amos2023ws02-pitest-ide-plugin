@@ -67,6 +67,9 @@ tasks {
     }
 
     register<org.jetbrains.intellij.tasks.RunIdeTask>("androidRunIde") {
-        ideDir.set(file("C:/Program Files/Android/Android Studio"))
+        val androidStudioHome = findProperty("androidStudioHome")
+        if(androidStudioHome != null) {
+            ideDir.set(file(androidStudioHome))
+        }
     }
 }
