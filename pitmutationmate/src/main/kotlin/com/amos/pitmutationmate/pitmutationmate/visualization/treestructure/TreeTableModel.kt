@@ -55,7 +55,6 @@ class TreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
         println("Not yet implemented")
     }
 
-
     override fun getColumnName(column: Int): String? {
         return columnNames[column]
     }

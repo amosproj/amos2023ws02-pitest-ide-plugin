@@ -4,6 +4,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.visualization.treestructure
 
+import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.intellij.ui.ColoredTreeCellRenderer
 import com.intellij.ui.treeStructure.treetable.TreeTable
 import java.awt.GridLayout
@@ -18,8 +19,8 @@ class TreeStructureTable : JPanel() {
         val treeTableModel = TreeTableModel(createDataStructure())
         val treeTable = TreeTable(treeTableModel)
         treeTable.setRootVisible(true)
-        treeTable.apply{
-            tree.apply{
+        treeTable.apply {
+            tree.apply {
                 showsRootHandles = true
                 isRootVisible = true
 //                cellRenderer = CellRenderer()
@@ -76,15 +77,18 @@ class TreeStructureTable : JPanel() {
 
             // iterate over reports and add them to data node structure
             for (report in coverageReports) {
-                var packageNode = rootNode.find{it.name == report.packageName}
+                var packageNode = rootNode.find { it.name == report.packageName }
                 if (packageNode != null) {
-                    packageNode.children = packageNode.children?.plus(DataNode(
-                        report.fileName,
-                        report.numberOfClasses,
-                        report.lineCoverageTextRatio,
-                        report.mutationCoverageTextRatio,
-                        report.testStrengthTextRatio,
-                        emptyList()))
+                    packageNode.children = packageNode.children?.plus(
+                        DataNode(
+                            report.fileName,
+                            report.numberOfClasses,
+                            report.lineCoverageTextRatio,
+                            report.mutationCoverageTextRatio,
+                            report.testStrengthTextRatio,
+                            emptyList()
+                            )
+                        )
                 } else {
                     packageNode = DataNode(
                         report.packageName,
@@ -92,14 +96,18 @@ class TreeStructureTable : JPanel() {
                         report.lineCoverageTextRatio,
                         report.mutationCoverageTextRatio,
                         report.testStrengthTextRatio,
-                        emptyList())
-                    packageNode.children = packageNode.children?.plus(DataNode(
-                        report.fileName,
-                        report.numberOfClasses,
-                        report.lineCoverageTextRatio,
-                        report.mutationCoverageTextRatio,
-                        report.testStrengthTextRatio,
-                        emptyList()))
+                        emptyList()
+                        )
+                    packageNode.children = packageNode.children?.plus(
+                        DataNode(
+                            report.fileName,
+                            report.numberOfClasses,
+                            report.lineCoverageTextRatio,
+                            report.mutationCoverageTextRatio,
+                            report.testStrengthTextRatio,
+                            emptyList()
+                            )
+                        )
                     rootNode = rootNode.plus(packageNode).toMutableList()
                 }
             }
