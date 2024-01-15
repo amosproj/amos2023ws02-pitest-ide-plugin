@@ -64,7 +64,5 @@ abstract class RunConfigurationAction : AnAction() {
         if (toolWindow != null) {
             mutationTestToolWindowFactorySingleton.updateReport(toolWindow, coverageReport)
         }
-
-
     }
 }
