@@ -10,7 +10,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 
-class AnnotationAction: AnAction() {
+class AnnotationAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         PluginState.isAnnotatorEnabled = true
 
@@ -23,5 +23,4 @@ class AnnotationAction: AnAction() {
             documentManager.commitDocument(it.viewProvider.document)
         }
     }
-
 }
