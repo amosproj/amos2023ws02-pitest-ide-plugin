@@ -29,38 +29,83 @@ class TreeStructureTable : JPanel() {
         setSize(1000, 800)
     }
     companion object {
+
+        private var rootNode: MutableList<DataNode> = ArrayList()
         private fun createDataStructure(): DataNode {
-            val children1: MutableList<DataNode> = ArrayList()
-            children1.add(DataNode("N12", "C12", "100% 10/10", "50", null))
-            children1.add(DataNode("N13", "C13", "100% 10/10", "60", null))
-            children1.add(DataNode("N14", "C14", "100% 10/10", "70", null))
-            children1.add(DataNode("N15", "C15", "100% 10/10", "80", null))
-            val children2: MutableList<DataNode> = ArrayList()
-            children2.add(DataNode("N12", "C12", "100% 10/10", "10", null))
-            children2.add(DataNode("N13", "C13", "100% 10/10", "20", children1))
-            children2.add(DataNode("N14", "C14", "100% 10/10", "30", null))
-            children2.add(DataNode("N15", "C15", "100% 10/10", "40", null))
-            val rootNodes: MutableList<DataNode> = ArrayList()
-            rootNodes.add(DataNode("N1", "C1", "100% 10/10", "10", children2))
-            rootNodes.add(DataNode("N2", "C2", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N3", "C3", "100% 10/10", "10", children2))
-            rootNodes.add(DataNode("N4", "C4", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N5", "C5", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N6", "C6", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N7", "C7", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N8", "C8", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N9", "C9", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N10", "C10", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N11", "C11", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N12", "C7", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N13", "C8", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N14", "C9", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N15", "C10", "100% 10/10", "10", children1))
-            rootNodes.add(DataNode("N16", "100% 10/10", "83% 5/6", "83% 5/6", children1))
-            return DataNode("All", "", "", "", rootNodes)
+            // TODO: replace with real coverage reports
+            val coverageReport1: XMLParser.CoverageReport = XMLParser.CoverageReport(
+                fileName = "myfilename1",
+                packageName = "mypackagename1",
+                mutatedClass = "mymutatedclass1",
+                lineCoveragePercentage = 0,
+                lineCoverageTextRatio = "0/19",
+                mutationCoveragePercentage = 0,
+                mutationCoverageTextRatio = "0/19",
+                testStrengthPercentage = 0,
+                testStrengthTextRatio = "0/19",
+                numberOfClasses = 1
+            )
+            val coverageReport2: XMLParser.CoverageReport = XMLParser.CoverageReport(
+                fileName = "myfilename2",
+                packageName = "mypackagename2",
+                mutatedClass = "mymutatedclass2",
+                lineCoveragePercentage = 0,
+                lineCoverageTextRatio = "0/19",
+                mutationCoveragePercentage = 0,
+                mutationCoverageTextRatio = "0/19",
+                testStrengthPercentage = 0,
+                testStrengthTextRatio = "0/19",
+                numberOfClasses = 2
+            )
+            val coverageReport3: XMLParser.CoverageReport = XMLParser.CoverageReport(
+                fileName = "myfilename3",
+                packageName = "mypackagename2",
+                mutatedClass = "mymutatedclass3",
+                lineCoveragePercentage = 0,
+                lineCoverageTextRatio = "0/19",
+                mutationCoveragePercentage = 0,
+                mutationCoverageTextRatio = "0/19",
+                testStrengthPercentage = 0,
+                testStrengthTextRatio = "0/19",
+                numberOfClasses = 2
+            )
+            var coverageReports: List<XMLParser.CoverageReport> = emptyList()
+            coverageReports = coverageReports.plus(coverageReport1)
+            coverageReports = coverageReports.plus(coverageReport2)
+            coverageReports = coverageReports.plus(coverageReport3)
+
+            // iterate over reports and add them to data node structure
+            for (report in coverageReports) {
+                var packageNode = rootNode.find{it.name == report.packageName}
+                if (packageNode != null) {
+                    packageNode.children = packageNode.children?.plus(DataNode(
+                        report.fileName,
+                        report.numberOfClasses,
+                        report.lineCoverageTextRatio,
+                        report.mutationCoverageTextRatio,
+                        report.testStrengthTextRatio,
+                        emptyList()))
+                } else {
+                    packageNode = DataNode(
+                        report.packageName,
+                        report.numberOfClasses,
+                        report.lineCoverageTextRatio,
+                        report.mutationCoverageTextRatio,
+                        report.testStrengthTextRatio,
+                        emptyList())
+                    packageNode.children = packageNode.children?.plus(DataNode(
+                        report.fileName,
+                        report.numberOfClasses,
+                        report.lineCoverageTextRatio,
+                        report.mutationCoverageTextRatio,
+                        report.testStrengthTextRatio,
+                        emptyList()))
+                    rootNode = rootNode.plus(packageNode).toMutableList()
+                }
+            }
+            return DataNode("All", 0, "", "", "", rootNode)
         }
     }
-
 }
 
 class CellRenderer : ColoredTreeCellRenderer() {

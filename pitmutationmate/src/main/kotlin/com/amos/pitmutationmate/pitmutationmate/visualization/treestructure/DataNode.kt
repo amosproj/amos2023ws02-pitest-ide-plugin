@@ -7,6 +7,7 @@ package com.amos.pitmutationmate.pitmutationmate.visualization.treestructure
 
 class DataNode(
     val name: String,
+    val nbClasses: Int,
     val lineCoverage: String,
     val mutationCoverage: String,
     val testStrength: String,
