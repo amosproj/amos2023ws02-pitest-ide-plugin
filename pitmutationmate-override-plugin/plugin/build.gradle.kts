@@ -30,22 +30,20 @@ dependencies {
     testImplementation("org.spockframework:spock-core:2.2-groovy-3.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")
 }
-// For publishing:
-// Plugin Portal account is associated with a different GitHub account for plugin 'io.github.amosproj'.
-// Either switch namespace to 'io.github.amos-pitmutationmate' or create a
-// public repository named "gradle-portal-verification-7RNGGEMN" under the user "amosproj" which you can delete once the first plugin version is approved.
+
 group = "io.github.amosproj"
 version = "1.0"
 
 gradlePlugin {
-    website = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin/wiki/Partner-Plugin-%22pimutationmate%E2%80%90override%E2%80%90plugin%22"
+    website = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin"
     vcsUrl = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin.git"
+
     plugins {
         create("pitmutationmate-partner-plugin") {
             id = "io.github.amosproj.pitmutationmate.override"
             displayName = "PITMutationMate Partner Plugin"
             description = "A plugin that lets you override the PITest settings of the gradle-pitest-plugin " +
-                "to use with the PITMutationMate Intellij plugin."
+                "to use with the PITMutationMate  Intellij plugin."
             tags =
                 listOf(
                     "pitmutationmate", "pitest", "mutation", "mutation testing", "mutation testing tool",

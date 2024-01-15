@@ -33,6 +33,8 @@ class TreeStructureTable : JPanel() {
     }
     companion object {
 
+        const val ID = "PackageBreakdown"
+        const val TITLE = "Package Breakdown"
         private var rootNode: MutableList<DataNode> = ArrayList()
         private fun createDataStructure(): DataNode {
             // TODO: replace with real coverage reports
@@ -81,10 +83,10 @@ class TreeStructureTable : JPanel() {
             for (report in coverageReports) {
                 var packageNode = rootNode.find { it.name == report.packageName }
                 if (packageNode != null) {
-                    packageNode.children = packageNode.children?.plus(DataNode(report.fileName,report.numberOfClasses,report.lineCoverageTextRatio,report.mutationCoverageTextRatio,report.testStrengthTextRatio,emptyList()))
+                    packageNode.children = packageNode.children?.plus(DataNode(report.fileName, report.numberOfClasses, report.lineCoverageTextRatio, report.mutationCoverageTextRatio, report.testStrengthTextRatio, emptyList()))
                 } else {
-                    packageNode = DataNode(report.packageName,report.numberOfClasses,report.lineCoverageTextRatio,report.mutationCoverageTextRatio,report.testStrengthTextRatio,emptyList())
-                    packageNode.children = packageNode.children?.plus(DataNode(report.fileName,report.numberOfClasses,report.lineCoverageTextRatio,report.mutationCoverageTextRatio,report.testStrengthTextRatio,emptyList()))
+                    packageNode = DataNode(report.packageName, report.numberOfClasses, report.lineCoverageTextRatio, report.mutationCoverageTextRatio, report.testStrengthTextRatio, emptyList())
+                    packageNode.children = packageNode.children?.plus(DataNode(report.fileName, report.numberOfClasses, report.lineCoverageTextRatio, report.mutationCoverageTextRatio, report.testStrengthTextRatio, emptyList()))
                     rootNode = rootNode.plus(packageNode).toMutableList()
                 }
             }
