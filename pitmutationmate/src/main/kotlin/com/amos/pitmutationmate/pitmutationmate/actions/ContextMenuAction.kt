@@ -22,17 +22,19 @@ import java.io.File
 class ContextMenuAction : RunConfigurationAction() {
     private val logger = Logger.getInstance(ContextMenuAction::class.java)
 
-    private fun updateAndExecuteForFile(psiFile: PsiFile, project: Project) {
-        logger.info("ContextMenuAction: actionPerformed in ProjectViewPopup for file $psiFile")
-        val psiClasses = (psiFile as PsiClassOwner).classes
+    private fun updateAndExecuteForFile(psiFileArray: Array<PsiFile>, project: Project) {
         var classFQNs: String = ""
-        for (psiClass in psiClasses) {
-            val fqn = psiClass.qualifiedName
-            if (fqn != null) {
-                classFQNs = if (classFQNs != "") {
-                    "$classFQNs,$fqn"
-                } else {
-                    fqn
+        for (psiFile in psiFileArray) {
+            logger.info("ContextMenuAction: actionPerformed in ProjectViewPopup for file $psiFile")
+            val psiClasses = (psiFile as PsiClassOwner).classes
+            for (psiClass in psiClasses) {
+                val fqn = psiClass.qualifiedName
+                if (fqn != null) {
+                    classFQNs = if (classFQNs != "") {
+                        "$classFQNs,$fqn"
+                    } else {
+                        fqn
+                    }
                 }
             }
         }
@@ -71,13 +73,13 @@ class ContextMenuAction : RunConfigurationAction() {
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
 
         if (psiFile != null) {
-            updateAndExecuteForFile(psiFile, e.project!!)
+            updateAndExecuteForFile(arrayOf(psiFile), e.project!!)
         }
     }
 
     private fun actionProjectViewPopupDir(e: AnActionEvent) {
         val psiElement = e.getData(CommonDataKeys.PSI_ELEMENT)
-
+        var psiFileArray: Array<PsiFile> = emptyArray()
         if (psiElement != null) {
             if (psiElement is PsiDirectory) {
                 val path = psiElement.virtualFile.path.toString()
@@ -85,9 +87,11 @@ class ContextMenuAction : RunConfigurationAction() {
 
                 directory.walk()
                     .filter { it.isFile && (it.extension == "kt" || it.extension == "java") }
-                    .forEach { getPsiFileFromPath(e.project!!, it.toString())?.let { it1 -> updateAndExecuteForFile(it1, e.project!!) } }
+                    .forEach { getPsiFileFromPath(e.project!!, it.toString())?.let { it1 -> psiFileArray += it1 } }
             }
         }
+
+        updateAndExecuteForFile(psiFileArray, e.project!!)
     }
 
     override fun actionPerformed(e: AnActionEvent) {
