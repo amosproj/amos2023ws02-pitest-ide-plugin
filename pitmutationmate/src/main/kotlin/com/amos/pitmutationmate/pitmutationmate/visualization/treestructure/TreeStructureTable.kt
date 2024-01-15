@@ -79,16 +79,15 @@ class TreeStructureTable : JPanel() {
             for (report in coverageReports) {
                 var packageNode = rootNode.find { it.name == report.packageName }
                 if (packageNode != null) {
-                    packageNode.children = packageNode.children?.plus(
-                        DataNode(
-                            report.fileName,
-                            report.numberOfClasses,
-                            report.lineCoverageTextRatio,
-                            report.mutationCoverageTextRatio,
-                            report.testStrengthTextRatio,
-                            emptyList()
-                            )
+                    packageNode.children = packageNode.children?.plus(DataNode(
+                        report.fileName,
+                        report.numberOfClasses,
+                        report.lineCoverageTextRatio,
+                        report.mutationCoverageTextRatio,
+                        report.testStrengthTextRatio,
+                        emptyList()
                         )
+                    )
                 } else {
                     packageNode = DataNode(
                         report.packageName,
@@ -98,8 +97,7 @@ class TreeStructureTable : JPanel() {
                         report.testStrengthTextRatio,
                         emptyList()
                         )
-                    packageNode.children = packageNode.children?.plus(
-                        DataNode(
+                    packageNode.children = packageNode.children?.plus(DataNode(
                             report.fileName,
                             report.numberOfClasses,
                             report.lineCoverageTextRatio,
@@ -118,13 +116,13 @@ class TreeStructureTable : JPanel() {
 
 class CellRenderer : ColoredTreeCellRenderer() {
     override fun customizeCellRenderer(
-            tree: JTree,
-            value: Any?,
-            selected: Boolean,
-            expanded: Boolean,
-            leaf: Boolean,
-            row: Int,
-            hasFocus: Boolean
+        tree: JTree,
+        value: Any?,
+        selected: Boolean,
+        expanded: Boolean,
+        leaf: Boolean,
+        row: Int,
+        hasFocus: Boolean
     ) {
         append("liam")
     }
