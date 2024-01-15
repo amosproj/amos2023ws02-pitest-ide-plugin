@@ -6,7 +6,7 @@ plugins {
     `maven-publish`
     idea
     `java-gradle-plugin`
-    id("com.gradle.plugin-publish") version "1.2.1"
+    id("signing")
 }
 
 group = "io.github.amosproj"
@@ -48,10 +48,14 @@ publishing {
     repositories {
         maven {
             credentials {
-                username = project.findProperty("usr").toString()
-                password = project.findProperty("pwd").toString()
+                username = project.findProperty("spaceUsername").toString()
+                password = project.findProperty("spacePassword").toString()
             }
-            url = uri("https://maven.pkg.jetbrains.space/mycompany/p/projectkey/my-maven-repo")
+            url = uri("https://maven.pkg.jetbrains.space/pitmutationmate/p/main/coverage-reporter")
         }
     }
+}
+
+signing {
+    sign(publishing.publications["maven"])
 }
