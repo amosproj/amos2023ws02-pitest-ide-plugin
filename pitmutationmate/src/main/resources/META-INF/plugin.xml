@@ -63,7 +63,7 @@
         </action>
         <action id="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
                 class="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
-                text="Enable MutationMate Annotations" description="Shows MutationMate editor annotations">
+                text="Enable/Disable MutationMate Annotations" description="Shows MutationMate editor annotations">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
         <action id="com.amos.pitmutationmate.pitmutationmate.actions.ContextMenuAction"
