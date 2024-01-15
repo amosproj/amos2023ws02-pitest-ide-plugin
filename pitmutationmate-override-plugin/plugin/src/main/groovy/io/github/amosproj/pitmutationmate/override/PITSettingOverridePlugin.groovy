@@ -40,7 +40,7 @@ class PITSettingOverridePlugin implements Plugin<Project> {
             log.info("No port given for the message server. Not sending messages.")
         }
 
-        project.afterEvaluate {
+        project.gradle.projectsEvaluated {
             try {
                 overrideProperties.each { propertyName, overrideValue ->
                     project.logger.info "Overriding property '$propertyName' with '$overrideValue'."
