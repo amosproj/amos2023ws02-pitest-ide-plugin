@@ -9,7 +9,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiClassOwner
 import com.intellij.psi.PsiDirectory
@@ -46,7 +45,6 @@ class ContextMenuAction : RunConfigurationAction() {
         return LocalFileSystem.getInstance().findFileByPath(filePath)
             ?.let { PsiManager.getInstance(project).findFile(it) }
     }
-
 
     private fun actionEditorPopup(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR)
@@ -97,10 +95,10 @@ class ContextMenuAction : RunConfigurationAction() {
     override fun actionPerformed(e: AnActionEvent) {
         if (e.place == "EditorPopup") {
             actionEditorPopup(e)
-        }else if (e.place == "ProjectViewPopup") {
+        } else if (e.place == "ProjectViewPopup") {
             if (e.getData(CommonDataKeys.PSI_ELEMENT).toString().startsWith("PsiDirectory")) {
                 actionProjectViewPopupDir(e)
-            }else {
+            } else {
                 actionProjectViewPopupFile(e)
             }
         }
