@@ -5,7 +5,6 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 
 import com.amos.pitmutationmate.pitmutationmate.editor.PluginState
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
-import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
