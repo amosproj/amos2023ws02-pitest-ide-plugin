@@ -61,16 +61,16 @@
                 keymap="$default"
                 keystroke="control button3 doubleClick"/> -->
         </action>
+        <action id="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
+                class="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
+                text="Enable MutationMate Annotations" description="Shows MutationMate editor annotations">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </action>
         <action id="com.amos.pitmutationmate.pitmutationmate.actions.ContextMenuAction"
-                class="com.amos.pitmutationmate.pitmutationmate.actions.ContextMenuAction" text="Run PIT MutationMate on This Class"
+                class="com.amos.pitmutationmate.pitmutationmate.actions.ContextMenuAction" text="Run MutationMate on This Class"
                 description="Initializes a PiTest run on the selected class">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
-        </action>
-        <action id="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
-                class="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
-                text="Enable MutationMate Annotations" description="Show MutationMate editor annotations">
-            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
     </actions>
 
