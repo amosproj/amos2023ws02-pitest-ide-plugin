@@ -48,17 +48,9 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
             project.gradle.allprojects {
                 try {
                     it.dependencies.add('pitest', overrideValue)
-                } catch (Exception e) {
-                    try {
-                        it.subprojects {
-                            buildscript {
-                                dependencies.add('pitest', overrideValue)
-                            }
-                        }
-                    } catch (Exception ex) {
-                        println('Inner catch ' + ex)
-                    }
-                    println('Outer catch ' + e)
+                } catch (Exception ex) {
+                    addPitestDependency(it, overrideValue)
+                    println('Outer catch ' + ex)
                 }
             }
             return
@@ -82,4 +74,15 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
         log.debug("Property '$propertyName' successfully overwritten with '$newValue'.")
     }
 
+    void addPitestDependency(Project project, String overrideValue) {
+        try {
+            project.subprojects {
+                buildscript {
+                    dependencies.add('pitest', overrideValue)
+                }
+            }
+        } catch (Exception e) {
+            println('Inner catch ' + e)
+        }
+    }
 }
