@@ -57,6 +57,11 @@ class HighlightGutterRenderer(val color: String) : GutterIconRenderer() {
     override fun getClickAction(): AnAction {
         return AnnotationAction()
     }
+
+    override fun getTooltipText(): String {
+        return "Click to disable MutationMate annotations"
+    }
+
     override fun getAlignment(): Alignment {
         return Alignment.LEFT
     }
