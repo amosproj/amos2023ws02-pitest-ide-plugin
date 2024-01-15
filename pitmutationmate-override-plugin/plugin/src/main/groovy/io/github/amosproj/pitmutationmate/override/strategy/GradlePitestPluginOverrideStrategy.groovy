@@ -12,6 +12,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import org.gradle.internal.component.model.ConfigurationNotFoundException
 
 /**
  * GradlePitestPluginOverrideStrategy
@@ -48,9 +49,9 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
             project.gradle.allprojects {
                 try {
                     it.dependencies.add('pitest', overrideValue)
-                } catch (Exception ex) {
+                } catch (ConfigurationNotFoundException e) {
                     addPitestDependency(it, overrideValue)
-                    println('Outer catch ' + ex)
+                    log.debug('Tried to add the dependency directly to project.dependencies ' + e)
                 }
             }
             return
@@ -81,8 +82,8 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
                     dependencies.add('pitest', overrideValue)
                 }
             }
-        } catch (Exception e) {
-            println('Inner catch ' + e)
+        } catch (ConfigurationNotFoundException e) {
+            log.debug('Tried to add the dependency to all subprojects in buildscript.dependencies ' + e)
         }
     }
 }
