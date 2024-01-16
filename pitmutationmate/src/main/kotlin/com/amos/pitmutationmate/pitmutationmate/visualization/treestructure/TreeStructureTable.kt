@@ -32,7 +32,8 @@ class TreeStructureTable : JPanel() {
         setSize(1000, 800)
     }
     companion object {
-
+        const val ID = "PackageBreakdown"
+        const val TITLE = "Package Breakdown"
         private var rootNode: MutableList<DataNode> = ArrayList()
         private fun createDataStructure(): DataNode {
             // TODO: replace with real coverage reports
