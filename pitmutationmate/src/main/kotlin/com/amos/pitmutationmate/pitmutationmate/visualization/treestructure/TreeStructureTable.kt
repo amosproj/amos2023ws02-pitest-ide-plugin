@@ -27,7 +27,7 @@ class TreeStructureTable : JPanel() {
             }
         }
         treeTable.tableHeader.reorderingAllowed = false
-        treeTable.tableHeader.resizingAllowed = false
+        treeTable.tableHeader.resizingAllowed = true
         this.add(JScrollPane(treeTable))
         setSize(1000, 800)
     }
