@@ -16,10 +16,10 @@ class  MutationResultService(private val project: Project) {
     fun getMutationResult(): XMLParser.ResultData {
         val reportPathGenerator = project.service<ReportPathGeneratorService>()
         val mutationReportPath = reportPathGenerator.getReportMutationsFile()
-        val coverageReprortPath = reportPathGenerator.getReportCoverageFile()
+        val coverageReportPath = reportPathGenerator.getReportCoverageFile()
 
         val parser = XMLParser()
-        return parser.loadResultsFromXmlReport(mutationReportPath.toString(),coverageReprortPath.toString())
+        return parser.loadResultsFromXmlReport(mutationReportPath.toString(),coverageReportPath.toString())
     }
 
     fun updateLastMutationResult(): XMLParser.ResultData? {
