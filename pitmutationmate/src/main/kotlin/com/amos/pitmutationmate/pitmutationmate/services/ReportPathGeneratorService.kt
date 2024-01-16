@@ -17,6 +17,7 @@ import kotlin.io.path.exists
 @Service(Service.Level.PROJECT)
 class ReportPathGeneratorService(private val project: Project) {
 
+
     /**
      * Returns the path to the report directory.
      * @return the path to the report directory
@@ -29,15 +30,19 @@ class ReportPathGeneratorService(private val project: Project) {
         return Path.of("$projectBasePath/build/reports/pitest/test")
     }
 
+    private fun checkForDebugBuiltType() : Path {
+        var path = getReportPath()
+        if (Files.exists(Paths.get("$path/debug"))) {
+            path = Path.of("$path/debug")
+        }
+        return path
+    }
     /**
      * Returns the path to mutations.xml.
      * @return the path to the report file
      */
     fun getReportMutationsFile(): Path {
-        var path = getReportPath()
-        if (Files.exists(Paths.get("$path/debug"))) {
-            path = Path.of("$path/debug")
-        }
+        var path = checkForDebugBuiltType()
         return Path.of("$path/mutations.xml")
     }
 
@@ -46,7 +51,7 @@ class ReportPathGeneratorService(private val project: Project) {
      * @return the path to the report file
      */
     fun getReportCoverageFile(): Path {
-        val path = getReportPath()
+        var path = checkForDebugBuiltType()
         return Path.of("$path/coverage.xml")
     }
 
