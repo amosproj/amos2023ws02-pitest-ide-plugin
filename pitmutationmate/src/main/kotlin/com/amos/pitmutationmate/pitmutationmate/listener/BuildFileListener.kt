@@ -22,7 +22,7 @@ class BuildFileListener : FileDocumentManagerListener {
             ProjectManager.getInstance().openProjects.forEach { project ->
                 if (isVirtualFileInProject(file, project)) {
                     logger.debug("Project: ${project.name} is being checked for plugins because it contains ${file.path}")
-                    project.service<PluginCheckerService>().checkPlugins(file)
+                    project.service<PluginCheckerService>().checkPlugins(listOf(file))
                 }
             }
         }

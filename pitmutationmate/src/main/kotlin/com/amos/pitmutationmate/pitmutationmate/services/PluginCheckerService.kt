@@ -25,31 +25,37 @@ class PluginCheckerService(private val project: Project) {
     private val logger = Logger.getInstance(this::class.java)
 
     private var isKotlinOrGroovy: BuildFile = BuildFile.NONE
-    private var isKotlinPitestPluginAvailable = false
-    private var isKotlinCompanionPluginAvailable = false
-    private var isGroovyPitestPluginAvailable = false
-    private var isGroovyCompanionPluginAvailable = false
+    private var kotlinPluginsAvailability = PluginsAvailability()
+    private var groovyPluginsAvailability = PluginsAvailability()
 
-    fun checkPlugins(file: VirtualFile) {
-        if (!file.exists()) {
-            logger.debug("File ${file.path} does not exist. Not checking for plugins.")
-            return
-        }
+    fun checkPlugins(files: Collection<VirtualFile>) {
+        val kotlinPlugins = PluginsAvailability()
+        val groovyPlugins = PluginsAvailability()
 
-        when (file.name) {
-            "build.gradle.kts" -> {
-                isKotlinOrGroovy = BuildFile.KOTLIN
-                checkKotlinBuildFile(file)
+        // iterate over given files
+        for (file in files) {
+            if (!file.exists()) {
+                logger.info("File ${file.path} does not exist. Not checking for plugins.")
+                continue
             }
 
-            "build.gradle" -> {
-                isKotlinOrGroovy = BuildFile.GROOVY
-                checkGroovyBuildFile(file)
-            }
+            when (file.name) {
+                "build.gradle.kts" -> {
+                    checkKotlinBuildFile(file, kotlinPlugins)
+                    kotlinPluginsAvailability = kotlinPlugins
+                    isKotlinOrGroovy = BuildFile.KOTLIN
+                }
 
-            else -> {
-                logger.debug("File ${file.path} is not a build file. Not checking for plugins.")
-                return
+                "build.gradle" -> {
+                    checkGroovyBuildFile(file, groovyPlugins)
+                    groovyPluginsAvailability = groovyPlugins
+                    isKotlinOrGroovy = BuildFile.GROOVY
+                }
+
+                else -> {
+                    logger.info("File ${file.path} is not a build file. Not checking for plugins.")
+                    continue
+                }
             }
         }
         fillToolWindow()
@@ -58,24 +64,24 @@ class PluginCheckerService(private val project: Project) {
     fun getErrorMessage(withHeader: Boolean = true): String? {
         var errorMessage = ""
 
-        if (isKotlinOrGroovy == BuildFile.NONE) {
-            return null
+        val pluginsAvailability = PluginsAvailability()
+        pluginsAvailability.pitestPluginAvailable = kotlinPluginsAvailability.pitestPluginAvailable || groovyPluginsAvailability.pitestPluginAvailable
+        pluginsAvailability.companionPluginAvailable = kotlinPluginsAvailability.companionPluginAvailable || groovyPluginsAvailability.companionPluginAvailable
+
+        val pitestPluginString = when (isKotlinOrGroovy) {
+            BuildFile.GROOVY -> GROOVY_PITEST_PLUGIN
+            else -> KOTLIN_PITEST_PLUGIN
+        }
+        val overridePluginString = when (isKotlinOrGroovy) {
+            BuildFile.GROOVY -> GROOVY_OVERRIDE_PLUGIN
+            else -> KOTLIN_OVERRIDE_PLUGIN
+        }
+        val buildFileName = when (isKotlinOrGroovy) {
+            BuildFile.GROOVY -> GROOVY_BUILD_FILE
+            else -> KOTLIN_BUILD_FILE
         }
 
-        var pitestPluginAvailable = isKotlinPitestPluginAvailable
-        var companionPluginAvailable = isKotlinCompanionPluginAvailable
-        var pitestPluginString = KOTLIN_PITEST_PLUGIN
-        var overridePluginString = KOTLIN_OVERRIDE_PLUGIN
-        var buildFileName = KOTLIN_BUILD_FILE
-        if (isKotlinOrGroovy == BuildFile.GROOVY) {
-            pitestPluginAvailable = isGroovyPitestPluginAvailable
-            companionPluginAvailable = isGroovyCompanionPluginAvailable
-            pitestPluginString = GROOVY_PITEST_PLUGIN
-            overridePluginString = GROOVY_OVERRIDE_PLUGIN
-            buildFileName = GROOVY_BUILD_FILE
-        }
-
-        if (!pitestPluginAvailable) {
+        if (!pluginsAvailability.pitestPluginAvailable) {
             if (errorMessage.isNotEmpty()) errorMessage += "\n"
             errorMessage += String.format(
                 ERROR_MESSAGE_PITEST_PLUGIN_MISSING,
@@ -83,7 +89,7 @@ class PluginCheckerService(private val project: Project) {
                 pitestPluginString
             )
         }
-        if (!companionPluginAvailable) {
+        if (!pluginsAvailability.companionPluginAvailable) {
             if (errorMessage.isNotEmpty()) errorMessage += "\n"
             errorMessage += String.format(
                 ERROR_MESSAGE_COMPANION_PLUGIN_MISSING,
@@ -109,7 +115,7 @@ class PluginCheckerService(private val project: Project) {
         val toolWindow = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowFactory.ID)
         if (toolWindow != null) {
             val errorMessage = getErrorMessage()
-            if (errorMessage != null) {
+            if (!errorMessage.isNullOrEmpty()) {
                 ToolWindowFactory.Util.initiateWithConfigError(errorMessage, toolWindow)
             } else {
                 ToolWindowFactory.Util.initiateWithData(toolWindow)
@@ -117,21 +123,21 @@ class PluginCheckerService(private val project: Project) {
         }
     }
 
-    private fun checkKotlinBuildFile(kotlinBuildFile: VirtualFile) {
+    private fun checkKotlinBuildFile(kotlinBuildFile: VirtualFile, kotlinPlugins: PluginsAvailability) {
         thisLogger().debug("checking kotlin plugins for $kotlinBuildFile")
         val psiFile = PsiManager.getInstance(project).findFile(kotlinBuildFile)
         val kotlinChecker = PluginCheckerKotlin()
         psiFile?.node?.psi?.accept(kotlinChecker)
 
-        if (!isKotlinPitestPluginAvailable) {
-            isKotlinPitestPluginAvailable = kotlinChecker.pitestPluginAvailable
+        if (!kotlinPlugins.pitestPluginAvailable) {
+            kotlinPlugins.pitestPluginAvailable = kotlinChecker.pitestPluginAvailable
         }
-        if (!isKotlinCompanionPluginAvailable) {
-            isKotlinCompanionPluginAvailable = kotlinChecker.companionPluginAvailable
+        if (!kotlinPlugins.companionPluginAvailable) {
+            kotlinPlugins.companionPluginAvailable = kotlinChecker.companionPluginAvailable
         }
     }
 
-    private fun checkGroovyBuildFile(groovyBuildFile: VirtualFile) {
+    private fun checkGroovyBuildFile(groovyBuildFile: VirtualFile, groovyPlugins: PluginsAvailability) {
         thisLogger().debug("checking groovy plugins for $groovyBuildFile")
         val builder = AstBuilder()
         val nodes = builder.buildFromString(
@@ -144,11 +150,11 @@ class PluginCheckerService(private val project: Project) {
         for (node in nodes) {
             node.visit(groovyChecker)
         }
-        if (!isGroovyPitestPluginAvailable) {
-            isGroovyPitestPluginAvailable = groovyChecker.pitestPluginAvailable
+        if (!groovyPlugins.pitestPluginAvailable) {
+            groovyPlugins.pitestPluginAvailable = groovyChecker.pitestPluginAvailable
         }
-        if (!isGroovyCompanionPluginAvailable) {
-            isGroovyCompanionPluginAvailable = groovyChecker.companionPluginAvailable
+        if (!groovyPlugins.companionPluginAvailable) {
+            groovyPlugins.companionPluginAvailable = groovyChecker.companionPluginAvailable
         }
     }
 
@@ -157,6 +163,11 @@ class PluginCheckerService(private val project: Project) {
         return document?.let {
             ByteArrayInputStream(it.text.toByteArray())
         }
+    }
+
+    private class PluginsAvailability {
+        var pitestPluginAvailable: Boolean = false
+        var companionPluginAvailable: Boolean = false
     }
 
     companion object {

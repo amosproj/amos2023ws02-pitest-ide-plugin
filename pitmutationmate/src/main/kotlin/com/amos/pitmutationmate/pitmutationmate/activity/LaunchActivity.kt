@@ -17,11 +17,7 @@ class LaunchActivity : ProjectActivity {
             val pluginChecker = project.service<PluginCheckerService>()
             val buildFiles = BuildSystemUtils.getProjectBuildFiles(project)
             thisLogger().debug("Detected buildFiles to analyze with PluginCheckerService on project open: $buildFiles")
-            for (buildFile in buildFiles) {
-                ApplicationManager.getApplication().invokeLater {
-                    pluginChecker.checkPlugins(buildFile)
-                }
-            }
+            ApplicationManager.getApplication().invokeLater { pluginChecker.checkPlugins(buildFiles) }
         }
     }
 }
