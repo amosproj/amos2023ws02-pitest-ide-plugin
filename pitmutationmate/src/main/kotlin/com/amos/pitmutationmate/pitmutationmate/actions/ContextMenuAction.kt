@@ -83,7 +83,7 @@ class ContextMenuAction : RunConfigurationAction() {
         if (psiElement != null) {
             if (psiElement is PsiDirectory) {
                 val path = psiElement.virtualFile.path.toString()
-                val directory: File = File(path)
+                val directory = File(path)
 
                 directory.walk()
                     .filter { it.isFile && (it.extension == "kt" || it.extension == "java") }
