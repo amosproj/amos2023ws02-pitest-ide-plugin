@@ -4,16 +4,21 @@
 
 package com.amos.pitmutationmate.pitmutationmate.visualization
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartFactory
+import org.jfree.chart.ChartPanel
 import org.jfree.data.category.DefaultCategoryDataset
 import javax.swing.JPanel
 
 class LineGraph : JPanel() {
 
+    companion object {
+        const val ID = "LineGraph"
+        const val TITLE = "Line Chart"
+    }
+
     init {
-        var dataset = createDataset();
-        var chart = ChartFactory.createLineChart(
+        val dataset = createDataset()
+        val chart = ChartFactory.createLineChart(
             "Line Chart Example", // Chart title
             "Date", // X-Axis Label
             "Number of Visitor", // Y-Axis Label

@@ -5,7 +5,7 @@ plugins {
     id("java")
     id("info.solidsoft.pitest") version "1.15.0"
     id ("com.groupcdg.pitest.github") version "1.0.5"
-    id("io.github.amosproj.pitmutationmate.override") version "1.0"
+    id("io.github.amos-pitmutationmate.pitmutationmate.override") version "1.0"
 }
 
 repositories {
