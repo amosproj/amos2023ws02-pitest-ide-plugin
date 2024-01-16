@@ -31,7 +31,6 @@ class TreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
     }
 
     override fun valueForPathChanged(path: TreePath?, newValue: Any?) {
-        TODO("Not yet implemented")
     }
 
     // This method should not be used.
@@ -52,7 +51,6 @@ class TreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
     }
 
     override fun setTree(tree: JTree?) {
-        println("Not yet implemented")
     }
 
     override fun getColumnName(column: Int): String? {
