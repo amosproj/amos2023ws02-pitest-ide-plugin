@@ -83,7 +83,9 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
                 }
             }
         } catch (ConfigurationNotFoundException e) {
-            log.debug('Tried to add the dependency to all subprojects in buildscript.dependencies ' + e)
+            log.debug('Adding the dependency to all subprojects in buildscript.dependencies failed. ' +
+                    'So the ConfigurationName "pitest" was not found.' +
+                    'Most probably this means that the pitest-plugin is not included.' + e)
         }
     }
 }
