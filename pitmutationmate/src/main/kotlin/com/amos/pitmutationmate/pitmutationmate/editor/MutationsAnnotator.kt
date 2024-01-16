@@ -60,7 +60,10 @@ class MutationsAnnotator :
         private val log = Logger.getInstance(MutationsAnnotator::class.java)
     }
 
-    override fun collectInformation(file: PsiFile): List<XMLParser.MutationResult> {
+    override fun collectInformation(file: PsiFile): List<XMLParser.MutationResult>? {
+        if (!PluginState.isAnnotatorEnabled) {
+            return null
+        }
         log.debug("collectInformation")
         val resultGenerator = file.project.service<MutationResultService>()
         return resultGenerator.getMutationResult().mutationResults.filter { it.sourceFile == file.name }
