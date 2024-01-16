@@ -12,6 +12,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import org.gradle.internal.component.model.ConfigurationNotFoundException
 
 /**
  * GradlePitestPluginOverrideStrategy
@@ -44,23 +45,13 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
         if (pitestExtension == null) {
             throw new GradleException("PITest extension not found. Please apply the PITest plugin first.")
         }
-
         if (propertyName == "addCoverageListenerDependency") {
-            project.gradle.allprojects {it ->
+            project.gradle.allprojects {
                 try {
-                    it.dependencies.add("pitest", overrideValue)
-                } catch(Exception e) {
-                    try {
-                        it.subprojects {
-                            buildscript {
-                                dependencies.add("pitest", overrideValue)
-                            }
-                        }
-                    }
-                    catch (Exception ex) {
-                        println("Inner catch " + ex.toString())
-                    }
-                    println("Outer catch " + e.toString())
+                    it.dependencies.add('pitest', overrideValue)
+                } catch (ConfigurationNotFoundException e) {
+                    addPitestDependency(it, overrideValue)
+                    log.debug('Tried to add the dependency directly to project.dependencies ' + e)
                 }
             }
             return
@@ -73,7 +64,8 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
         PITConfigurationValues overrideFields = new PITConfigurationValues()
         def overrideProperty = overrideFields.properties.find { it.key == propertyName }
         if (overrideProperty == null) {
-            throw new GradleException("Cannot override property '$propertyName' for pitest extension: Unknown Property.")
+            throw new GradleException(
+                "Cannot override property '$propertyName' for pitest extension: Unknown Property.")
         }
 
         Class clazz = overrideProperty.value.getClass()
@@ -83,4 +75,15 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
         log.debug("Property '$propertyName' successfully overwritten with '$newValue'.")
     }
 
+    void addPitestDependency(Project project, String overrideValue) {
+        try {
+            project.subprojects {
+                buildscript {
+                    dependencies.add('pitest', overrideValue)
+                }
+            }
+        } catch (ConfigurationNotFoundException e) {
+            log.debug('Tried to add the dependency to all subprojects in buildscript.dependencies ' + e)
+        }
+    }
 }
