@@ -12,6 +12,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import org.gradle.internal.component.model.ConfigurationNotFoundException
 
 /**
  * GradlePitestPluginOverrideStrategy
@@ -33,17 +34,27 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
     @Override
     void apply(Project project, String propertyName, String overrideValue) {
         log.debug("Overriding property '$propertyName' with '$overrideValue'.")
-
         def pitestExtension = project.extensions.findByName(OVERRIDE_SECTION)
-
         def projIter = project.subprojects.iterator()
-        while(pitestExtension == null && projIter.hasNext()) {
-            def subproject = projIter.next()
+        def subproject = project
+        while (pitestExtension == null && projIter.hasNext()) {
+            subproject = projIter.next()
             pitestExtension = subproject.extensions.findByName(OVERRIDE_SECTION)
         }
 
         if (pitestExtension == null) {
             throw new GradleException("PITest extension not found. Please apply the PITest plugin first.")
+        }
+        if (propertyName == "addCoverageListenerDependency") {
+            project.gradle.allprojects {
+                try {
+                    it.dependencies.add('pitest', overrideValue)
+                } catch (ConfigurationNotFoundException e) {
+                    addPitestDependency(it, overrideValue)
+                    log.debug('Tried to add the dependency directly to project.dependencies ' + e)
+                }
+            }
+            return
         }
 
         if (!pitestExtension.hasProperty(propertyName)) {
@@ -64,4 +75,17 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
         log.debug("Property '$propertyName' successfully overwritten with '$newValue'.")
     }
 
+    void addPitestDependency(Project project, String overrideValue) {
+        try {
+            project.subprojects {
+                buildscript {
+                    dependencies.add('pitest', overrideValue)
+                }
+            }
+        } catch (ConfigurationNotFoundException e) {
+            log.debug('Adding the dependency to all subprojects in buildscript.dependencies failed. ' +
+                    'So the ConfigurationName "pitest" was not found.' +
+                    'Most probably this means that the pitest-plugin is not included.' + e)
+        }
+    }
 }
