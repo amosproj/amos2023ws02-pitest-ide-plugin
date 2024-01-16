@@ -8,7 +8,6 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import kotlin.io.path.exists
 
 /**
@@ -31,7 +30,7 @@ class ReportPathGeneratorService(private val project: Project) {
 
     private fun checkForDebugBuiltType(): Path {
         var path = getReportPath()
-        if (Files.exists(Paths.get("$path/debug"))) {
+        if (Files.exists(Path.of("$path/debug"))) {
             path = Path.of("$path/debug")
         }
         return path
