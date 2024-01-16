@@ -45,23 +45,7 @@ class GradlePitestPluginOverrideStrategy implements OverrideStrategy {
             throw new GradleException("PITest extension not found. Please apply the PITest plugin first.")
         }
 
-        println("BUILD PATH: " + subproject.projectDir.toString())
-
-        /*subproject.extensions.getByName("buildOutputs").properties.each {
-            it -> println("BUILDOUT: " + it.value + " : " + it.key)
-        }*/
-
-        pitestExtension.properties.each { it ->
-            println("PITEST PROPS: " + it.value + " : " + it.key)
-        }
-        def repDir = pitestExtension.properties.find {
-            it -> it.key == "reportDir"
-        }
-        repDir.value.properties.each {
-            it ->
-                println("REPORTDIR: " + it.value + " : " + it.key)
-        }
-        if(propertyName == "addCoverageListenerDependency"){
+        if (propertyName == "addCoverageListenerDependency") {
             project.gradle.allprojects {it ->
                 try {
                     it.dependencies.add("pitest", overrideValue)

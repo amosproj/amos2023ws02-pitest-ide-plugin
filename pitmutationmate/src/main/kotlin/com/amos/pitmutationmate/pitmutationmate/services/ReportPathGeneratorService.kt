@@ -6,7 +6,9 @@ package com.amos.pitmutationmate.pitmutationmate.services
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
+import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import kotlin.io.path.exists
 
 /**
@@ -32,7 +34,10 @@ class ReportPathGeneratorService(private val project: Project) {
      * @return the path to the report file
      */
     fun getReportMutationsFile(): Path {
-        val path = getReportPath()
+        var path = getReportPath()
+        if(Files.exists(Paths.get("$path/debug"))) {
+            path = Path.of("$path/debug")
+        }
         return Path.of("$path/mutations.xml")
     }
 
