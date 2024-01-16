@@ -29,10 +29,12 @@ class ContextMenuAction : RunConfigurationAction() {
             for (psiClass in psiClasses) {
                 val fqn = psiClass.qualifiedName
                 if (fqn != null) {
-                    classFQNs = if (classFQNs != "") {
-                        "$classFQNs,$fqn"
-                    } else {
-                        fqn
+                    if (!fqn.endsWith("Test")) {
+                        classFQNs = if (classFQNs != "") {
+                            "$classFQNs,$fqn"
+                        } else {
+                            fqn
+                        }
                     }
                 }
             }
@@ -122,10 +124,15 @@ class ContextMenuAction : RunConfigurationAction() {
             val validClass = (findEnclosingClass(psiElement) != null)
             return validFile && validClass
         }
-        if (e.place == "ProjectViewPopup") {
-            if (e.getData(CommonDataKeys.PSI_ELEMENT).toString().startsWith("PsiDirectory") && e.getData(CommonDataKeys.PSI_ELEMENT).toString().contains("main")) {
-                return true
+        if (e.place == "ProjectViewPopup" && e.getData(CommonDataKeys.PSI_ELEMENT).toString().startsWith("PsiDirectory")) {
+            val psiElement = e.getData(CommonDataKeys.PSI_ELEMENT)
+            if (psiElement is PsiDirectory) {
+                val directory: File = File(psiElement.virtualFile.path.toString())
+                var returnValue: Boolean = false
+                directory.walk().filter { it.isFile && (it.extension == "kt" || it.extension == "java") }.forEach { if (!it.name.contains("Test")) {returnValue = true} }
+                return returnValue
             }
+            return false
         }
         return validFile
     }
