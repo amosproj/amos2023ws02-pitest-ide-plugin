@@ -60,6 +60,8 @@ class GradleTaskExecutor : BasePitestExecutor() {
         if (!classFQN.isNullOrEmpty()) {
             parameters.add("-Dpitmutationmate.override.targetClasses=$classFQN")
         }
+        parameters.add("-Dpitmutationmate.override.outputFormats=XML,report-coverage")
+        parameters.add("-Dpitmutationmate.override.addCoverageListenerDependency=io.github.amosproj:coverage-plugin:1.0")
         parameters.add("-Dpitmutationmate.override.verbose=true")
         parameters.add("-Dpitmutationmate.override.port=$port")
         parameters.add("-Dpitmutationmate.override.reportDir=${reportDir.toAbsolutePath()}")

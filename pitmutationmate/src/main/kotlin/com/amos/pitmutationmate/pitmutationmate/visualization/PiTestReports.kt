@@ -129,6 +129,11 @@ class PiTestReports : JPanel() {
     private var reports: ArrayList<PiTestClassReport> = ArrayList()
     private var summary: PiTestClassReport = PiTestClassReport()
 
+    companion object {
+        const val ID = "PitestReports"
+        const val TITLE = "Reports"
+    }
+
     fun addReport(report: PiTestClassReport) {
         this.reports.add(report)
     }

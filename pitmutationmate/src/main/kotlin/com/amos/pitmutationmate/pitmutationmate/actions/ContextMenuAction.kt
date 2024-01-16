@@ -3,9 +3,11 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
+import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
@@ -107,6 +109,11 @@ class ContextMenuAction : RunConfigurationAction() {
     }
 
     override fun update(e: AnActionEvent) {
+        val pluginError = e.project?.service<PluginCheckerService>()?.getErrorMessage()
+        if (pluginError != null) {
+            e.presentation.isEnabled = false
+            return
+        }
         val shouldEnable: Boolean = checkCondition(e)
         e.presentation.isEnabled = shouldEnable
     }
