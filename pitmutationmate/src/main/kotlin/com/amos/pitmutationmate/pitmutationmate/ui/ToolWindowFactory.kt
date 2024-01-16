@@ -10,7 +10,7 @@ import com.amos.pitmutationmate.pitmutationmate.visualization.ConfigurationError
 import com.amos.pitmutationmate.pitmutationmate.visualization.LineGraph
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestClassReport
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestReports
-import com.amos.pitmutationmate.pitmutationmate.visualization.treetable.JTreeTable
+import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.TreeStructureTable
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
@@ -49,7 +49,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             // TODO: fetch most recent results to display (e.g. when opening up the editor and previous Pitest runs are saved)
 
             val coverageReport = ContentFactory.getInstance().createContent(PiTestReports(), PiTestReports.TITLE, false)
-            val table = ContentFactory.getInstance().createContent(JTreeTable(), JTreeTable.TITLE, false)
+            val table = ContentFactory.getInstance().createContent(TreeStructureTable(), TreeStructureTable.TITLE, false)
             val lineChart = ContentFactory.getInstance().createContent(LineGraph(), LineGraph.TITLE, false)
             val barChart = ContentFactory.getInstance().createContent(BarGraph(), BarGraph.TITLE, false)
 
