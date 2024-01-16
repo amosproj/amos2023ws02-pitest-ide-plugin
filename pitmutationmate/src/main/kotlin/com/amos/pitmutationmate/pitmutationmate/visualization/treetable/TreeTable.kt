@@ -8,12 +8,10 @@ import java.awt.Dimension
 import java.util.*
 import javax.swing.JTable
 
-
 class TreeTable(treeTableModel: AbstractTreeTableModel?) : JTable() {
     private val tree: TreeTableCellRenderer
 
     init {
-
         // JTree erstellen.
         tree = TreeTableCellRenderer(this, treeTableModel)
 
@@ -22,9 +20,8 @@ class TreeTable(treeTableModel: AbstractTreeTableModel?) : JTable() {
 
         // Gleichzeitiges Selektieren fuer Tree und Table.
         val selectionModel = TreeTableSelectionModel()
-        tree.setSelectionModel(selectionModel) //For the tree
-        setSelectionModel(selectionModel.getListSelectionModel()) //For the table
-
+        tree.selectionModel = selectionModel // For the tree
+        setSelectionModel(selectionModel.getListSelectionModel()) // For the table
 
         // Renderer fuer den Tree.
         setDefaultRenderer(TreeTableModel::class.java, tree)
@@ -35,7 +32,7 @@ class TreeTable(treeTableModel: AbstractTreeTableModel?) : JTable() {
         setShowGrid(false)
 
         // Keine Abstaende.
-        setIntercellSpacing(Dimension(0, 0))
+        intercellSpacing = Dimension(0, 0)
     }
 
     override fun editCellAt(row: Int, column: Int): Boolean {

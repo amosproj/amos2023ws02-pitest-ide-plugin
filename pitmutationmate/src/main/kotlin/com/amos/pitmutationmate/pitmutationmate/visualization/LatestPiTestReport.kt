@@ -34,6 +34,11 @@ class LatestPiTestReport(
     )
 ) : JPanel() {
 
+    companion object {
+        const val ID = "LatestPiTestReport"
+        const val TITLE = "Latest Result"
+    }
+
     init {
         val lineCoverageBar = CustomProgressBar(coverageReport.lineCoveragePercentage, coverageReport.lineCoverageTextRatio)
         val mutationCoverageBar = CustomProgressBar(coverageReport.mutationCoveragePercentage, coverageReport.mutationCoverageTextRatio)

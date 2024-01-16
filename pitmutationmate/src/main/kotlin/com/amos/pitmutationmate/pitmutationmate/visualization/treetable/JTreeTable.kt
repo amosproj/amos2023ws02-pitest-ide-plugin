@@ -23,6 +23,10 @@ class JTreeTable : JPanel() {
     }
 
     companion object {
+
+        const val ID = "JTreeTable"
+        const val TITLE = "Coverage"
+
         private fun createDataStructure(): DataNode {
             val children1: MutableList<DataNode> = ArrayList()
             children1.add(DataNode("N12", "C12", "100% 10/10", "50", null))

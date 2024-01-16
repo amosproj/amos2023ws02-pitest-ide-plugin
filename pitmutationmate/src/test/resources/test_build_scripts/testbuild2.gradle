@@ -3,7 +3,7 @@
 
 plugins {
     id 'java'
-    id 'io.github.amosproj.pitmutationmate.override' version '1.0'
+    id 'io.github.amos-pitmutationmate.pitmutationmate.override' version '1.0'
 }
 
 repositories {
