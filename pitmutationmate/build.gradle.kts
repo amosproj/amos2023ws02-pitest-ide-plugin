@@ -65,4 +65,11 @@ tasks {
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
+
+    register<org.jetbrains.intellij.tasks.RunIdeTask>("runIdeAndroidStudio") {
+        val androidStudioHome = findProperty("androidStudioHome")
+        if (androidStudioHome != null) {
+            ideDir.set(file(androidStudioHome))
+        }
+    }
 }

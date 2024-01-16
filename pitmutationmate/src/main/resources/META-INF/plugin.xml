@@ -2,21 +2,21 @@
 <!--SPDX-FileCopyrightText: 2023-->
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-  <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-  <id>com.amos.pitmutationmate.pitmutationmate</id>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.amos.pitmutationmate.pitmutationmate</id>
 
-  <!-- Public plugin name should be written in Title Case.
-       Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-  <name>PITmutationmate</name>
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>PITmutationmate</name>
 
-  <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-  <vendor email="" url="https://github.com/amosproj/amos2023ws02-pitest-ide-plugin">PITest</vendor>
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="" url="https://github.com/amosproj/amos2023ws02-pitest-ide-plugin">PITest</vendor>
 
-  <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
-       Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
-       Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
 
-  <description><![CDATA[
+    <description><![CDATA[
     <p><strong>Pit Mutation Mate.</strong></p>
     <p><a href="https://pitest.org/">PIT (Pitest)</a> is a popular mutation testing framework for Java / JVM-based languages.</p>
     <p>This plugin assists users in analyzing PITest reports in IntelliJ IDEA.</p>
@@ -32,26 +32,34 @@
   ]]></description>
 
 
-  <!-- Product and plugin compatibility requirements.
-       Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.java</depends>
     <depends>org.jetbrains.kotlin</depends>
 
 
-  <!-- Extension points defined by the plugin.
-       Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
-  <extensions defaultExtensionNs="com.intellij">
-      <toolWindow id="Pitest" secondary="false" icon="AllIcons.Toolwindows.WebToolWindow" anchor="right"
-                factoryClass="com.amos.pitmutationmate.pitmutationmate.MutationTestToolWindowFactory"/>
-      <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.actions.GutterMarker"
-                                language=""/>
-      <configurationType implementation="com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType"/>
-      <externalAnnotator language="" implementationClass="com.amos.pitmutationmate.pitmutationmate.editor.MutationsAnnotator"/>
-  </extensions>
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Pitest" secondary="false" icon="com.amos.pitmutationmate.pitmutationmate.icons.Icons.Logo13"
+                    anchor="right"
+                    factoryClass="com.amos.pitmutationmate.pitmutationmate.ui.ToolWindowFactory"/>
+        <runLineMarkerContributor implementationClass="com.amos.pitmutationmate.pitmutationmate.actions.GutterMarker"
+                                  language=""/>
+        <configurationType
+                implementation="com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType"/>
+        <externalAnnotator language=""
+                           implementationClass="com.amos.pitmutationmate.pitmutationmate.editor.MutationsAnnotator"/>
+        <fileDocumentManagerListener implementation="com.amos.pitmutationmate.pitmutationmate.listener.BuildFileListener" />
+        <postStartupActivity implementation="com.amos.pitmutationmate.pitmutationmate.activity.LaunchActivity" />
+
+    </extensions>
     <actions>
         <action id="com.amos.pitmutationmate.pitmutationmate.actions.ToolMenuAction"
-                class="com.amos.pitmutationmate.pitmutationmate.actions.ToolMenuAction" text="Run PIT MutationMate on This Project"
-                description="Initializes a PiTest run on the selected class">
+                class="com.amos.pitmutationmate.pitmutationmate.actions.ToolMenuAction"
+                text="Run PIT MutationMate on This Project"
+                description="Initializes a PiTest run on the selected class"
+                icon="com.amos.pitmutationmate.pitmutationmate.icons.Icons.Logo16">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
             <!-- <keyboard-shortcut
                     keymap="$default"
@@ -61,9 +69,16 @@
                 keymap="$default"
                 keystroke="control button3 doubleClick"/> -->
         </action>
+        <action id="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
+                class="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
+                text="Enable/Disable MutationMate Annotations" description="Shows MutationMate editor annotations">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </action>
         <action id="com.amos.pitmutationmate.pitmutationmate.actions.ContextMenuAction"
-                class="com.amos.pitmutationmate.pitmutationmate.actions.ContextMenuAction" text="Run PIT MutationMate on This Class"
-                description="Initializes a PiTest run on the selected class">
+                class="com.amos.pitmutationmate.pitmutationmate.actions.ContextMenuAction"
+                text="Run MutationMate on This Class"
+                description="Initializes a PiTest run on the selected class"
+                icon="com.amos.pitmutationmate.pitmutationmate.icons.Icons.Logo16">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
         </action>

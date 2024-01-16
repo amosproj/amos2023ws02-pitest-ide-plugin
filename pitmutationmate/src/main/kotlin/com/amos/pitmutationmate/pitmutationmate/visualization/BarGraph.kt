@@ -4,25 +4,31 @@
 
 package com.amos.pitmutationmate.pitmutationmate.visualization
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
-
+import org.jfree.chart.ChartFactory
+import org.jfree.chart.ChartPanel
+import org.jfree.chart.plot.PlotOrientation
+import org.jfree.data.category.CategoryDataset
+import org.jfree.data.category.DefaultCategoryDataset
 import javax.swing.JPanel
 
 class BarGraph : JPanel() {
 
+    companion object {
+        const val ID = "BarGraph"
+        const val TITLE = "Bar Chart"
+    }
+
     init {
         val dataset = createDataset()
         val chart = ChartFactory.createBarChart(
-            "Bar Chart Example",  //Chart Title
-            "Year",  // Category axis
-            "Population in Million",  // Value axis
+            "Bar Chart Example", // Chart Title
+            "Year", // Category axis
+            "Population in Million", // Value axis
             dataset,
             PlotOrientation.VERTICAL,
-            true, true, false
+            true,
+            true,
+            false
         )
         this.add(ChartPanel(chart))
     }

@@ -3,15 +3,15 @@
 
 package com.amos.pitmutationmate.pitmutationmate.configuration
 
+import com.amos.pitmutationmate.pitmutationmate.icons.Icons
 import com.intellij.execution.configurations.ConfigurationTypeBase
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.util.NotNullLazyValue
 
 internal class RunConfigurationType : ConfigurationTypeBase(
     ID,
     "PITmutationmate",
     "PITmutationmate run configuration type",
-    NotNullLazyValue.createValue { AllIcons.Nodes.Console }
+    NotNullLazyValue.createValue { Icons.Logo16 }
 ) {
     init {
         addFactory(ConfigurationFactory(this))
