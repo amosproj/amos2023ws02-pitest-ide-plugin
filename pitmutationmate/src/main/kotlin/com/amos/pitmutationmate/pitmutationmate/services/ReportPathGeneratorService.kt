@@ -42,7 +42,7 @@ class ReportPathGeneratorService(private val project: Project) {
      */
     fun getReportCoverageFile(): Path {
         val path = getReportPath()
-        return Path.of("$path/coverage.xml")
+        return Path.of("$path/coverageInformation.xml")
     }
 
     /**

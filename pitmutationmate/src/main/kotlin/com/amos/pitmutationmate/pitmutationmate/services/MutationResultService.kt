@@ -9,13 +9,25 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 
 @Service(Service.Level.PROJECT)
-class MutationResultService(private val project: Project) {
+class  MutationResultService(private val project: Project) {
+
+    private var lastMutationResult: XMLParser.ResultData? = null
 
     fun getMutationResult(): XMLParser.ResultData {
         val reportPathGenerator = project.service<ReportPathGeneratorService>()
-        val dir = reportPathGenerator.getReportMutationsFile()
+        val mutationReportPath = reportPathGenerator.getReportMutationsFile()
+        val coverageReprortPath = reportPathGenerator.getReportCoverageFile()
 
         val parser = XMLParser()
-        return parser.loadResultsFromXmlReport(dir.toString())
+        return parser.loadResultsFromXmlReport(mutationReportPath.toString(),coverageReprortPath.toString())
+    }
+
+    fun updateLastMutationResult(): XMLParser.ResultData? {
+        lastMutationResult = getMutationResult()
+        return lastMutationResult;
+    }
+
+    fun getLastMutationResult(): XMLParser.ResultData? {
+        return lastMutationResult;
     }
 }
