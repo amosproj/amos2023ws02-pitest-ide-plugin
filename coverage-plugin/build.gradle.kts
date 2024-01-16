@@ -6,7 +6,6 @@ plugins {
     `maven-publish`
     idea
     `java-gradle-plugin`
-    id("com.gradle.plugin-publish") version "1.2.1"
 }
 
 group = "io.github.amosproj"

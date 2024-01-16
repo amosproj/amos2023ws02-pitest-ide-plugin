@@ -3,6 +3,8 @@
 
 package com.amos.pitmutationmate.pitmutationmate.visualization
 
+import com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction
+import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.GutterIconRenderer
@@ -50,6 +52,14 @@ class HighlightGutterRenderer(val color: String) : GutterIconRenderer() {
                 BarIcon(JBColor.GREEN)
             }
         }
+    }
+
+    override fun getClickAction(): AnAction {
+        return AnnotationAction()
+    }
+
+    override fun getTooltipText(): String {
+        return "Click to disable MutationMate annotations"
     }
 
     override fun getAlignment(): Alignment {
