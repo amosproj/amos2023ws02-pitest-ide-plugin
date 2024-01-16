@@ -25,7 +25,7 @@ class XMLListener(private var dir: Path, private var editor: Editor) {
 
     private fun loadResults() {
         val parser: XMLParser = XMLParser()
-        this.result = parser.loadResultsFromXmlReport(this.dir.toString())
+        this.result = parser.loadResultsFromXmlReport(this.dir.toString(),this.dir.toString())
     }
 
     fun displayResults() {

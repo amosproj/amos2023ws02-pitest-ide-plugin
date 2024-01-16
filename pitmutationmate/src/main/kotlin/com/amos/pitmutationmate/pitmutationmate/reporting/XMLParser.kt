@@ -9,16 +9,17 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 class XMLParser {
-    fun loadResultsFromXmlReport(xmlReportPath: String): ResultData {
+    fun loadResultsFromXmlReport(xmlMutationReportPath: String, xmlCoverageReportPath: String): ResultData {
         val resultData = ResultData()
         try {
             val documentBuilderFactory = DocumentBuilderFactory.newInstance()
             val documentBuilder = documentBuilderFactory.newDocumentBuilder()
-            val document = documentBuilder.parse(File(xmlReportPath))
+            val documentMutationReport = documentBuilder.parse(File(xmlMutationReportPath))
+            val documentCoverageReport = documentBuilder.parse(File(xmlCoverageReportPath))
 
-            extractMutationResults(document, resultData)
-            extractCoverageReports(document, resultData, false)
-            extractCoverageReports(document, resultData, true)
+            extractMutationResults(documentMutationReport, resultData)
+            extractCoverageReports(documentCoverageReport, resultData, false)
+            extractCoverageReports(documentCoverageReport, resultData, true)
         } catch (e: Exception) {
             // TODO: Handle Parser exceptions
             e.printStackTrace()
