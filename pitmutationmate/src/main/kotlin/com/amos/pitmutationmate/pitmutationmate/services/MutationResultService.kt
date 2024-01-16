@@ -24,10 +24,6 @@ class  MutationResultService(private val project: Project) {
 
     fun updateLastMutationResult(): XMLParser.ResultData? {
         lastMutationResult = getMutationResult()
-        return lastMutationResult;
-    }
-
-    fun getLastMutationResult(): XMLParser.ResultData? {
-        return lastMutationResult;
+        return lastMutationResult
     }
 }
