@@ -6,7 +6,7 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfiguration
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType
 import com.amos.pitmutationmate.pitmutationmate.editor.PluginState
-import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
+import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
 import com.amos.pitmutationmate.pitmutationmate.ui.ToolWindowFactory
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.execution.ExecutorRegistry
@@ -47,21 +47,10 @@ abstract class RunConfigurationAction : AnAction() {
         // TODO: ensure only the external annotator is rerun
         DaemonCodeAnalyzer.getInstance(project).restart()
 
-        // Update visualisation with mock results
-        // TODO: replace this by real results extracted by the HTMLParser
         val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
-        val coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
-            "Test",
-            "Test",
-            "Test",
-            lineCoveragePercentage = 80,
-            lineCoverageTextRatio = "160/200",
-            mutationCoveragePercentage = 50,
-            mutationCoverageTextRatio = "100/200",
-            testStrengthPercentage = 40,
-            testStrengthTextRatio = "80/200",
-            numberOfClasses = 1
-        )
+
+        //safe and get latest pitest results and update report toolWindow with it
+        val coverageReport = MutationResultService(project).updateLastMutationResult()?.coverageReports?.first()
         if (toolWindow != null) {
             ToolWindowFactory.Util.updateReport(toolWindow, coverageReport)
         }
