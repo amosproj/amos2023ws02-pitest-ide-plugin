@@ -4,9 +4,7 @@
 plugins {
     kotlin("jvm") version "1.9.21"
     `maven-publish`
-    idea
-    `java-gradle-plugin`
-    id("signing")
+    signing
 }
 
 group = "io.github.amosproj"
@@ -30,9 +28,14 @@ kotlin {
     jvmToolchain(17)
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 publishing {
     publications {
-        create<MavenPublication>("maven") {
+        create<MavenPublication>("mavenKotlin") {
             groupId = group.toString()
             artifactId = "coverage-reporter"
             version = project.version.toString()
@@ -41,21 +44,61 @@ publishing {
             pom {
                 name.set("Coverage Reporter")
                 description.set("Coverage Report writer for PIT")
+                url.set("https://github.com/amosproj/amos2023ws02-pitest-ide-plugin")
+
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/license/mit/")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("pitmutationmate")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/amosproj/amos2023ws02-pitest-ide-plugin.git")
+                    developerConnection.set("scm:git:ssh://github.com/amosproj/amos2023ws02-pitest-ide-plugin.git")
+                    url.set("https://github.com/amosproj/amos2023ws02-pitest-ide-plugin")
+                }
             }
+
         }
     }
 
     repositories {
-        maven {
+        /*maven {
+            name = "MavenSpace"
             credentials {
                 username = project.findProperty("spaceUsername").toString()
                 password = project.findProperty("spacePassword").toString()
             }
             url = uri("https://maven.pkg.jetbrains.space/pitmutationmate/p/main/coverage-reporter")
+        }*/
+        maven {
+            name = "OSSRH"
+            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            val snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+            credentials {
+                username = project.findProperty("ossrhUsername").toString()
+                password = project.findProperty("ossrhPassword").toString()
+            }
         }
+
     }
 }
 
+val signingKey: String? by project
+val signingPassword: String? by project
+
 signing {
-    sign(publishing.publications["maven"])
+    //sign(configurations["archives"])
+
+    if (signingKey != null && signingPassword != null) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    }
+    sign(publishing.publications)
 }
