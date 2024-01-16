@@ -50,7 +50,6 @@ abstract class RunConfigurationAction : AnAction() {
         // Update visualisation with mock results
         // TODO: replace this by real results extracted by the HTMLParser
         val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
-        val toolWindowFactorySingleton = ToolWindowFactory()
         val coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
             "Test",
             "Test",
@@ -64,7 +63,7 @@ abstract class RunConfigurationAction : AnAction() {
             numberOfClasses = 1
         )
         if (toolWindow != null) {
-            toolWindowFactorySingleton.updateReport(toolWindow, coverageReport)
+            ToolWindowFactory.Util.updateReport(toolWindow, coverageReport)
         }
     }
 

@@ -31,23 +31,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
         } else {
             Util.initiateWithData(toolWindow)
             // TODO: fetch most recent results to display (e.g. when opening up the editor and previous Pitest runs are saved)
-            updateReport(toolWindow, null)
-        }
-    }
-
-    fun updateReport(toolWindow: ToolWindow, newCoverageReport: XMLParser.CoverageReport?) {
-        val report = if (newCoverageReport != null) {
-            PiTestClassReport(newCoverageReport)
-        } else {
-            null
-        }
-        val reportWindow = toolWindow.contentManager.findContent(PiTestReports.TITLE).component
-
-        if (reportWindow is PiTestReports) {
-            if (report != null) {
-                reportWindow.addReport(report)
-            }
-            reportWindow.visualizeReports()
+            Util.updateReport(toolWindow, null)
         }
     }
 
@@ -73,6 +57,24 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             toolWindow.contentManager.addContent(table)
             toolWindow.contentManager.addContent(lineChart)
             toolWindow.contentManager.addContent(barChart)
+
+            updateReport(toolWindow, null)
+        }
+
+        fun updateReport(toolWindow: ToolWindow, newCoverageReport: XMLParser.CoverageReport?) {
+            val report = if (newCoverageReport != null) {
+                PiTestClassReport(newCoverageReport)
+            } else {
+                null
+            }
+            val reportWindow = toolWindow.contentManager.findContent(PiTestReports.TITLE).component
+
+            if (reportWindow is PiTestReports) {
+                if (report != null) {
+                    reportWindow.addReport(report)
+                }
+                reportWindow.visualizeReports()
+            }
         }
     }
 }
