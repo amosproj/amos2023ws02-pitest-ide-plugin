@@ -35,7 +35,7 @@ class ReportPathGeneratorService(private val project: Project) {
      */
     fun getReportMutationsFile(): Path {
         var path = getReportPath()
-        if(Files.exists(Paths.get("$path/debug"))) {
+        if (Files.exists(Paths.get("$path/debug"))) {
             path = Path.of("$path/debug")
         }
         return Path.of("$path/mutations.xml")
