@@ -136,7 +136,9 @@ class ContextMenuAction : RunConfigurationAction() {
             if (psiElement is PsiDirectory) {
                 val directory: File = File(psiElement.virtualFile.path.toString())
                 var returnValue: Boolean = false
-                directory.walk().filter { it.isFile && (it.extension == "kt" || it.extension == "java") }.forEach { if (!it.name.contains("Test")) {returnValue = true} }
+                directory.walk()
+                    .filter { it.isFile && (it.extension == "kt" || it.extension == "java") }
+                    .forEach { if (!it.name.contains("Test")) { returnValue = true } }
                 return returnValue
             }
             return false
