@@ -123,8 +123,12 @@ class PluginCheckerService(private val project: Project) {
         val kotlinChecker = PluginCheckerKotlin()
         psiFile?.node?.psi?.accept(kotlinChecker)
 
-        isKotlinPitestPluginAvailable = kotlinChecker.pitestPluginAvailable
-        isKotlinCompanionPluginAvailable = kotlinChecker.companionPluginAvailable
+        if (!isKotlinPitestPluginAvailable) {
+            isKotlinPitestPluginAvailable = kotlinChecker.pitestPluginAvailable
+        }
+        if (!isKotlinCompanionPluginAvailable) {
+            isKotlinCompanionPluginAvailable = kotlinChecker.companionPluginAvailable
+        }
     }
 
     private fun checkGroovyBuildFile(groovyBuildFile: VirtualFile) {
@@ -140,8 +144,12 @@ class PluginCheckerService(private val project: Project) {
         for (node in nodes) {
             node.visit(groovyChecker)
         }
-        isGroovyPitestPluginAvailable = groovyChecker.pitestPluginAvailable
-        isGroovyCompanionPluginAvailable = groovyChecker.companionPluginAvailable
+        if (!isGroovyPitestPluginAvailable) {
+            isGroovyPitestPluginAvailable = groovyChecker.pitestPluginAvailable
+        }
+        if (!isGroovyCompanionPluginAvailable) {
+            isGroovyCompanionPluginAvailable = groovyChecker.companionPluginAvailable
+        }
     }
 
     private fun getInputStreamFromVirtualFile(virtualFile: VirtualFile): InputStream? {
