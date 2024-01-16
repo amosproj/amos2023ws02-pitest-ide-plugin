@@ -14,7 +14,7 @@ pids
 
 # Gradle
 .gradle
-gradle.properties
+**/gradle.properties
 
 # Java
 .classpath

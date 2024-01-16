@@ -43,7 +43,7 @@ class RunArchiver(packageName: String, project: Project) {
                 file.copyTo(destinationFile, overwrite = true)
                 println("Report ${file.path} saved successfully")
             } catch (e: Exception) {
-                println("Error saving report")
+                println("ErrorDialog saving report")
             }
         }
     }
