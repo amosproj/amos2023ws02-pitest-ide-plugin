@@ -119,6 +119,10 @@ class PiTestClassReport(
     fun getCustomHeight(): Int {
         return this.height
     }
+
+    fun getCoverageReport(): XMLParser.CoverageReport {
+        return this.coverageReport
+    }
 }
 
 class PiTestReports : JPanel() {
@@ -164,7 +168,7 @@ class PiTestReports : JPanel() {
             if (i < 5) {
                 this.reports[i].renderer()
                 heights += this.reports[i].getCustomHeight()
-                rows += arrayOf(getLabel("Placeholder Class"), this.reports[i])
+                rows += arrayOf(getLabel(this.reports[i].getCoverageReport().fileName), this.reports[i])
             } else {
                 this.summary.renderer()
                 heights += this.summary.getCustomHeight()

@@ -51,7 +51,7 @@ abstract class RunConfigurationAction : AnAction() {
         // TODO: replace this by real results extracted by the HTMLParser
         val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
         val coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
-            "Test",
+            classFQN.toString(),
             "Test",
             "Test",
             lineCoveragePercentage = 80,
