@@ -3,8 +3,10 @@
 
 package com.amos.pitmutationmate.pitmutationmate.execution
 
+import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
 import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorService
 import com.amos.pitmutationmate.pitmutationmate.services.UdpMessagingServer
+import com.amos.pitmutationmate.pitmutationmate.ui.ToolWindowFactory
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.ProcessAdapter
 import com.intellij.execution.process.ProcessEvent
@@ -14,6 +16,8 @@ import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.wm.ToolWindow
+import com.intellij.openapi.wm.ToolWindowManager
 import java.nio.file.Path
 
 abstract class BasePitestExecutor {
@@ -38,6 +42,13 @@ abstract class BasePitestExecutor {
             override fun processTerminated(event: ProcessEvent) {
                 log.debug("BasePitestExecutor: executeTask: processTerminated: event: $event")
                 messagingServer.stopServer() // Stop the UDP server
+                //update tool window with latest result data
+                val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
+                //safe and get latest pitest results and update report toolWindow with it
+                val coverageReport = MutationResultService(project).updateLastMutationResult()?.coverageReports?.first()
+                if (toolWindow != null) {
+                    ToolWindowFactory.Util.updateReport(toolWindow, coverageReport)
+                }
             }
         })
         ProcessTerminatedListener.attach(processHandler)

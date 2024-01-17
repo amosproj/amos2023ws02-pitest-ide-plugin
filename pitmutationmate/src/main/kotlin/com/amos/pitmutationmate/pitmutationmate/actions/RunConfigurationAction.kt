@@ -46,14 +46,7 @@ abstract class RunConfigurationAction : AnAction() {
         PluginState.isAnnotatorEnabled = true
         // TODO: ensure only the external annotator is rerun
         DaemonCodeAnalyzer.getInstance(project).restart()
-
-        val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
-
-        //safe and get latest pitest results and update report toolWindow with it
-        val coverageReport = MutationResultService(project).updateLastMutationResult()?.coverageReports?.first()
-        if (toolWindow != null) {
-            ToolWindowFactory.Util.updateReport(toolWindow, coverageReport)
-        }
+        //moved tool window update since if it's done pitest didn't run through
     }
 
     private fun getRunConfig(runConfigs: List<RunnerAndConfigurationSettings>): RunnerAndConfigurationSettings {
