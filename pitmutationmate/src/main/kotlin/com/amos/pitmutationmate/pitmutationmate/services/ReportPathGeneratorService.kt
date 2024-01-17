@@ -41,7 +41,7 @@ class ReportPathGeneratorService(private val project: Project) {
      * @return the path to the report file
      */
     fun getReportMutationsFile(): Path {
-        var path = checkForDebugBuiltType()
+        val path = checkForDebugBuiltType()
         return Path.of("$path/mutations.xml")
     }
 
@@ -50,8 +50,8 @@ class ReportPathGeneratorService(private val project: Project) {
      * @return the path to the report file
      */
     fun getReportCoverageFile(): Path {
-        var path = checkForDebugBuiltType()
-        return Path.of("$path/coverage.xml")
+        val path = checkForDebugBuiltType()
+        return Path.of("$path/coverageInformation.xml")
     }
 
     /**

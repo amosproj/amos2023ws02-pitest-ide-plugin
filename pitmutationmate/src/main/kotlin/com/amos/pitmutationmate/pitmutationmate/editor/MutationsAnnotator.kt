@@ -66,7 +66,7 @@ class MutationsAnnotator :
         }
         log.debug("collectInformation")
         val resultGenerator = file.project.service<MutationResultService>()
-        return resultGenerator.getMutationResult().mutationResults.filter { it.sourceFile == file.name }
+        return resultGenerator.getMutationResult()?.mutationResults?.filter { it.sourceFile == file.name }
     }
 
     override fun doAnnotate(

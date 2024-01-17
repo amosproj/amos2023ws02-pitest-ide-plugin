@@ -6,8 +6,6 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfiguration
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType
 import com.amos.pitmutationmate.pitmutationmate.editor.PluginState
-import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
-import com.amos.pitmutationmate.pitmutationmate.ui.ToolWindowFactory
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.execution.ExecutorRegistry
 import com.intellij.execution.ProgramRunnerUtil
@@ -15,8 +13,6 @@ import com.intellij.execution.RunManager
 import com.intellij.execution.RunnerAndConfigurationSettings
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.wm.ToolWindow
-import com.intellij.openapi.wm.ToolWindowManager
 
 abstract class RunConfigurationAction : AnAction() {
     fun updateAndExecuteRunConfig(classFQN: String?, project: Project) {
@@ -46,25 +42,7 @@ abstract class RunConfigurationAction : AnAction() {
         PluginState.isAnnotatorEnabled = true
         // TODO: ensure only the external annotator is rerun
         DaemonCodeAnalyzer.getInstance(project).restart()
-
-        // Update visualisation with mock results
-        // TODO: replace this by real results extracted by the HTMLParser
-        val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
-        val coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
-            classFQN.toString(),
-            "Test",
-            "Test",
-            lineCoveragePercentage = 80,
-            lineCoverageTextRatio = "160/200",
-            mutationCoveragePercentage = 50,
-            mutationCoverageTextRatio = "100/200",
-            testStrengthPercentage = 40,
-            testStrengthTextRatio = "80/200",
-            numberOfClasses = 1
-        )
-        if (toolWindow != null) {
-            ToolWindowFactory.Util.updateReport(toolWindow, coverageReport)
-        }
+        // moved tool window update since if it's done pitest didn't run through
     }
 
     private fun getRunConfig(runConfigs: List<RunnerAndConfigurationSettings>): RunnerAndConfigurationSettings {
