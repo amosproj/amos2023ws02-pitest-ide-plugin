@@ -6,8 +6,6 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfiguration
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType
 import com.amos.pitmutationmate.pitmutationmate.editor.PluginState
-import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
-import com.amos.pitmutationmate.pitmutationmate.ui.ToolWindowFactory
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.execution.ExecutorRegistry
 import com.intellij.execution.ProgramRunnerUtil
@@ -15,8 +13,6 @@ import com.intellij.execution.RunManager
 import com.intellij.execution.RunnerAndConfigurationSettings
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.wm.ToolWindow
-import com.intellij.openapi.wm.ToolWindowManager
 
 abstract class RunConfigurationAction : AnAction() {
     fun updateAndExecuteRunConfig(classFQN: String?, project: Project) {
