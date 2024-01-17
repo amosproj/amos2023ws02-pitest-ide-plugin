@@ -25,8 +25,9 @@ class LaunchActivity : ProjectActivity {
             ApplicationManager.getApplication().invokeLater { pluginChecker.checkPlugins(buildFiles) }
             // Open test results on loading project if reports are present
             ApplicationManager.getApplication().invokeLater {
-                val coverageReport = MutationResultService(project).updateLastMutationResult()?.coverageReports?.first()
-                val mutationReport = MutationResultService(project).updateLastMutationResult()?.mutationResults?.first()
+                val reportGeneratorService = project.service<MutationResultService>()
+                val coverageReport = reportGeneratorService.updateLastMutationResult()?.coverageReports?.first()
+                val mutationReport = reportGeneratorService.updateLastMutationResult()?.mutationResults?.first()
                 // Check if coverageResult is stored
                 if (coverageReport != null) {
                     // Update ToolWindow

@@ -45,7 +45,7 @@ abstract class BasePitestExecutor {
                 // update tool window with latest result data
                 val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
                 // safe and get latest pitest results and update report toolWindow with it
-                val coverageReport = MutationResultService(project).updateLastMutationResult()?.coverageReports?.first()
+                val coverageReport = project.service<MutationResultService>().updateLastMutationResult()?.coverageReports?.first()
                 if (toolWindow != null) {
                     ToolWindowFactory.Util.updateReport(toolWindow, coverageReport)
                 }
