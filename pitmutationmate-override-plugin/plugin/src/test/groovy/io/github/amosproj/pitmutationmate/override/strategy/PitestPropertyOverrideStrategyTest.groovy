@@ -10,6 +10,7 @@
 package io.github.amosproj.pitmutationmate.override.strategy
 
 import io.github.amosproj.pitmutationmate.override.PITConfigurationValues
+import io.github.amosproj.pitmutationmate.override.utils.PitestSampleFailingExtension
 import nebula.test.ProjectSpec
 import org.gradle.api.GradleException
 import org.gradle.api.file.Directory
@@ -168,8 +169,3 @@ class PitestPropertyOverrideStrategyTest extends ProjectSpec {
 
 }
 
-class PitestSampleFailingExtension {
-
-    String doesNotExist
-
-}
