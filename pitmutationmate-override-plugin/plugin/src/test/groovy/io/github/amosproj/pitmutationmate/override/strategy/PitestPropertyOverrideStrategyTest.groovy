@@ -17,13 +17,13 @@ import org.gradle.api.file.Directory
 import java.nio.file.Files
 
 /**
- * Tests for [GradlePitestPluginOverrideStrategy].
+ * Tests for [PitestPropertyOverrideStrategy].
  */
-class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
+class PitestPropertyOverrideStrategyTest extends ProjectSpec {
 
     def "Throws exception if pitest extension cannot be resolved"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
 
         when:
         overrideStrategy.apply(project, 'doesntExist', 'test')
@@ -35,7 +35,7 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
 
    def "Throws exception if extension does not have property"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
         project.extensions.add('pitest', new Object())
 
         when:
@@ -48,20 +48,20 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
 
    def "Throws exception if PITConfigurationValues does not have property"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
         project.extensions.create('pitest', PitestSampleFailingExtension)
 
         when:
-        overrideStrategy.apply(project, 'doesntExist', 'test')
+        overrideStrategy.apply(project, 'doesNotExist', 'test')
 
         then:
         Throwable t = thrown(GradleException)
-        t.message == "Cannot override property 'doesntExist' for pitest extension: Unknown Property."
+        t.message == "Cannot override property 'doesNotExist' for pitest extension: Unknown Property."
    }
 
    def "Can override pitest property threads"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
         project.extensions.create('pitest', PITConfigurationValues)
         assert project.pitest.threads == 4
 
@@ -74,7 +74,7 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
 
    def "Can override pitest property verbose"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
         project.extensions.create('pitest', PITConfigurationValues)
         assert project.pitest.verbose == true
 
@@ -87,7 +87,7 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
 
    def "Can override pitest property includeLaunchClasspath"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
         project.extensions.create('pitest', PITConfigurationValues)
         assert project.pitest.includeLaunchClasspath == true
 
@@ -100,7 +100,7 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
 
    def "Can override pitest property timestampedReports"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
         project.extensions.create('pitest', PITConfigurationValues)
         assert project.pitest.timestampedReports == true
 
@@ -113,7 +113,7 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
 
    def "Can override pitest property targetClasses"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
         project.extensions.create('pitest', PITConfigurationValues)
         assert project.pitest.targetClasses == [ "test1", "test2" ].toSet()
 
@@ -126,7 +126,7 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
 
    def "Can override pitest property targetTests"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
         project.extensions.create('pitest', PITConfigurationValues)
         assert project.pitest.targetTests == [ "test3", "test4" ].toSet()
 
@@ -139,7 +139,7 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
 
    def "Can override pitest property outputFormats"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
         project.extensions.create('pitest', PITConfigurationValues)
         assert project.pitest.outputFormats == [ "XML", "HTML" ].toSet()
 
@@ -152,7 +152,7 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
 
    def "Can override pitest property reportDir"() {
         given:
-        OverrideStrategy overrideStrategy = new GradlePitestPluginOverrideStrategy()
+        OverrideStrategy overrideStrategy = new PitestPropertyOverrideStrategy()
         project.extensions.create('pitest', PITConfigurationValues)
         def givenDir = new File('build/reports/pitest') as Directory
         def newDirPath = Files.createTempDirectory("myTempDirPrefix")
@@ -170,6 +170,6 @@ class GradlePitestPluginOverrideStrategyTest extends ProjectSpec {
 
 class PitestSampleFailingExtension {
 
-    String doesntExist
+    String doesNotExist
 
 }
