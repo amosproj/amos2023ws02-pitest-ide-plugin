@@ -31,8 +31,8 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")
 }
 
-version = "1.0"
 group = "io.github.amos-pitmutationmate.pitmutationmate.override"
+version = "1.1"
 
 gradlePlugin {
     website = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin"
