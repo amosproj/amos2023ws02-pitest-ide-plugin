@@ -42,9 +42,9 @@ abstract class BasePitestExecutor {
             override fun processTerminated(event: ProcessEvent) {
                 log.debug("BasePitestExecutor: executeTask: processTerminated: event: $event")
                 messagingServer.stopServer() // Stop the UDP server
-                //update tool window with latest result data
+                // update tool window with latest result data
                 val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
-                //safe and get latest pitest results and update report toolWindow with it
+                // safe and get latest pitest results and update report toolWindow with it
                 val coverageReport = MutationResultService(project).updateLastMutationResult()?.coverageReports?.first()
                 if (toolWindow != null) {
                     ToolWindowFactory.Util.updateReport(toolWindow, coverageReport)

@@ -10,7 +10,7 @@ import com.intellij.openapi.project.Project
 import kotlin.io.path.exists
 
 @Service(Service.Level.PROJECT)
-class  MutationResultService(private val project: Project) {
+class MutationResultService(private val project: Project) {
 
     private var lastMutationResult: XMLParser.ResultData? = null
 
@@ -19,9 +19,9 @@ class  MutationResultService(private val project: Project) {
         val mutationReportPath = reportPathGenerator.getReportMutationsFile()
         val coverageReportPath = reportPathGenerator.getReportCoverageFile()
 
-        if (mutationReportPath.exists() && coverageReportPath.exists()){
+        if (mutationReportPath.exists() && coverageReportPath.exists()) {
             val parser = XMLParser()
-            return parser.loadResultsFromXmlReport(mutationReportPath.toString(),coverageReportPath.toString())
+            return parser.loadResultsFromXmlReport(mutationReportPath.toString(), coverageReportPath.toString())
         }
         return null
     }

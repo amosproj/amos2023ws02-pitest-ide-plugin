@@ -23,21 +23,21 @@ class LaunchActivity : ProjectActivity {
             val buildFiles = BuildSystemUtils.getProjectBuildFiles(project)
             thisLogger().debug("Detected buildFiles to analyze with PluginCheckerService on project open: $buildFiles")
             ApplicationManager.getApplication().invokeLater { pluginChecker.checkPlugins(buildFiles) }
-            //Open test results on loading project if reports are present
+            // Open test results on loading project if reports are present
             ApplicationManager.getApplication().invokeLater {
                 val coverageReport = MutationResultService(project).updateLastMutationResult()?.coverageReports?.first()
                 val mutationReport = MutationResultService(project).updateLastMutationResult()?.mutationResults?.first()
-                //Check if coverageResult is stored
+                // Check if coverageResult is stored
                 if (coverageReport != null) {
-                    //Update ToolWindow
+                    // Update ToolWindow
                     val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("Pitest")
                     if (toolWindow != null) {
                         ToolWindowFactory.Util.updateReport(toolWindow, coverageReport)
                     }
                 }
-                //Check if mutationResult is stored
-                if (mutationReport != null){
-                    //Enable Annotator to display information
+                // Check if mutationResult is stored
+                if (mutationReport != null) {
+                    // Enable Annotator to display information
                     PluginState.isAnnotatorEnabled = true
                 }
             }
