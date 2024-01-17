@@ -31,8 +31,8 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")
 }
 
-group = "io.github.amosproj"
 version = "1.0"
+group = "io.github.amos-pitmutationmate.pitmutationmate.override"
 
 gradlePlugin {
     website = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin"
@@ -40,7 +40,7 @@ gradlePlugin {
 
     plugins {
         create("pitmutationmate-partner-plugin") {
-            id = "io.github.amosproj.pitmutationmate.override"
+            id = "io.github.amos-pitmutationmate.pitmutationmate.override"
             displayName = "PITMutationMate Partner Plugin"
             description = "A plugin that lets you override the PITest settings of the gradle-pitest-plugin " +
                 "to use with the PITMutationMate  Intellij plugin."
