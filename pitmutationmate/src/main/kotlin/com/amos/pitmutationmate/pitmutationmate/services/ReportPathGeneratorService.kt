@@ -27,6 +27,14 @@ class ReportPathGeneratorService(private val project: Project) {
         return Path.of("$projectBasePath/build/reports/pitest/test")
     }
 
+    private fun checkForDebugBuiltType(): Path {
+        var path = getReportPath()
+        if (Files.exists(Path.of("$path/debug"))) {
+            path = Path.of("$path/debug")
+        }
+        return path
+    }
+
     /**
      * Returns the path to mutations.xml.
      * @return the path to the report file

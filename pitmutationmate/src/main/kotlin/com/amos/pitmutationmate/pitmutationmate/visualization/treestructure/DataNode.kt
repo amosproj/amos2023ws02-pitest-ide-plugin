@@ -2,11 +2,11 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.amos.pitmutationmate.pitmutationmate.visualization.treetable
-
+package com.amos.pitmutationmate.pitmutationmate.visualization.treestructure
 
 class DataNode(
     val name: String,
+    val nbClasses: Int,
     val lineCoverage: String,
     val mutationCoverage: String,
     val testStrength: String,
@@ -20,7 +20,7 @@ class DataNode(
     }
 
     /**
-     * Knotentext vom JTree.
+     * Node text from the JTree.
      */
     override fun toString(): String {
         return name
