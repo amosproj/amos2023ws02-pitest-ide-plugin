@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.amos.pitmutationmate.pitmutationmate.visualization
+/*package com.amos.pitmutationmate.pitmutationmate.visualization
 
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartPanel
@@ -53,3 +53,4 @@ class BarGraph : JPanel() {
         return dataset
     }
 }
+*/

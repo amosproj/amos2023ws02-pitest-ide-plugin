@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023 2023
 //
 // SPDX-License-Identifier: MIT
-
+/*
 package com.amos.pitmutationmate.pitmutationmate.visualization
 
 import org.jfree.chart.ChartFactory
@@ -48,3 +48,4 @@ class LineGraph : JPanel() {
         return dataset
     }
 }
+*/
