@@ -16,7 +16,6 @@ repositories {
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    // https://mvnrepository.com/artifact/org.pitest/pitest-command-line
     implementation("org.pitest:pitest-command-line:1.15.3")
 }
 
@@ -69,14 +68,6 @@ publishing {
     }
 
     repositories {
-        /*maven {
-            name = "MavenSpace"
-            credentials {
-                username = project.findProperty("spaceUsername").toString()
-                password = project.findProperty("spacePassword").toString()
-            }
-            url = uri("https://maven.pkg.jetbrains.space/pitmutationmate/p/main/coverage-reporter")
-        }*/
         maven {
             name = "OSSRH"
             val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -95,8 +86,6 @@ val signingKey: String? by project
 val signingPassword: String? by project
 
 signing {
-    //sign(configurations["archives"])
-
     if (signingKey != null && signingPassword != null) {
         useInMemoryPgpKeys(signingKey, signingPassword)
     }
