@@ -33,12 +33,6 @@ jobs:
         run: ./gradlew test --no-daemon
         working-directory: "pitmutationmate"
 
-      # Run Qodana inspections
-      - name: Qodana - Code Inspection
-        uses: JetBrains/qodana-action@v2023.2.8
-        with:
-          cache-default-branch-only: true
-
       - name: Run Plugin Verification tasks
         run: ./gradlew runPluginVerifier --no-daemon
         working-directory: "pitmutationmate"
