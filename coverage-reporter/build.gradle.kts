@@ -63,7 +63,6 @@ publishing {
                     url.set("https://github.com/amosproj/amos2023ws02-pitest-ide-plugin")
                 }
             }
-
         }
     }
 
@@ -78,7 +77,6 @@ publishing {
                 password = project.findProperty("ossrhPassword").toString()
             }
         }
-
     }
 }
 
