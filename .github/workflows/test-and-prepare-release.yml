@@ -62,10 +62,10 @@ jobs:
           PROPERTIES="$(./gradlew properties --console=plain -q)"
           VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
 
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "pluginVerifierHomeDir=~/.pluginVerifier" >> $GITHUB_OUTPUT
-
-          echo "EOF" >> $GITHUB_OUTPUT
+          {
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "pluginVerifierHomeDir=~/.pluginVerifier" >> $GITHUB_OUTPUT
+          } >> $GITHUB_OUTPUT
           # prepare list of IDEs for Plugin Verifier
           ./gradlew listProductsReleases
         working-directory: "pitmutationmate"
