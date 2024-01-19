@@ -27,7 +27,7 @@ class TypesPropertyIntegrationTest extends IntegrationSpec {
         logLevel = LogLevel.DEBUG
         fork = true
         buildFile << """
-        apply plugin: 'io.github.amosproj.pitmutationmate.override'
+        apply plugin: 'io.github.amos-pitmutationmate.pitmutationmate.override'
         """
     }
 

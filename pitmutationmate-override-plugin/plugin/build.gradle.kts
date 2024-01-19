@@ -25,14 +25,14 @@ tasks.test {
 
 dependencies {
     implementation("commons-beanutils:commons-beanutils-core:1.8.3")
-    implementation("com.netflix.nebula:nebula-test:10.3.0")
 
+    testImplementation("com.netflix.nebula:nebula-test:10.3.0")
     testImplementation("org.spockframework:spock-core:2.2-groovy-3.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")
 }
 
-group = "io.github.amosproj"
-version = "1.0"
+group = "io.github.amos-pitmutationmate.pitmutationmate.override"
+version = "1.1"
 
 gradlePlugin {
     website = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin"
@@ -40,7 +40,7 @@ gradlePlugin {
 
     plugins {
         create("pitmutationmate-partner-plugin") {
-            id = "io.github.amosproj.pitmutationmate.override"
+            id = "io.github.amos-pitmutationmate.pitmutationmate.override"
             displayName = "PITMutationMate Partner Plugin"
             description = "A plugin that lets you override the PITest settings of the gradle-pitest-plugin " +
                 "to use with the PITMutationMate  Intellij plugin."
