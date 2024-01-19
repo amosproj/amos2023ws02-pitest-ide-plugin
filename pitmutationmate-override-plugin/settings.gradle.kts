@@ -2,5 +2,5 @@
 //
 // SPDX-License-Identifier: MIT
 
-rootProject.name = "io.github.amosproj.pitmutationmate.override"
+rootProject.name = "io.github.amos-pitmutationmate.pitmutationmate.override"
 include("plugin")

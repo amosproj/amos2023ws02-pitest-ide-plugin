@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.plugincheck
 
+import com.intellij.openapi.diagnostic.thisLogger
 import org.jetbrains.kotlin.idea.structuralsearch.visitor.KotlinRecursiveElementVisitor
 import org.jetbrains.kotlin.psi.KtCallExpression
 
@@ -20,11 +21,13 @@ class PluginCheckerKotlin : KotlinRecursiveElementVisitor() {
             if (expression.valueArgumentList != null) {
                 for (arg in expression.valueArgumentList!!.arguments) {
                     val pluginName = arg.text
-                    if (pluginName.contains("pitest")) {
+                    if (pluginName.contains(PluginName.PITEST)) {
                         pitestPluginAvailable = true
+                        thisLogger().debug("kotlin - pitest plugin available")
                     }
-                    if (pluginName.contains("io.github.amosproj.pitmutationmate.override")) {
+                    if (pluginName.contains(PluginName.COMPANION)) {
                         companionPluginAvailable = true
+                        thisLogger().debug("kotlin - companion plugin available")
                     }
                 }
             }

@@ -19,9 +19,10 @@ class XMLParserTests {
 
     @Test
     fun loadResultsFromXml_reportFlyerReport() {
-        val file = getTestInputFilepath("test_report/mutations.xml")
+        val file1 = getTestInputFilepath("test_report/mutations.xml")
+        val file2 = getTestInputFilepath("test_report/coverageInformation.xml")
         val parser = XMLParser()
-        val actualResultData = parser.loadResultsFromXmlReport(file.absolutePath)
+        val actualResultData = parser.loadResultsFromXmlReport(file1.absolutePath, file2.absolutePath)
 
         assertTrue(actualResultData.mutationResults.isNotEmpty())
 
@@ -39,18 +40,20 @@ class XMLParserTests {
 
     @Test
     fun loadResultFromXml_missingXmlNode() {
-        val file = getTestInputFilepath("test_report/mutations_missingXmlNode.xml")
+        val file1 = getTestInputFilepath("test_report/mutations_missingXmlNode.xml")
+        val file2 = getTestInputFilepath("test_report/coverageInformation.xml")
         val parser = XMLParser()
-        val actualResultData = parser.loadResultsFromXmlReport(file.absolutePath)
+        val actualResultData = parser.loadResultsFromXmlReport(file1.absolutePath, file2.absolutePath)
 
         assertTrue(actualResultData.mutationResults.isNotEmpty())
     }
 
     @Test
     fun loadResultFromXml_additionalXmlNode() {
-        val file = getTestInputFilepath("test_report/mutations_additionalNodes.xml")
+        val file1 = getTestInputFilepath("test_report/mutations_additionalNodes.xml")
+        val file2 = getTestInputFilepath("test_report/coverageInformation.xml")
         val parser = XMLParser()
-        val actualResultData = parser.loadResultsFromXmlReport(file.absolutePath)
+        val actualResultData = parser.loadResultsFromXmlReport(file1.absolutePath, file2.absolutePath)
 
         assertTrue(actualResultData.mutationResults.isNotEmpty())
     }
