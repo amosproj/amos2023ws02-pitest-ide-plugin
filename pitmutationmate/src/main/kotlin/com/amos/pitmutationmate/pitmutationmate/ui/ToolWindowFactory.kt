@@ -29,8 +29,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
         if (pluginError != null) {
             Util.initiateWithConfigError(pluginError, toolWindow)
         } else {
-            Util.initiateWithData(toolWindow)
-            // TODO: fetch most recent results to display (e.g. when opening up the editor and previous Pitest runs are saved)
+            Util.initiateWithData(toolWindow, project)
             Util.updateReport(toolWindow, null)
         }
     }
@@ -44,19 +43,18 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             toolWindow.contentManager.addContent(errorContent)
         }
 
-        fun initiateWithData(toolWindow: ToolWindow) {
+        fun initiateWithData(toolWindow: ToolWindow, project : Project) {
             toolWindow.contentManager.removeAllContents(true)
-            // TODO: fetch most recent results to display (e.g. when opening up the editor and previous Pitest runs are saved)
 
             val coverageReport = ContentFactory.getInstance().createContent(PiTestReports(), PiTestReports.TITLE, false)
-            val table = ContentFactory.getInstance().createContent(TreeStructureTable(), TreeStructureTable.TITLE, false)
+            val table = ContentFactory.getInstance().createContent(TreeStructureTable(project), TreeStructureTable.TITLE, false)
             val lineChart = ContentFactory.getInstance().createContent(LineGraph(), LineGraph.TITLE, false)
             val barChart = ContentFactory.getInstance().createContent(BarGraph(), BarGraph.TITLE, false)
 
             toolWindow.contentManager.addContent(coverageReport)
             toolWindow.contentManager.addContent(table)
-            toolWindow.contentManager.addContent(lineChart)
-            toolWindow.contentManager.addContent(barChart)
+            //toolWindow.contentManager.addContent(lineChart)
+            //toolWindow.contentManager.addContent(barChart)
 
             updateReport(toolWindow, null)
         }
