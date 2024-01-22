@@ -55,13 +55,6 @@ class RunConfiguration(
             logger.debug("MutationMateRunConfiguration: classFQN was updated to '$classFQN'.")
         }
 
-    var overwriteScope: Boolean
-        get() = options.overwriteScope
-        set(overwriteScope) {
-            options.overwriteScope = overwriteScope
-            logger.debug("MutationMateRunConfiguration: overwriteScope was updated to '$overwriteScope'.")
-        }
-
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
         return com.amos.pitmutationmate.pitmutationmate.configuration.SettingsEditor()
     }

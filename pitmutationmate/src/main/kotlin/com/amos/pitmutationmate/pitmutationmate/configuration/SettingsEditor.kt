@@ -17,7 +17,6 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     private val myPanel: JPanel
     private val gradleTaskField: TextFieldWithHistory = TextFieldWithHistory()
     private val gradleExecutableField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
-    private val overwriteCheckbox: JCheckBox = JCheckBox("No Overwrite")
     private val scopeField: JBTextField = JBTextField()
 
     init {
@@ -30,7 +29,6 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
         )
         scopeField.emptyText.setText("com.myproj.package1.classA,com.myproj.package1.classB,com.myproj.package2.classC,...")
         myPanel = FormBuilder.createFormBuilder()
-            .addLabeledComponent("Overwrite behavior", overwriteCheckbox)
             .addLabeledComponent("Gradle task", gradleTaskField)
             .addLabeledComponent("Gradle script", gradleExecutableField)
             .addLabeledComponent("Scope", scopeField)
@@ -38,14 +36,12 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     }
 
     override fun resetEditorFrom(runConfiguration: RunConfiguration) {
-        overwriteCheckbox.isSelected = runConfiguration.overwriteScope
         scopeField.text = runConfiguration.classFQN
         gradleTaskField.text = runConfiguration.taskName
         runConfiguration.gradleExecutable.also { gradleExecutableField.text = it ?: "" }
     }
 
     override fun applyEditorTo(runConfiguration: RunConfiguration) {
-        runConfiguration.overwriteScope = overwriteCheckbox.isSelected
         runConfiguration.classFQN = scopeField.text
         runConfiguration.taskName = gradleTaskField.text
         runConfiguration.gradleExecutable = gradleExecutableField.text

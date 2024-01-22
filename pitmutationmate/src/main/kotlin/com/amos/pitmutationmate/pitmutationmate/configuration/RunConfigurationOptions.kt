@@ -28,5 +28,4 @@ class RunConfigurationOptions : RunConfigurationOptions() {
             gradleExecutableOption.setValue(this, value)
         }
 
-    var overwriteScope: Boolean by property(false)
 }
