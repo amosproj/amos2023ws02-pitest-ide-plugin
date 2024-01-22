@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2023 Lennart Heimbs <lennart@heimbs.me>
+// SPDX-FileCopyrightText: 2023 Lennart Heimbs <lennart@heimbs.me>, Brianne Oberson
 
 package com.amos.pitmutationmate.pitmutationmate.configuration
 
@@ -27,4 +27,6 @@ class RunConfigurationOptions : RunConfigurationOptions() {
         set(value) {
             gradleExecutableOption.setValue(this, value)
         }
+
+    var overwriteScope: Boolean by property(false)
 }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2023 Lennart Heimbs
+// SPDX-FileCopyrightText: 2023 Lennart Heimbs, Brianne Oberson
 
 package com.amos.pitmutationmate.pitmutationmate.configuration
 
@@ -53,6 +53,13 @@ class RunConfiguration(
         set(classFQN) {
             options.classFQN = classFQN
             logger.debug("MutationMateRunConfiguration: classFQN was updated to '$classFQN'.")
+        }
+
+    var overwriteScope: Boolean
+        get() = options.overwriteScope
+        set(overwriteScope) {
+            options.overwriteScope = overwriteScope
+            logger.debug("MutationMateRunConfiguration: overwriteScope was updated to '$overwriteScope'.")
         }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
