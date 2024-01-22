@@ -9,8 +9,10 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.ui.TextFieldWithHistory
 import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
-import javax.swing.JCheckBox
+import com.intellij.util.ui.UIUtil
+import java.awt.Font
 import javax.swing.JComponent
+import javax.swing.JLabel
 import javax.swing.JPanel
 
 class SettingsEditor : SettingsEditor<RunConfiguration>() {
@@ -18,6 +20,7 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     private val gradleTaskField: TextFieldWithHistory = TextFieldWithHistory()
     private val gradleExecutableField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
     private val scopeField: JBTextField = JBTextField()
+    private val label = JLabel("Scope should be given as a comma-separated list (no spaces!)\nof the fully qualified names of the desired classes to test.", )
 
     init {
         gradleTaskField.text = "pitest"
@@ -28,10 +31,14 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
             FileChooserDescriptorFactory.createSingleFileDescriptor()
         )
         scopeField.emptyText.setText("com.myproj.package1.classA,com.myproj.package1.classB,com.myproj.package2.classC,...")
+        val userFont = UIUtil.getLabelFont()
+        val customFont = Font(userFont.name, userFont.style, 12)
+        label.font = customFont
         myPanel = FormBuilder.createFormBuilder()
             .addLabeledComponent("Gradle task", gradleTaskField)
             .addLabeledComponent("Gradle script", gradleExecutableField)
             .addLabeledComponent("Scope", scopeField)
+            .addLabeledComponent("", label)
             .panel
     }
 
