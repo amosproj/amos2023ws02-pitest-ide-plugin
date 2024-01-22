@@ -3,19 +3,16 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
+import com.amos.pitmutationmate.pitmutationmate.icons.Icons
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
-import com.intellij.icons.AllIcons
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtClass
-import com.intellij.openapi.util.IconLoader
-
 import javax.swing.Icon
 
 class GutterMarker : RunLineMarkerContributor() {
     override fun getInfo(psielement: PsiElement): Info? {
-        //val gutterIcon: Icon = AllIcons.General.ArrowRight
-        val gutterIcon: Icon = IconLoader.getIcon("/icons/pluginIcon.svg", javaClass)
+        val gutterIcon: Icon = Icons.RunButton
         if (psielement is PsiClass) {
             val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${psielement.name}'" }
             val fqn = psielement.qualifiedName
