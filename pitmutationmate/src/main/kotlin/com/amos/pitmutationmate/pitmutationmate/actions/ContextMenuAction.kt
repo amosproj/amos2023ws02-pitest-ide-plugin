@@ -50,6 +50,22 @@ class ContextMenuAction : RunConfigurationAction() {
             ?.let { PsiManager.getInstance(project).findFile(it) }
     }
 
+    private fun isTestFile(project: Project, file: File): Boolean {
+        val psiFile = getPsiFileFromPath(project, file.path)
+        val psiClasses = (psiFile as PsiClassOwner).classes
+
+        for (psiClass in psiClasses) {
+            val fqn = psiClass.qualifiedName
+            if (fqn != null) {
+                if (fqn.endsWith("Test")) {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+
     private fun actionEditorPopup(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
@@ -129,7 +145,7 @@ class ContextMenuAction : RunConfigurationAction() {
             val editor = e.getData(CommonDataKeys.EDITOR)
             val psiElement = psiFile?.findElementAt(editor?.caretModel!!.offset)
             val validClass = (findEnclosingClass(psiElement) != null)
-            return validFile && validClass
+            return validFile && validClass && !isTestFile(e.project!!, File(psiFile!!.virtualFile.path))
         }
         if (e.place == "ProjectViewPopup" && e.getData(CommonDataKeys.PSI_ELEMENT).toString().startsWith("PsiDirectory")) {
             val psiElement = e.getData(CommonDataKeys.PSI_ELEMENT)
@@ -138,12 +154,12 @@ class ContextMenuAction : RunConfigurationAction() {
                 var returnValue: Boolean = false
                 directory.walk()
                     .filter { it.isFile && (it.extension == "kt" || it.extension == "java") }
-                    .forEach { if (!it.name.contains("Test")) { returnValue = true } }
+                    .forEach { if ( !isTestFile(e.project!!, it) ) { returnValue = true } }
                 return returnValue
             }
             return false
         }
-        return validFile
+        return validFile && !isTestFile(e.project!!, File(psiFile!!.virtualFile.path))
     }
 
     private fun findEnclosingClass(psiElement: PsiElement?): PsiElement? {
