@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2023 Lennart Heimbs <lennart@heimbs.me>
+// SPDX-FileCopyrightText: 2023 Lennart Heimbs <lennart@heimbs.me>, Brianne Oberson
 
 package com.amos.pitmutationmate.pitmutationmate.configuration
 
@@ -15,6 +15,7 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     private val myPanel: JPanel
     private val gradleTaskField: TextFieldWithHistory = TextFieldWithHistory()
     private val gradleExecutableField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
+    private val enableCheckbox: JCheckBox = JCheckBox("No Overwrite")
 
     init {
         gradleTaskField.text = "pitest"
@@ -32,6 +33,7 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     }
 
     override fun resetEditorFrom(runConfiguration: RunConfiguration) {
+        enableCheckbox.isSelected = runConfiguration.isMutationMateEnabled
         gradleTaskField.text = runConfiguration.taskName
         runConfiguration.gradleExecutable.also { gradleExecutableField.text = it ?: "" }
     }
