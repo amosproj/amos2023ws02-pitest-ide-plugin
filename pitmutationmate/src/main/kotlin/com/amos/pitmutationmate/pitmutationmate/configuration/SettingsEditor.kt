@@ -20,8 +20,6 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     private val gradleTaskField: TextFieldWithHistory = TextFieldWithHistory()
     private val gradleExecutableField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
     private val scopeField: JBTextField = JBTextField()
-    private val label = JLabel("Scope should be given as a comma-separated list (no spaces!)\nof the fully qualified names of the desired classes to test.", )
-
     init {
         gradleTaskField.text = "pitest"
         gradleExecutableField.addBrowseFolderListener(
@@ -31,15 +29,19 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
             FileChooserDescriptorFactory.createSingleFileDescriptor()
         )
         scopeField.emptyText.setText("com.myproj.package1.classA,com.myproj.package1.classB,com.myproj.package2.classC,...")
-        val userFont = UIUtil.getLabelFont()
-        val customFont = Font(userFont.name, userFont.style, 12)
-        label.font = customFont
         myPanel = FormBuilder.createFormBuilder()
             .addLabeledComponent("Gradle task", gradleTaskField)
             .addLabeledComponent("Gradle script", gradleExecutableField)
             .addLabeledComponent("Scope", scopeField)
-            .addLabeledComponent("", label)
+            .addLabeledComponent("", getScopeTipMessage())
             .panel
+    }
+
+    private fun getScopeTipMessage(): JLabel {
+        val multilineText = "<html>The scope should be given as a comma-separated list (no spaces!) of the fully qualified names<br>of the desired classes to test.</html>"
+        val scopeTipMessage = JLabel(multilineText)
+        scopeTipMessage.font = Font(UIUtil.getLabelFont().name, UIUtil.getLabelFont().style, 12)
+        return scopeTipMessage
     }
 
     override fun resetEditorFrom(runConfiguration: RunConfiguration) {
