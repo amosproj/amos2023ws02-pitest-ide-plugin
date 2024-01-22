@@ -28,7 +28,7 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
             null,
             FileChooserDescriptorFactory.createSingleFileDescriptor()
         )
-        scopeField.getEmptyText().setText("com.myproj.package1.classA,com.myproj.package1.classB,com.myproj.package2.classC,...")
+        scopeField.emptyText.setText("com.myproj.package1.classA,com.myproj.package1.classB,com.myproj.package2.classC,...")
         myPanel = FormBuilder.createFormBuilder()
             .addLabeledComponent("Overwrite behavior", overwriteCheckbox)
             .addLabeledComponent("Gradle task", gradleTaskField)
