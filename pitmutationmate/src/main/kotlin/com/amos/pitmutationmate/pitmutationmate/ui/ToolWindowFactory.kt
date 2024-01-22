@@ -41,7 +41,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             toolWindow.contentManager.addContent(errorContent)
         }
 
-        fun initiateWithData(toolWindow: ToolWindow, project : Project) {
+        fun initiateWithData(toolWindow: ToolWindow, project: Project) {
             toolWindow.contentManager.removeAllContents(true)
 
             val coverageReport = ContentFactory.getInstance().createContent(PiTestReports(), PiTestReports.TITLE, false)
