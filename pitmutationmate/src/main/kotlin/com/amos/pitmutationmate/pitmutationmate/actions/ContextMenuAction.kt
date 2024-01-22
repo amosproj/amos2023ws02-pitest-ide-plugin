@@ -154,7 +154,7 @@ class ContextMenuAction : RunConfigurationAction() {
                 var returnValue: Boolean = false
                 directory.walk()
                     .filter { it.isFile && (it.extension == "kt" || it.extension == "java") }
-                    .forEach { if ( !isTestFile(e.project!!, it) ) { returnValue = true } }
+                    .forEach { if (!isTestFile(e.project!!, it)) { returnValue = true } }
                 return returnValue
             }
             return false
