@@ -43,7 +43,7 @@ class ReportPathGeneratorService(private val project: Project) {
      */
     fun getArchivePath(): Path {
         val projectBasePath = getBasePath()
-        return Path.of("$projectBasePath/build/reports/pitest/history")
+        return Path.of("$projectBasePath/.history")
     }
 
     private fun checkForDebugBuiltType(): Path {
