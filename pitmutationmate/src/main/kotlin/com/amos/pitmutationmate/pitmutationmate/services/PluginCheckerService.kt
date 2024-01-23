@@ -118,7 +118,7 @@ class PluginCheckerService(private val project: Project) {
             if (!errorMessage.isNullOrEmpty()) {
                 ToolWindowFactory.Util.initiateWithConfigError(errorMessage, toolWindow)
             } else {
-                ToolWindowFactory.Util.initiateWithData(toolWindow)
+                ToolWindowFactory.Util.initiateWithData(toolWindow, project)
             }
         }
     }

@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.execution
 
+import com.amos.pitmutationmate.pitmutationmate.RunArchiver
 import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
 import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorService
 import com.amos.pitmutationmate.pitmutationmate.services.UdpMessagingServer
@@ -45,9 +46,13 @@ abstract class BasePitestExecutor {
                 // update tool window with latest result data
                 val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow(ToolWindowFactory.ID)
                 // safe and get latest pitest results and update report toolWindow with it
-                val coverageReport = project.service<MutationResultService>().updateLastMutationResult()?.coverageReports?.first()
+                val resultData = project.service<MutationResultService>().updateLastMutationResult()
                 if (toolWindow != null) {
-                    ToolWindowFactory.Util.updateReport(toolWindow, coverageReport)
+                    ToolWindowFactory.Util.updateReport(toolWindow, resultData)
+                }
+                // archive the pitestrun using the runarchiver
+                if (classFQN != null) {
+                    RunArchiver(classFQN, project).archiveRun()
                 }
             }
         })
