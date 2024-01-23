@@ -47,15 +47,15 @@ class TreeStructureTable(project: Project) : JPanel() {
                 for (report in coverageReports) {
                     var packageNode = rootNode.find { it.name == report.packageName }
                     if (packageNode != null) {
-                        packageNode.children = packageNode.children?.plus(DataNode(report.fileName, report.numberOfClasses, report.lineCoverageTextRatio, report.mutationCoverageTextRatio, report.testStrengthTextRatio, emptyList()))
+                        packageNode.children = packageNode.children?.plus(DataNode(report.fileName, report.numberOfClasses.toString(), report.lineCoverageTextRatio, report.mutationCoverageTextRatio, report.testStrengthTextRatio, emptyList()))
                     } else {
-                        packageNode = DataNode(report.packageName, report.numberOfClasses, report.lineCoverageTextRatio, report.mutationCoverageTextRatio, report.testStrengthTextRatio, emptyList())
-                        packageNode.children = packageNode.children?.plus(DataNode(report.fileName, report.numberOfClasses, report.lineCoverageTextRatio, report.mutationCoverageTextRatio, report.testStrengthTextRatio, emptyList()))
+                        packageNode = DataNode(report.packageName, "", "", "", "", emptyList())
+                        packageNode.children = packageNode.children?.plus(DataNode(report.fileName, report.numberOfClasses.toString(), report.lineCoverageTextRatio, report.mutationCoverageTextRatio, report.testStrengthTextRatio, emptyList()))
                         rootNode = rootNode.plus(packageNode).toMutableList()
                     }
                 }
             }
-            return DataNode("All", 0, "", "", "", rootNode)
+            return DataNode("All", "", "", "", "", rootNode)
         }
     }
 }
