@@ -8,12 +8,10 @@ import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import com.intellij.ui.ColoredTreeCellRenderer
 import com.intellij.ui.treeStructure.treetable.TreeTable
 import java.awt.GridLayout
 import javax.swing.JPanel
 import javax.swing.JScrollPane
-import javax.swing.JTree
 
 class TreeStructureTable(project: Project) : JPanel() {
 
