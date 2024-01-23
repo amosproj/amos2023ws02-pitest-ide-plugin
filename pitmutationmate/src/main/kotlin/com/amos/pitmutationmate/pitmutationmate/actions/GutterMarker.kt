@@ -13,15 +13,15 @@ import javax.swing.Icon
 class GutterMarker : RunLineMarkerContributor() {
     override fun getInfo(psielement: PsiElement): Info? {
         val gutterIcon: Icon = Icons.RunButton
-        if (psielement is PsiClass) {
-            val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${psielement.name}'" }
-            val fqn = psielement.qualifiedName
+        if (psielement.context is PsiClass && psielement.text.equals("class")) {
+            val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${(psielement.context as PsiClass).name}'" }
+            val fqn = (psielement.context as PsiClass).qualifiedName
             val action: Array<GutterAction?> = arrayOf(fqn?.let { GutterAction(it) })
             return Info(gutterIcon, action, toolTipProvider)
         }
-        if (psielement is KtClass) {
-            val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${psielement.name}'" }
-            val fqn = psielement.fqName.toString()
+        if (psielement.context is KtClass && psielement.text.equals("class")) {
+            val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${(psielement.context as KtClass).name}'" }
+            val fqn = (psielement.context as KtClass).fqName.toString()
             val action: Array<GutterAction?> = arrayOf(GutterAction(fqn))
             return Info(gutterIcon, action, toolTipProvider)
         }
