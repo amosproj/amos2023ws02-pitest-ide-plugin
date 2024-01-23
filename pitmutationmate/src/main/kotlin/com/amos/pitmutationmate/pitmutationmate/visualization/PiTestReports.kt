@@ -141,7 +141,7 @@ class PiTestReports : JPanel() {
     fun addReport(report: PiTestClassReport) {
         this.reports.add(report)
     }
-    fun deleteReports(){
+    fun deleteReports() {
         this.reports.removeAll(reports)
     }
 
