@@ -2,6 +2,6 @@
 <!--SPDX-License-Identifier: MIT-->
 <!--SPDX-FileCopyrightText: 2023-->
 <coverageInformation>
-<testMetaData><fileName>Presenter.java</fileName><packageName>de.esolutions.pitest.showcase</packageName><mutatedClass>de.esolutions.pitest.showcase.Presenter</mutatedClass><lineCoveragePercentage>100</lineCoveragePercentage><lineCoverage>19/19</lineCoverage><mutationCoveragePercentage>23</mutationCoveragePercentage><mutationCoverage>3/13</mutationCoverage><testStrengthPercentage>25</testStrengthPercentage><testStrength>3/12</testStrength></testMetaData>
-<totalMetaData><lineCoveragePercentage>100</lineCoveragePercentage><lineCoverage>19/19</lineCoverage><mutationCoveragePercentage>23</mutationCoveragePercentage><mutationCoverage>3/13</mutationCoverage><testStrengthPercentage>25</testStrengthPercentage><testStrength>3/12</testStrength></totalMetaData>
+<testMetaData><FileName>Presenter.java</FileName><PackageName>de.esolutions.pitest.showcase</PackageName><MutatedClass>de.esolutions.pitest.showcase.Presenter</MutatedClass><LineCoveragePercentage>100</LineCoveragePercentage><LineCoverage>19/19</LineCoverage><MutationCoveragePercentage>23</MutationCoveragePercentage><MutationCoverage>3/13</MutationCoverage><TestStrengthPercentage>25</TestStrengthPercentage><TestStrength>3/12</TestStrength></testMetaData>
+<totalMetaData><LineCoveragePercentage>100</LineCoveragePercentage><LineCoverage>19/19</LineCoverage><MutationCoveragePercentage>23</MutationCoveragePercentage><MutationCoverage>3/13</MutationCoverage><TestStrengthPercentage>25</TestStrengthPercentage><TestStrength>3/12</TestStrength></totalMetaData>
 </coverageInformation>
