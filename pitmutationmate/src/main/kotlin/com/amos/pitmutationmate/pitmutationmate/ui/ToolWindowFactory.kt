@@ -53,11 +53,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
 
             val reportGeneratorService = project.service<MutationResultService>()
             val newCoverageReport = reportGeneratorService.updateLastMutationResult()?.coverageReports?.first()
-            if (newCoverageReport != null) {
-                updateReport(toolWindow, newCoverageReport)
-            } else {
-                updateReport(toolWindow, null)
-            }
+            updateReport(toolWindow, newCoverageReport)
         }
 
         fun updateReport(toolWindow: ToolWindow, newCoverageReport: XMLParser.CoverageReport?) {
