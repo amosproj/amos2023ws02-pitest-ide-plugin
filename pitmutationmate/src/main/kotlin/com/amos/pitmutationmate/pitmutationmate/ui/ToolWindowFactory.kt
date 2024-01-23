@@ -4,6 +4,7 @@
 package com.amos.pitmutationmate.pitmutationmate.ui
 
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
+import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
 import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.amos.pitmutationmate.pitmutationmate.visualization.ConfigurationErrorPanel
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestClassReport
@@ -14,6 +15,7 @@ import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
+import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.content.ContentFactory
 
 internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
@@ -50,7 +52,14 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             toolWindow.contentManager.addContent(coverageReport)
             toolWindow.contentManager.addContent(table)
 
-            updateReport(toolWindow, null)
+            val reportGeneratorService = project.service<MutationResultService>()
+            val newCoverageReport = reportGeneratorService.updateLastMutationResult()?.coverageReports?.first()
+            if (newCoverageReport != null) {
+                updateReport(toolWindow, newCoverageReport)
+            }
+            else {
+                updateReport(toolWindow, null)
+            }
         }
 
         fun updateReport(toolWindow: ToolWindow, newCoverageReport: XMLParser.CoverageReport?) {
