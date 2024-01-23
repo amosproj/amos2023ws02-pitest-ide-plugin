@@ -27,5 +27,4 @@ class RunConfigurationOptions : RunConfigurationOptions() {
         set(value) {
             gradleExecutableOption.setValue(this, value)
         }
-
 }
