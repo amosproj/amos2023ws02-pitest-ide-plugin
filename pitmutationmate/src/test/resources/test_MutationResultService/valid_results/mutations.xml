@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--SPDX-License-Identifier: MIT-->
+<!--SPDX-FileCopyrightText: 2023-->
+
+<mutations>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>Presenter.java</sourceFile>
+        <mutatedClass>de.esolutions.pitest.showcase.Presenter</mutatedClass>
+        <mutatedMethod>&lt;init&gt;</mutatedMethod>
+        <methodDescription>(Lde/esolutions/pitest/showcase/View;Lde/esolutions/pitest/showcase/Model;)V
+        </methodDescription>
+        <lineNumber>10</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator</mutator>
+        <indexes>
+            <index>15</index>
+        </indexes>
+        <blocks>
+            <block>1</block>
+        </blocks>
+        <killingTest>
+            de.esolutions.pitest.showcase.PresenterTest.[engine:junit-jupiter]/[class:de.esolutions.pitest.showcase.PresenterTest]/[method:shouldSetDataCorrectlyWhenFilterIsSet()]
+        </killingTest>
+        <description>removed call to de/esolutions/pitest/showcase/View::onFilterSelected</description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='2'>
+        <sourceFile>Presenter.java</sourceFile>
+        <mutatedClass>de.esolutions.pitest.showcase.Presenter</mutatedClass>
+        <mutatedMethod>&lt;init&gt;</mutatedMethod>
+        <methodDescription>(Lde/esolutions/pitest/showcase/View;Lde/esolutions/pitest/showcase/Model;)V
+        </methodDescription>
+        <lineNumber>12</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator</mutator>
+        <indexes>
+            <index>22</index>
+        </indexes>
+        <blocks>
+            <block>2</block>
+        </blocks>
+        <killingTest>
+            de.esolutions.pitest.showcase.PresenterTest.[engine:junit-jupiter]/[class:de.esolutions.pitest.showcase.PresenterTest]/[method:shouldSetDataCorrectlyWhenNoFilterIsSet()]
+        </killingTest>
+        <description>removed call to de/esolutions/pitest/showcase/Model::onDataUpdated</description>
+    </mutation>
+    <mutation detected='false' status='SURVIVED' numberOfTestsRun='1'>
+        <sourceFile>Presenter.java</sourceFile>
+        <mutatedClass>de.esolutions.pitest.showcase.Presenter</mutatedClass>
+        <mutatedMethod>calculateValue</mutatedMethod>
+        <methodDescription>(Ljava/util/List;)I</methodDescription>
+        <lineNumber>24</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.PrimitiveReturnsMutator</mutator>
+        <indexes>
+            <index>23</index>
+        </indexes>
+        <blocks>
+            <block>6</block>
+        </blocks>
+        <killingTest/>
+        <description>replaced int return with 0 for de/esolutions/pitest/showcase/Presenter::calculateValue
+        </description>
+    </mutation>
+</mutations>
