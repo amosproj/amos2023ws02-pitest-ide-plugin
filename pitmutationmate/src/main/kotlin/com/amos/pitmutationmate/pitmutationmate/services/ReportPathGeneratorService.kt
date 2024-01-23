@@ -17,15 +17,33 @@ import kotlin.io.path.exists
 class ReportPathGeneratorService(private val project: Project) {
 
     /**
-     * Returns the path to the report directory.
-     * @return the path to the report directory
+     * Returns the path to the report base path.
+     * @return the path to the report base path
      */
-    fun getReportPath(): Path {
+    fun getBasePath(): Path {
         val projectBasePath = project.basePath ?: ""
         if (projectBasePath.isEmpty()) {
             log.warn("Project base path is empty, using current directory as base path")
         }
+        return Path.of(projectBasePath)
+    }
+
+    /**
+     * Returns the path to the report directory.
+     * @return the path to the report directory
+     */
+    fun getReportPath(): Path {
+        val projectBasePath = getBasePath()
         return Path.of("$projectBasePath/build/reports/pitest/test")
+    }
+
+    /**
+     * Returns the path to the report archive.
+     * @return the path to the report archive
+     */
+    fun getArchivePath(): Path {
+        val projectBasePath = getBasePath()
+        return Path.of("$projectBasePath/build/reports/pitest/history")
     }
 
     private fun checkForDebugBuiltType(): Path {
