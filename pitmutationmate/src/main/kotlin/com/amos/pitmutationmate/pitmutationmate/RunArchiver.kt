@@ -8,7 +8,6 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import java.io.File
 import java.lang.Exception
-import java.nio.file.Path
 import java.nio.file.Paths
 
 class RunArchiver(packageName: String, project: Project) {
