@@ -55,8 +55,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             val newCoverageReport = reportGeneratorService.updateLastMutationResult()?.coverageReports?.first()
             if (newCoverageReport != null) {
                 updateReport(toolWindow, newCoverageReport)
-            }
-            else {
+            } else {
                 updateReport(toolWindow, null)
             }
         }
