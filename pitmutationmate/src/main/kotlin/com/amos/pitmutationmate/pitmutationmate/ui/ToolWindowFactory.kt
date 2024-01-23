@@ -52,22 +52,23 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             toolWindow.contentManager.addContent(table)
 
             val reportGeneratorService = project.service<MutationResultService>()
-            val newCoverageReport = reportGeneratorService.updateLastMutationResult()?.coverageReports?.first()
-            updateReport(toolWindow, newCoverageReport)
+            val newCoverageReports = reportGeneratorService.updateLastMutationResult()
+            updateReport(toolWindow, newCoverageReports)
         }
 
-        fun updateReport(toolWindow: ToolWindow, newCoverageReport: XMLParser.CoverageReport?) {
-            val report = if (newCoverageReport != null) {
-                PiTestClassReport(newCoverageReport)
-            } else {
-                null
-            }
+        fun updateReport(toolWindow: ToolWindow, newResultData: XMLParser.ResultData?) {
+            val coverageResults = newResultData?.coverageReports
+            val totals = newResultData?.totalResult
             val reportWindow = toolWindow.contentManager.findContent(PiTestReports.TITLE).component
 
             if (reportWindow is PiTestReports) {
-                if (report != null) {
-                    reportWindow.addReport(report)
+                reportWindow.deleteReports()
+                if (coverageResults != null) {
+                    for(report in coverageResults) {
+                        reportWindow.addReport(PiTestClassReport(report))
+                    }
                 }
+                totals?.let { PiTestClassReport(it) }?.let { reportWindow.setSummary(it) }
                 reportWindow.visualizeReports()
             }
         }

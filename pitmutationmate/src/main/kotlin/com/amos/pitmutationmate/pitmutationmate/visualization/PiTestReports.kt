@@ -19,7 +19,7 @@ import javax.swing.ListSelectionModel
 import javax.swing.table.DefaultTableCellRenderer
 import javax.swing.table.DefaultTableModel
 
-private class cellRenderer : DefaultTableCellRenderer() {
+private class CellRenderer : DefaultTableCellRenderer() {
 
     override fun getTableCellRendererComponent(
         table: JTable?,
@@ -67,8 +67,8 @@ fun createTable(data: Array<Array<out JComponent>>, columnNames: Array<String>):
     table.columnModel.getColumn(0).preferredWidth = firstColumnWidth
     table.columnModel.getColumn(0).width = firstColumnWidth
 
-    table.columnModel.getColumn(0).cellRenderer = cellRenderer()
-    table.columnModel.getColumn(1).cellRenderer = cellRenderer()
+    table.columnModel.getColumn(0).cellRenderer = CellRenderer()
+    table.columnModel.getColumn(1).cellRenderer = CellRenderer()
 
     return table
 }
@@ -141,6 +141,13 @@ class PiTestReports : JPanel() {
     fun addReport(report: PiTestClassReport) {
         this.reports.add(report)
     }
+    fun deleteReports(){
+        this.reports.removeAll(reports)
+    }
+
+    fun setSummary(summary: PiTestClassReport) {
+        this.summary = summary
+    }
 
     private fun displayErrorMessage(): JPanel {
         val panel = JPanel()
@@ -165,22 +172,6 @@ class PiTestReports : JPanel() {
         var heights = emptyArray<Int>()
 
         for (i in this.reports.indices) {
-            // generate the summary
-            val summary = this.summary.getCoverageReport()
-            val report = reports[i].getCoverageReport()
-            if (i == 0) {
-                // for the first report just add the data to the summary
-                summary.lineCoveragePercentage = report.lineCoveragePercentage
-                summary.mutationCoveragePercentage = report.mutationCoveragePercentage
-                summary.testStrengthPercentage = report.testStrengthPercentage
-                summary.numberOfClasses = report.numberOfClasses
-            } else {
-                // for all other report we also have to normalize them after adding
-                summary.lineCoveragePercentage = (summary.lineCoveragePercentage + report.lineCoveragePercentage) / 2
-                summary.mutationCoveragePercentage = (summary.mutationCoveragePercentage + report.mutationCoveragePercentage) / 2
-                summary.testStrengthPercentage = (summary.testStrengthPercentage + report.testStrengthPercentage) / 2
-                summary.numberOfClasses += report.numberOfClasses
-            }
             // visualize the reports and the summary if needed
             if (i < 5) {
                 this.reports[i].renderer()
