@@ -19,8 +19,8 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     private val myPanel: JPanel
     private val gradleTaskField: TextFieldWithHistory = TextFieldWithHistory()
     private val gradleExecutableField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
-    private val scopeField: JBTextField = JBTextField()
-    private val label = JLabel("Scope should be given as a comma-separated list (no spaces!)\nof the fully qualified names of the desired classes to test.", )
+    private val targetClasses: JBTextField = JBTextField()
+    private val label = JLabel("Target classes should be given as a comma-separated list (no spaces!)\nof the fully qualified names of the desired classes to test.", )
 
     init {
         gradleTaskField.text = "pitest"
@@ -30,26 +30,26 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
             null,
             FileChooserDescriptorFactory.createSingleFileDescriptor()
         )
-        scopeField.emptyText.setText("com.myproj.package1.classA,com.myproj.package1.classB,com.myproj.package2.classC,...")
+        targetClasses.emptyText.setText("com.myproj.package1.classA,com.myproj.package1.classB,com.myproj.package2.classC,...")
         val userFont = UIUtil.getLabelFont()
         val customFont = Font(userFont.name, userFont.style, 12)
         label.font = customFont
         myPanel = FormBuilder.createFormBuilder()
             .addLabeledComponent("Gradle task", gradleTaskField)
             .addLabeledComponent("Gradle script", gradleExecutableField)
-            .addLabeledComponent("Scope", scopeField)
+            .addLabeledComponent("Target classes", targetClasses)
             .addLabeledComponent("", label)
             .panel
     }
 
     override fun resetEditorFrom(runConfiguration: RunConfiguration) {
-        scopeField.text = runConfiguration.classFQN
+        targetClasses.text = runConfiguration.classFQN
         gradleTaskField.text = runConfiguration.taskName
         runConfiguration.gradleExecutable.also { gradleExecutableField.text = it ?: "" }
     }
 
     override fun applyEditorTo(runConfiguration: RunConfiguration) {
-        runConfiguration.classFQN = scopeField.text
+        runConfiguration.classFQN = targetClasses.text
         runConfiguration.taskName = gradleTaskField.text
         runConfiguration.gradleExecutable = gradleExecutableField.text
     }
