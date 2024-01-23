@@ -184,12 +184,12 @@ class XMLParser {
         val fileName: String,
         val packageName: String,
         val mutatedClass: String,
-        val lineCoveragePercentage: Int,
+        var lineCoveragePercentage: Int,
         val lineCoverageTextRatio: String,
-        val mutationCoveragePercentage: Int,
+        var mutationCoveragePercentage: Int,
         val mutationCoverageTextRatio: String,
-        val testStrengthPercentage: Int,
+        var testStrengthPercentage: Int,
         val testStrengthTextRatio: String,
-        val numberOfClasses: Int
+        var numberOfClasses: Int
     )
 }

@@ -96,7 +96,7 @@ class PiTestClassReport(
 
     private var height: Int = 0
 
-    fun renderer(compact: Boolean = false) {
+    fun renderer(summary: Boolean = false) {
         this.removeAll() // To assure an empty block
         val lineCoverageBar = CustomProgressBar(this.coverageReport.lineCoveragePercentage, this.coverageReport.lineCoverageTextRatio)
         val mutationCoverageBar = CustomProgressBar(this.coverageReport.mutationCoveragePercentage, this.coverageReport.mutationCoverageTextRatio)
@@ -108,7 +108,11 @@ class PiTestClassReport(
             arrayOf(getLabel("Mutation Coverage"), mutationCoverageBar),
             arrayOf(getLabel("Test Strength"), testStrengthBar)
         )
-        val columnNames = arrayOf("Pit Test Coverage Report", "")
+
+        var columnNames = arrayOf("Pit Test Coverage Report", "")
+        if (summary) {
+            columnNames = arrayOf("Pit Test Coverage Summary", "")
+        }
         val table = createTable(data, columnNames)
         layout = BorderLayout()
 
@@ -138,10 +142,6 @@ class PiTestReports : JPanel() {
         this.reports.add(report)
     }
 
-    fun addSummary(summary: PiTestClassReport) {
-        this.summary = summary
-    }
-
     private fun displayErrorMessage(): JPanel {
         val panel = JPanel()
 
@@ -165,6 +165,23 @@ class PiTestReports : JPanel() {
         var heights = emptyArray<Int>()
 
         for (i in this.reports.indices) {
+            // generate the summary
+            val summary = this.summary.getCoverageReport()
+            val report = reports[i].getCoverageReport()
+            if (i == 0) {
+                // for the first report just add the data to the summary
+                summary.lineCoveragePercentage = report.lineCoveragePercentage
+                summary.mutationCoveragePercentage = report.mutationCoveragePercentage
+                summary.testStrengthPercentage = report.testStrengthPercentage
+                summary.numberOfClasses = report.numberOfClasses
+            } else {
+                // for all other report we also have to normalize them after adding
+                summary.lineCoveragePercentage = (summary.lineCoveragePercentage + report.lineCoveragePercentage)/2
+                summary.mutationCoveragePercentage = (summary.mutationCoveragePercentage + report.mutationCoveragePercentage)/2
+                summary.testStrengthPercentage = (summary.testStrengthPercentage + report.testStrengthPercentage)/2
+                summary.numberOfClasses += report.numberOfClasses
+            }
+            // visualize the reports and the summary if needed
             if (i < 5) {
                 this.reports[i].renderer()
                 heights += this.reports[i].getCustomHeight()
