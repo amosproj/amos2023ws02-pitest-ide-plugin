@@ -20,7 +20,7 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     private val gradleTaskField: TextFieldWithHistory = TextFieldWithHistory()
     private val gradleExecutableField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
     private val targetClasses: JBTextField = JBTextField()
-    private val label = JLabel("Target classes should be given as a comma-separated list (no spaces!)\nof the fully qualified names of the desired classes to test.", )
+    private val label = JLabel("Target classes should be given as a comma-separated list (no spaces!)\nof the fully qualified names of the desired classes to test.")
 
     init {
         gradleTaskField.text = "pitest"
