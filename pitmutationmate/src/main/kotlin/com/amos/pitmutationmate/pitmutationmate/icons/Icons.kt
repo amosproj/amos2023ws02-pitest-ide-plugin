@@ -14,4 +14,7 @@ object Icons {
 
     @JvmField
     val Logo12 = IconLoader.getIcon("icons/pluginIcon12.svg", javaClass)
+
+    @JvmField
+    val RunButton = IconLoader.getIcon("icons/runGutterButtonIcon.svg", javaClass)
 }

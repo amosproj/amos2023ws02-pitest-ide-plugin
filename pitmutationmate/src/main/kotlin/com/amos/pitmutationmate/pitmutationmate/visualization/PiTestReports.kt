@@ -19,7 +19,7 @@ import javax.swing.ListSelectionModel
 import javax.swing.table.DefaultTableCellRenderer
 import javax.swing.table.DefaultTableModel
 
-private class cellRenderer : DefaultTableCellRenderer() {
+private class CellRenderer : DefaultTableCellRenderer() {
 
     override fun getTableCellRendererComponent(
         table: JTable?,
@@ -67,8 +67,8 @@ fun createTable(data: Array<Array<out JComponent>>, columnNames: Array<String>):
     table.columnModel.getColumn(0).preferredWidth = firstColumnWidth
     table.columnModel.getColumn(0).width = firstColumnWidth
 
-    table.columnModel.getColumn(0).cellRenderer = cellRenderer()
-    table.columnModel.getColumn(1).cellRenderer = cellRenderer()
+    table.columnModel.getColumn(0).cellRenderer = CellRenderer()
+    table.columnModel.getColumn(1).cellRenderer = CellRenderer()
 
     return table
 }
@@ -96,7 +96,7 @@ class PiTestClassReport(
 
     private var height: Int = 0
 
-    fun renderer(compact: Boolean = false) {
+    fun renderer(summary: Boolean = false) {
         this.removeAll() // To assure an empty block
         val lineCoverageBar = CustomProgressBar(this.coverageReport.lineCoveragePercentage, this.coverageReport.lineCoverageTextRatio)
         val mutationCoverageBar = CustomProgressBar(this.coverageReport.mutationCoveragePercentage, this.coverageReport.mutationCoverageTextRatio)
@@ -108,7 +108,11 @@ class PiTestClassReport(
             arrayOf(getLabel("Mutation Coverage"), mutationCoverageBar),
             arrayOf(getLabel("Test Strength"), testStrengthBar)
         )
-        val columnNames = arrayOf("Pit Test Coverage Report", "")
+
+        var columnNames = arrayOf("Pit Test Coverage Report", "")
+        if (summary) {
+            columnNames = arrayOf("Pit Test Coverage Summary", "")
+        }
         val table = createTable(data, columnNames)
         layout = BorderLayout()
 
@@ -137,8 +141,11 @@ class PiTestReports : JPanel() {
     fun addReport(report: PiTestClassReport) {
         this.reports.add(report)
     }
+    fun deleteReports() {
+        this.reports.removeAll(reports)
+    }
 
-    fun addSummary(summary: PiTestClassReport) {
+    fun setSummary(summary: PiTestClassReport) {
         this.summary = summary
     }
 
@@ -165,6 +172,7 @@ class PiTestReports : JPanel() {
         var heights = emptyArray<Int>()
 
         for (i in this.reports.indices) {
+            // visualize the reports and the summary if needed
             if (i < 5) {
                 this.reports[i].renderer()
                 heights += this.reports[i].getCustomHeight()

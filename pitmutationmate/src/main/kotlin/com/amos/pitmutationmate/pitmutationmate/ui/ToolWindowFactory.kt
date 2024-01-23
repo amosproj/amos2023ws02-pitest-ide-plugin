@@ -4,6 +4,7 @@
 package com.amos.pitmutationmate.pitmutationmate.ui
 
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
+import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
 import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.amos.pitmutationmate.pitmutationmate.visualization.ConfigurationErrorPanel
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestClassReport
@@ -27,8 +28,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
         if (pluginError != null) {
             Util.initiateWithConfigError(pluginError, toolWindow)
         } else {
-            Util.initiateWithData(toolWindow)
-            // TODO: fetch most recent results to display (e.g. when opening up the editor and previous Pitest runs are saved)
+            Util.initiateWithData(toolWindow, project)
             Util.updateReport(toolWindow, null)
         }
     }
@@ -42,31 +42,33 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             toolWindow.contentManager.addContent(errorContent)
         }
 
-        fun initiateWithData(toolWindow: ToolWindow) {
+        fun initiateWithData(toolWindow: ToolWindow, project: Project) {
             toolWindow.contentManager.removeAllContents(true)
-            // TODO: fetch most recent results to display (e.g. when opening up the editor and previous Pitest runs are saved)
 
             val coverageReport = ContentFactory.getInstance().createContent(PiTestReports(), PiTestReports.TITLE, false)
-            val table = ContentFactory.getInstance().createContent(TreeStructureTable(), TreeStructureTable.TITLE, false)
+            val table = ContentFactory.getInstance().createContent(TreeStructureTable(project), TreeStructureTable.TITLE, false)
 
             toolWindow.contentManager.addContent(coverageReport)
             toolWindow.contentManager.addContent(table)
 
-            updateReport(toolWindow, null)
+            val reportGeneratorService = project.service<MutationResultService>()
+            val newCoverageReports = reportGeneratorService.updateLastMutationResult()
+            updateReport(toolWindow, newCoverageReports)
         }
 
-        fun updateReport(toolWindow: ToolWindow, newCoverageReport: XMLParser.CoverageReport?) {
-            val report = if (newCoverageReport != null) {
-                PiTestClassReport(newCoverageReport)
-            } else {
-                null
-            }
-            val reportWindow = toolWindow.contentManager.findContent(PiTestReports.TITLE)?.component
+        fun updateReport(toolWindow: ToolWindow, newResultData: XMLParser.ResultData?) {
+            val coverageResults = newResultData?.coverageReports
+            val totals = newResultData?.totalResult
+            val reportWindow = toolWindow.contentManager.findContent(PiTestReports.TITLE).component
 
             if (reportWindow is PiTestReports) {
-                if (report != null) {
-                    reportWindow.addReport(report)
+                reportWindow.deleteReports()
+                if (coverageResults != null) {
+                    for (report in coverageResults) {
+                        reportWindow.addReport(PiTestClassReport(report))
+                    }
                 }
+                totals?.let { PiTestClassReport(it) }?.let { reportWindow.setSummary(it) }
                 reportWindow.visualizeReports()
             }
         }

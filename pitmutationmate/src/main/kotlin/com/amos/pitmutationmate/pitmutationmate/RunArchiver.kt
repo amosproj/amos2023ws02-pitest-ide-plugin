@@ -3,22 +3,22 @@
 
 package com.amos.pitmutationmate.pitmutationmate
 
+import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorService
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import java.io.File
 import java.lang.Exception
-import java.nio.file.Path
 import java.nio.file.Paths
 
 class RunArchiver(packageName: String, project: Project) {
     private val pn: String = packageName
-    private val pwd: String? = project.basePath?.let { Paths.get(it).toAbsolutePath().toString() }
-    private val rootPiTestDirectoryPathName: Path? = pwd?.let { Paths.get(it, "build", "reports", "pitest") }
-    private val reportDirectory: File = File(Paths.get(rootPiTestDirectoryPathName.toString(), this.pn).toString())
+    private val reportPathGeneratorService = project.service<ReportPathGeneratorService>()
+    private val reportDirectory: File = File(reportPathGeneratorService.getReportPath().toString())
 
     fun archiveRun() {
         println("Archiving $reportDirectory")
-        var archiveDirectory = Paths.get(rootPiTestDirectoryPathName.toString(), "history", this.pn).toFile()
-        if (!archiveDirectory.exists()) { // && archiveDirectory.isDirectory) {
+        var archiveDirectory = Paths.get(reportPathGeneratorService.getArchivePath().toString(), this.pn).toFile()
+        if (!archiveDirectory.exists()) {
             val success = archiveDirectory.mkdirs()
 
             if (!success) {

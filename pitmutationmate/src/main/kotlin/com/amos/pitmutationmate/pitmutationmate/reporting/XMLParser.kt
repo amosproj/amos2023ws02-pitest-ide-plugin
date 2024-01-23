@@ -18,8 +18,8 @@ class XMLParser {
             val documentCoverageReport = documentBuilder.parse(File(xmlCoverageReportPath))
 
             extractMutationResults(documentMutationReport, resultData)
-            extractCoverageReports(documentCoverageReport, resultData, false)
-            extractCoverageReports(documentCoverageReport, resultData, true)
+            extractCoverageReports(documentCoverageReport, resultData, false, -1)
+            extractCoverageReports(documentCoverageReport, resultData, true, resultData.coverageReports.size)
         } catch (e: Exception) {
             // TODO: Handle Parser exceptions
             e.printStackTrace()
@@ -73,8 +73,8 @@ class XMLParser {
         }
     }
 
-    private fun extractCoverageReports(document: Document, resultData: ResultData, totals: Boolean) {
-        val mutationsNodeList = document.getElementsByTagName(if (totals) "totalMetaData" else "coverageInformation")
+    private fun extractCoverageReports(document: Document, resultData: ResultData, totals: Boolean, totalNumber: Int) {
+        val mutationsNodeList = document.getElementsByTagName(if (totals) "totalMetaData" else "testMetaData")
 
         for (i in 0 until mutationsNodeList.length) {
             val mutationNode = mutationsNodeList.item(i)
@@ -102,7 +102,7 @@ class XMLParser {
                     mutationCoverageTextRatio,
                     testStrengthPercentage,
                     testStrengthTextRatio,
-                    0
+                    if (totals) totalNumber else 1
                 )
                 if (totals) resultData.totalResult = coverageReport else resultData.addCoverageReport(coverageReport)
             }
@@ -184,12 +184,12 @@ class XMLParser {
         val fileName: String,
         val packageName: String,
         val mutatedClass: String,
-        val lineCoveragePercentage: Int,
+        var lineCoveragePercentage: Int,
         val lineCoverageTextRatio: String,
-        val mutationCoveragePercentage: Int,
+        var mutationCoveragePercentage: Int,
         val mutationCoverageTextRatio: String,
-        val testStrengthPercentage: Int,
+        var testStrengthPercentage: Int,
         val testStrengthTextRatio: String,
-        val numberOfClasses: Int
+        var numberOfClasses: Int
     )
 }
