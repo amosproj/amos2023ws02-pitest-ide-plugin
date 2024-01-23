@@ -19,16 +19,8 @@ abstract class RunConfigurationAction : AnAction() {
         val executor = ExecutorRegistry.getInstance().getExecutorById("Run")
 
         val runManager = RunManager.getInstance(project)
-        val runConfigs = runManager.getConfigurationSettingsList(
-            RunConfigurationType::class.java
-        )
 
-        val runConfig: RunnerAndConfigurationSettings = if (runConfigs.isEmpty()) {
-            // create a new default run configuration
-            runManager.createConfiguration("Pitest", RunConfigurationType::class.java)
-        } else {
-            getRunConfig(runConfigs)
-        }
+        val runConfig: RunnerAndConfigurationSettings = runManager.createConfiguration("Temp Pitest Config", RunConfigurationType::class.java)
         runConfig.configuration.let {
             val rc = it as RunConfiguration
             if (classFQN != null) {
@@ -42,9 +34,5 @@ abstract class RunConfigurationAction : AnAction() {
         PluginState.isAnnotatorEnabled = true
         // TODO: ensure only the external annotator is rerun
         DaemonCodeAnalyzer.getInstance(project).restart()
-    }
-
-    private fun getRunConfig(runConfigs: List<RunnerAndConfigurationSettings>): RunnerAndConfigurationSettings {
-        return runConfigs[0]
     }
 }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2023 Lennart Heimbs
+// SPDX-FileCopyrightText: 2023 Lennart Heimbs, Brianne Oberson
 
 package com.amos.pitmutationmate.pitmutationmate.configuration
 
