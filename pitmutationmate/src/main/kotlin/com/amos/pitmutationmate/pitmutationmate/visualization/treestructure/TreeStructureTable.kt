@@ -59,17 +59,3 @@ class TreeStructureTable(project: Project) : JPanel() {
         }
     }
 }
-
-class CellRenderer : ColoredTreeCellRenderer() {
-    override fun customizeCellRenderer(
-        tree: JTree,
-        value: Any?,
-        selected: Boolean,
-        expanded: Boolean,
-        leaf: Boolean,
-        row: Int,
-        hasFocus: Boolean
-    ) {
-        append("liam")
-    }
-}
