@@ -39,6 +39,7 @@ class TreeStructureTable(project: Project) : JPanel() {
         private var rootNode: MutableList<DataNode> = ArrayList()
         private fun createDataStructure(project: Project): DataNode {
             val coverageReports: MutableList<XMLParser.CoverageReport>? = project.service<MutationResultService>().updateLastMutationResult()?.coverageReports
+            val totalReport = project.service<MutationResultService>().updateLastMutationResult()?.totalResult
 
             // iterate over reports and add them to data node structure
             if (coverageReports != null) {
@@ -53,7 +54,11 @@ class TreeStructureTable(project: Project) : JPanel() {
                     }
                 }
             }
-            return DataNode("All", "", "", "", "", rootNode)
+            if (totalReport != null) {
+                return DataNode("All", totalReport.numberOfClasses.toString(), totalReport.lineCoverageTextRatio, totalReport.mutationCoverageTextRatio, totalReport.testStrengthTextRatio, rootNode)
+            } else {
+                return DataNode("All", "", "", "", "", rootNode)
+            }
         }
     }
 }

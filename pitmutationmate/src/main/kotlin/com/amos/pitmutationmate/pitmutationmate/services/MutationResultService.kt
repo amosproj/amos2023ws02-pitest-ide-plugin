@@ -21,8 +21,7 @@ class MutationResultService(private val project: Project) {
 
         if (mutationReportPath.exists() && coverageReportPath.exists()) {
             val parser = XMLParser()
-            val ret = parser.loadResultsFromXmlReport(mutationReportPath.toString(), coverageReportPath.toString())
-            return ret
+            return parser.loadResultsFromXmlReport(mutationReportPath.toString(), coverageReportPath.toString())
         }
         return null
     }
