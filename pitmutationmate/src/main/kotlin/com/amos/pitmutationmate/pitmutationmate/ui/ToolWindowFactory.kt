@@ -64,7 +64,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             if (reportWindow is PiTestReports) {
                 reportWindow.deleteReports()
                 if (coverageResults != null) {
-                    for(report in coverageResults) {
+                    for (report in coverageResults) {
                         reportWindow.addReport(PiTestClassReport(report))
                     }
                 }
