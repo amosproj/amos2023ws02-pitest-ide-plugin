@@ -176,9 +176,9 @@ class PiTestReports : JPanel() {
                 summary.numberOfClasses = report.numberOfClasses
             } else {
                 // for all other report we also have to normalize them after adding
-                summary.lineCoveragePercentage = (summary.lineCoveragePercentage + report.lineCoveragePercentage)/2
-                summary.mutationCoveragePercentage = (summary.mutationCoveragePercentage + report.mutationCoveragePercentage)/2
-                summary.testStrengthPercentage = (summary.testStrengthPercentage + report.testStrengthPercentage)/2
+                summary.lineCoveragePercentage = (summary.lineCoveragePercentage + report.lineCoveragePercentage) / 2
+                summary.mutationCoveragePercentage = (summary.mutationCoveragePercentage + report.mutationCoveragePercentage) / 2
+                summary.testStrengthPercentage = (summary.testStrengthPercentage + report.testStrengthPercentage) / 2
                 summary.numberOfClasses += report.numberOfClasses
             }
             // visualize the reports and the summary if needed
