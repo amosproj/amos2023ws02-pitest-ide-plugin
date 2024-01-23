@@ -38,8 +38,15 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
             .addLabeledComponent("Gradle task", gradleTaskField)
             .addLabeledComponent("Gradle script", gradleExecutableField)
             .addLabeledComponent("Target classes", targetClasses)
-            .addLabeledComponent("", label)
+            .addLabeledComponent("", getScopeTipMessage())
             .panel
+    }
+
+    private fun getScopeTipMessage(): JLabel {
+        val multilineText = "<html>The scope should be given as a comma-separated list (no spaces!) of the fully qualified names<br>of the desired classes to test.</html>"
+        val scopeTipMessage = JLabel(multilineText)
+        scopeTipMessage.font = Font(UIUtil.getLabelFont().name, UIUtil.getLabelFont().style, 12)
+        return scopeTipMessage
     }
 
     override fun resetEditorFrom(runConfiguration: RunConfiguration) {
