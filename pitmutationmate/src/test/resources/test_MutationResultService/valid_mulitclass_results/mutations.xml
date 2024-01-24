@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--SPDX-License-Identifier: MIT-->
+<!--SPDX-FileCopyrightText: 2023-->
+
+<mutations partial="true">
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.Palindrome</mutatedClass>
+        <mutatedMethod>isPalindrome</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Z</methodDescription>
+        <lineNumber>9</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.MathMutator</mutator>
+        <indexes>
+            <index>23</index>
+        </indexes>
+        <blocks>
+            <block>5</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.PalindromeTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.PalindromeTest]/[method:whenPalindrome_thenAccept()]
+        </killingTest>
+        <description>Replaced integer subtraction with addition</description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.Palindrome</mutatedClass>
+        <mutatedMethod>isPalindrome</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Z</methodDescription>
+        <lineNumber>10</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.MathMutator</mutator>
+        <indexes>
+            <index>33</index>
+        </indexes>
+        <blocks>
+            <block>7</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.PalindromeTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.PalindromeTest]/[method:whenPalindrome_thenAccept()]
+        </killingTest>
+        <description>Replaced integer subtraction with addition</description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.Palindrome</mutatedClass>
+        <mutatedMethod>isPalindrome</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Z</methodDescription>
+        <lineNumber>5</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_ELSE</mutator>
+        <indexes>
+            <index>5</index>
+        </indexes>
+        <blocks>
+            <block>1</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.PalindromeTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.PalindromeTest]/[method:whenPalindrome_thenAccept()]
+        </killingTest>
+        <description>removed conditional - replaced equality check with false</description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.Palindrome</mutatedClass>
+        <mutatedMethod>isPalindrome</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Z</methodDescription>
+        <lineNumber>11</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_ELSE</mutator>
+        <indexes>
+            <index>40</index>
+        </indexes>
+        <blocks>
+            <block>8</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.PalindromeTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.PalindromeTest]/[method:whenPalindrome_thenAccept()]
+        </killingTest>
+        <description>removed conditional - replaced equality check with false</description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.Palindrome</mutatedClass>
+        <mutatedMethod>isPalindrome</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Z</methodDescription>
+        <lineNumber>11</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_ELSE</mutator>
+        <indexes>
+            <index>44</index>
+        </indexes>
+        <blocks>
+            <block>10</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.PalindromeTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.PalindromeTest]/[method:whenPalindrome_thenAccept()]
+        </killingTest>
+        <description>removed conditional - replaced equality check with false</description>
+    </mutation>
+    <mutation detected='false' status='SURVIVED' numberOfTestsRun='1'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.Palindrome</mutatedClass>
+        <mutatedMethod>isPalindrome</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Z</methodDescription>
+        <lineNumber>5</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_IF</mutator>
+        <indexes>
+            <index>5</index>
+        </indexes>
+        <blocks>
+            <block>1</block>
+        </blocks>
+        <killingTest/>
+        <description>removed conditional - replaced equality check with true</description>
+    </mutation>
+    <mutation detected='false' status='SURVIVED' numberOfTestsRun='1'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.Palindrome</mutatedClass>
+        <mutatedMethod>isPalindrome</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Z</methodDescription>
+        <lineNumber>11</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_IF</mutator>
+        <indexes>
+            <index>40</index>
+        </indexes>
+        <blocks>
+            <block>8</block>
+        </blocks>
+        <killingTest/>
+        <description>removed conditional - replaced equality check with true</description>
+    </mutation>
+    <mutation detected='false' status='SURVIVED' numberOfTestsRun='1'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.Palindrome</mutatedClass>
+        <mutatedMethod>isPalindrome</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Z</methodDescription>
+        <lineNumber>11</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_IF</mutator>
+        <indexes>
+            <index>44</index>
+        </indexes>
+        <blocks>
+            <block>10</block>
+        </blocks>
+        <killingTest/>
+        <description>removed conditional - replaced equality check with true</description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.Palindrome</mutatedClass>
+        <mutatedMethod>isPalindrome</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Z</methodDescription>
+        <lineNumber>6</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator</mutator>
+        <indexes>
+            <index>9</index>
+        </indexes>
+        <blocks>
+            <block>2</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.PalindromeTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.PalindromeTest]/[method:whenPalindrome_thenAccept()]
+        </killingTest>
+        <description>replaced boolean return with false for
+            de/pfoerd/example/pitest/coffeemachine/Palindrome::isPalindrome
+        </description>
+    </mutation>
+    <mutation detected='false' status='SURVIVED' numberOfTestsRun='1'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.Palindrome</mutatedClass>
+        <mutatedMethod>isPalindrome</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Z</methodDescription>
+        <lineNumber>11</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator</mutator>
+        <indexes>
+            <index>52</index>
+        </indexes>
+        <blocks>
+            <block>13</block>
+        </blocks>
+        <killingTest/>
+        <description>replaced boolean return with true for
+            de/pfoerd/example/pitest/coffeemachine/Palindrome::isPalindrome
+        </description>
+    </mutation>
+    <mutation detected='false' status='SURVIVED' numberOfTestsRun='3'>
+        <sourceFile>CoffeeService.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService</mutatedClass>
+        <mutatedMethod>getRecipe</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;
+        </methodDescription>
+        <lineNumber>16</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_ELSE</mutator>
+        <indexes>
+            <index>6</index>
+        </indexes>
+        <blocks>
+            <block>1</block>
+        </blocks>
+        <killingTest/>
+        <description>removed conditional - replaced equality check with false</description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='2'>
+        <sourceFile>CoffeeService.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService</mutatedClass>
+        <mutatedMethod>getRecipe</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;
+        </methodDescription>
+        <lineNumber>16</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_IF</mutator>
+        <indexes>
+            <index>6</index>
+        </indexes>
+        <blocks>
+            <block>1</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.service.CoffeeServiceTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.service.CoffeeServiceTest]/[test-template:returnsRecipeForCoffeeType(java.lang.String,
+            int)]/[test-template-invocation:#1]
+        </killingTest>
+        <description>removed conditional - replaced equality check with true</description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>CoffeeService.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService</mutatedClass>
+        <mutatedMethod>getRecipe</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;
+        </methodDescription>
+        <lineNumber>17</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator</mutator>
+        <indexes>
+            <index>10</index>
+        </indexes>
+        <blocks>
+            <block>2</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.service.CoffeeServiceTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.service.CoffeeServiceTest]/[method:returnsDefaultRecipeForCoffee()]
+        </killingTest>
+        <description>replaced return value with null for
+            de/pfoerd/example/pitest/coffeemachine/service/CoffeeService::getRecipe
+        </description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>CoffeeService.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService</mutatedClass>
+        <mutatedMethod>getRecipe</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;
+        </methodDescription>
+        <lineNumber>20</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator</mutator>
+        <indexes>
+            <index>34</index>
+        </indexes>
+        <blocks>
+            <block>8</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.service.CoffeeServiceTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.service.CoffeeServiceTest]/[test-template:returnsRecipeForCoffeeType(java.lang.String,
+            int)]/[test-template-invocation:#1]
+        </killingTest>
+        <description>replaced return value with null for
+            de/pfoerd/example/pitest/coffeemachine/service/CoffeeService::getRecipe
+        </description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>CoffeeService.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService</mutatedClass>
+        <mutatedMethod>lambda$getRecipe$0</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;)Z
+        </methodDescription>
+        <lineNumber>22</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator</mutator>
+        <indexes>
+            <index>7</index>
+        </indexes>
+        <blocks>
+            <block>2</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.service.CoffeeServiceTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.service.CoffeeServiceTest]/[test-template:returnsRecipeForCoffeeType(java.lang.String,
+            int)]/[test-template-invocation:#1]
+        </killingTest>
+        <description>replaced boolean return with false for
+            de/pfoerd/example/pitest/coffeemachine/service/CoffeeService::lambda$getRecipe$0
+        </description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>CoffeeService.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService</mutatedClass>
+        <mutatedMethod>lambda$getRecipe$0</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;)Z
+        </methodDescription>
+        <lineNumber>22</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator</mutator>
+        <indexes>
+            <index>7</index>
+        </indexes>
+        <blocks>
+            <block>2</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.service.CoffeeServiceTest.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.service.CoffeeServiceTest]/[test-template:returnsRecipeForCoffeeType(java.lang.String,
+            int)]/[test-template-invocation:#1]
+        </killingTest>
+        <description>replaced boolean return with true for
+            de/pfoerd/example/pitest/coffeemachine/service/CoffeeService::lambda$getRecipe$0
+        </description>
+    </mutation>
+    <mutation detected='false' status='SURVIVED' numberOfTestsRun='3'>
+        <sourceFile>CoffeeService2.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2</mutatedClass>
+        <mutatedMethod>getRecipe</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;
+        </methodDescription>
+        <lineNumber>16</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_ELSE</mutator>
+        <indexes>
+            <index>6</index>
+        </indexes>
+        <blocks>
+            <block>1</block>
+        </blocks>
+        <killingTest/>
+        <description>removed conditional - replaced equality check with false</description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>CoffeeService2.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2</mutatedClass>
+        <mutatedMethod>getRecipe</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;
+        </methodDescription>
+        <lineNumber>16</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_IF</mutator>
+        <indexes>
+            <index>6</index>
+        </indexes>
+        <blocks>
+            <block>1</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2Test.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2Test]/[test-template:returnsRecipeForCoffeeType(java.lang.String,
+            int)]/[test-template-invocation:#2]
+        </killingTest>
+        <description>removed conditional - replaced equality check with true</description>
+    </mutation>
+    <mutation detected='false' status='NO_COVERAGE' numberOfTestsRun='0'>
+        <sourceFile>CoffeeService2.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2</mutatedClass>
+        <mutatedMethod>getRecipe</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;
+        </methodDescription>
+        <lineNumber>17</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator</mutator>
+        <indexes>
+            <index>10</index>
+        </indexes>
+        <blocks>
+            <block>2</block>
+        </blocks>
+        <killingTest/>
+        <description>replaced return value with null for
+            de/pfoerd/example/pitest/coffeemachine/service/CoffeeService2::getRecipe
+        </description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>CoffeeService2.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2</mutatedClass>
+        <mutatedMethod>getRecipe</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;)Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;
+        </methodDescription>
+        <lineNumber>20</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator</mutator>
+        <indexes>
+            <index>34</index>
+        </indexes>
+        <blocks>
+            <block>8</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2Test.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2Test]/[test-template:returnsRecipeForCoffeeType(java.lang.String,
+            int)]/[test-template-invocation:#2]
+        </killingTest>
+        <description>replaced return value with null for
+            de/pfoerd/example/pitest/coffeemachine/service/CoffeeService2::getRecipe
+        </description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>CoffeeService2.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2</mutatedClass>
+        <mutatedMethod>lambda$getRecipe$0</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;)Z
+        </methodDescription>
+        <lineNumber>22</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator</mutator>
+        <indexes>
+            <index>7</index>
+        </indexes>
+        <blocks>
+            <block>2</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2Test.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2Test]/[test-template:returnsRecipeForCoffeeType(java.lang.String,
+            int)]/[test-template-invocation:#2]
+        </killingTest>
+        <description>replaced boolean return with false for
+            de/pfoerd/example/pitest/coffeemachine/service/CoffeeService2::lambda$getRecipe$0
+        </description>
+    </mutation>
+    <mutation detected='true' status='KILLED' numberOfTestsRun='1'>
+        <sourceFile>CoffeeService2.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2</mutatedClass>
+        <mutatedMethod>lambda$getRecipe$0</mutatedMethod>
+        <methodDescription>(Ljava/lang/String;Lde/pfoerd/example/pitest/coffeemachine/repo/RecipeTO;)Z
+        </methodDescription>
+        <lineNumber>22</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator</mutator>
+        <indexes>
+            <index>7</index>
+        </indexes>
+        <blocks>
+            <block>2</block>
+        </blocks>
+        <killingTest>
+            de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2Test.[engine:junit-jupiter]/[class:de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2Test]/[test-template:returnsRecipeForCoffeeType(java.lang.String,
+            int)]/[test-template-invocation:#2]
+        </killingTest>
+        <description>replaced boolean return with true for
+            de/pfoerd/example/pitest/coffeemachine/service/CoffeeService2::lambda$getRecipe$0
+        </description>
+    </mutation>
+    <mutation detected='false' status='NO_COVERAGE' numberOfTestsRun='0'>
+        <sourceFile>Palindrome.java</sourceFile>
+        <mutatedClass>de.pfoerd.example.pitest.coffeemachine.MyEmptyClass</mutatedClass>
+        <mutatedMethod>doNothing</mutatedMethod>
+        <methodDescription>()V</methodDescription>
+        <lineNumber>19</lineNumber>
+        <mutator>org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator</mutator>
+        <indexes>
+            <index>5</index>
+        </indexes>
+        <blocks>
+            <block>0</block>
+        </blocks>
+        <killingTest/>
+        <description>removed call to java/io/PrintStream::println</description>
+    </mutation>
+</mutations>

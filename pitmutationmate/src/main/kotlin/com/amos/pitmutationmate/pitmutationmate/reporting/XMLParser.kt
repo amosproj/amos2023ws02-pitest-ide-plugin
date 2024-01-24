@@ -2,119 +2,170 @@
 // SPDX-FileCopyrightText: 2023
 
 package com.amos.pitmutationmate.pitmutationmate.reporting
+
+import com.intellij.openapi.diagnostic.thisLogger
 import org.w3c.dom.Document
 import org.w3c.dom.Element
-import org.w3c.dom.Node
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 class XMLParser {
     fun loadResultsFromXmlReport(xmlMutationReportPath: String, xmlCoverageReportPath: String): ResultData {
+        thisLogger().info("Loading XML reports from $xmlMutationReportPath and $xmlCoverageReportPath")
         val resultData = ResultData()
         try {
-            val documentBuilderFactory = DocumentBuilderFactory.newInstance()
-            val documentBuilder = documentBuilderFactory.newDocumentBuilder()
-            val documentMutationReport = documentBuilder.parse(File(xmlMutationReportPath))
-            val documentCoverageReport = documentBuilder.parse(File(xmlCoverageReportPath))
+            val documentMutationReport = parseXmlDocument(File(xmlMutationReportPath))
+            val documentCoverageReport = parseXmlDocument(File(xmlCoverageReportPath))
 
             extractMutationResults(documentMutationReport, resultData)
-            extractCoverageReports(documentCoverageReport, resultData, false, -1)
-            extractCoverageReports(documentCoverageReport, resultData, true, resultData.coverageReports.size)
+            extractCoverageReports(documentCoverageReport, resultData)
+            extractCoverageReportTotals(documentCoverageReport, resultData)
         } catch (e: Exception) {
-            // TODO: Handle Parser exceptions
-            e.printStackTrace()
+            thisLogger().warn("Error while parsing XML reports: ${e.message}")
         }
 
         return resultData
     }
 
+    private fun parseXmlDocument(xmlFile: File): Document {
+        val factory = DocumentBuilderFactory.newInstance()
+        val builder = factory.newDocumentBuilder()
+        return builder.parse(xmlFile)
+    }
+
     private fun extractMutationResults(document: Document, resultData: ResultData) {
+        thisLogger().info("Extracting mutation results")
         val mutationsNodeList = document.getElementsByTagName("mutation")
 
         for (i in 0 until mutationsNodeList.length) {
-            val mutationNode = mutationsNodeList.item(i)
+            val element = mutationsNodeList.item(i) as? Element ?: continue
 
-            if (mutationNode.nodeType == Node.ELEMENT_NODE) {
-                val element = mutationNode as Element
+            val detected = getAttribute(element, "detected", false)
+            val status = getAttribute(element, "status", "N/A")
+            val numberOfTestsRun = getAttribute(element, "numberOfTestsRun", 0)
+            val sourceFile = getTextContent(element, "sourceFile")
+            val mutatedClass = getTextContent(element, "mutatedClass")
+            val mutatedMethod = getTextContent(element, "mutatedMethod")
+            val methodDescription = getTextContent(element, "methodDescription")
+            val lineNumber = getTextContentAsInt(element, "lineNumber")
+            val mutator = getTextContent(element, "mutator")
+            val indexes = getListContent(element, "index")
+            val blocks = getListContent(element, "block")
+            val killingTest = getTextContent(element, "killingTest")
+            val description = getTextContent(element, "description")
 
-                val detected = getAttribute(element, "detected", false)
-                val status = getAttribute(element, "status", "N/A")
-                val numberOfTestsRun = getAttribute(element, "numberOfTestsRun", -1)
-                val sourceFile = getTextContent(element, "sourceFile")
-                val mutatedClass = getTextContent(element, "mutatedClass")
-                val mutatedMethod = getTextContent(element, "mutatedMethod")
-                val methodDescription = getTextContent(element, "methodDescription")
-                val lineNumber = getTextContent(element, "lineNumber").toInt()
-                val mutator = getTextContent(element, "mutator")
-                val indexes = getListContent(element, "index")
-                val blocks = getListContent(element, "block")
-                val killingTest = getTextContent(element, "killingTest")
-                val description = getTextContent(element, "description")
-
-                val mutationResult = MutationResult(
-                    detected,
-                    status,
-                    numberOfTestsRun,
-                    sourceFile,
-                    mutatedClass,
-                    mutatedMethod,
-                    methodDescription,
-                    lineNumber,
-                    mutator,
-                    indexes,
-                    blocks,
-                    killingTest,
-                    description
-                )
-                resultData.addMutationResult(mutationResult)
-                // display color bars for mutation result
-                resultData.displayResult(mutationResult)
-            }
+            val mutationResult = MutationResult(
+                detected,
+                status,
+                numberOfTestsRun,
+                sourceFile,
+                mutatedClass,
+                mutatedMethod,
+                methodDescription,
+                lineNumber,
+                mutator,
+                indexes,
+                blocks,
+                killingTest,
+                description
+            )
+            resultData.addMutationResult(mutationResult)
         }
     }
 
-    private fun extractCoverageReports(document: Document, resultData: ResultData, totals: Boolean, totalNumber: Int) {
-        val mutationsNodeList = document.getElementsByTagName(if (totals) "totalMetaData" else "testMetaData")
+    private fun extractCoverageReports(document: Document, resultData: ResultData) {
+        thisLogger().info("Extracting coverage reports")
+        val mutationsNodeList = document.getElementsByTagName("testMetaData")
 
         for (i in 0 until mutationsNodeList.length) {
-            val mutationNode = mutationsNodeList.item(i)
+            val element = mutationsNodeList.item(i) as? Element ?: continue
 
-            if (mutationNode.nodeType == Node.ELEMENT_NODE) {
-                val element = mutationNode as Element
-
-                val fileName = if (totals) "totals" else getTextContent(element, "FileName")
-                val packageName = if (totals) "totals" else getTextContent(element, "PackageName")
-                val mutatedClass = if (totals) "totals" else getTextContent(element, "MutatedClass")
-                val lineCoveragePercentage = getTextContent(element, "LineCoveragePercentage").toInt()
-                val lineCoverageTextRatio = getTextContent(element, "LineCoverage")
-                val mutationCoveragePercentage = getTextContent(element, "MutationCoveragePercentage").toInt()
-                val mutationCoverageTextRatio = getTextContent(element, "MutationCoverage")
-                val testStrengthPercentage = getTextContent(element, "TestStrengthPercentage").toInt()
-                val testStrengthTextRatio = getTextContent(element, "TestStrength")
-
-                val coverageReport = CoverageReport(
-                    fileName,
-                    packageName,
-                    mutatedClass,
-                    lineCoveragePercentage,
-                    lineCoverageTextRatio,
-                    mutationCoveragePercentage,
-                    mutationCoverageTextRatio,
-                    testStrengthPercentage,
-                    testStrengthTextRatio,
-                    if (totals) totalNumber else 1
-                )
-                if (totals) resultData.totalResult = coverageReport else resultData.addCoverageReport(coverageReport)
-            }
+            val fileName = getTextContent(element, "FileName")
+            val packageName = getTextContent(element, "PackageName")
+            val mutatedClass = getTextContent(element, "MutatedClass")
+            val coverageReport = CoverageReport(
+                fileName,
+                packageName,
+                mutatedClass,
+                getLineCoveragePercentage(element),
+                getLineCoverageTextRatio(element),
+                getMutationCoveragePercentage(element),
+                getMutationCoverageTextRatio(element),
+                getTestStrengthPercentage(element),
+                getTestStrengthTextRatio(element),
+                if (fileName == "N/A") 0 else 1
+            )
+            resultData.addCoverageReport(coverageReport)
         }
+    }
+
+    private fun extractCoverageReportTotals(document: Document, resultData: ResultData) {
+        thisLogger().info("Extracting coverage report totals")
+        val mutationsNodeList = document.getElementsByTagName("totalMetaData")
+
+        for (i in 0 until mutationsNodeList.length) {
+            val element = mutationsNodeList.item(i) as? Element ?: continue
+
+            val coverageReport = CoverageReport(
+                "totals",
+                "totals",
+                "totals",
+                getLineCoveragePercentage(element),
+                getLineCoverageTextRatio(element),
+                getMutationCoveragePercentage(element),
+                getMutationCoverageTextRatio(element),
+                getTestStrengthPercentage(element),
+                getTestStrengthTextRatio(element),
+                0
+            )
+            resultData.addCoverageReportTotals(coverageReport)
+        }
+    }
+
+    private fun getLineCoveragePercentage(element: Element): Int {
+        return getTextContentAsInt(element, "LineCoveragePercentage")
+    }
+
+    private fun getLineCoverageTextRatio(element: Element): String {
+        return getTextContent(element, "LineCoverage")
+    }
+
+    private fun getMutationCoveragePercentage(element: Element): Int {
+        return getTextContentAsInt(element, "MutationCoveragePercentage")
+    }
+
+    private fun getMutationCoverageTextRatio(element: Element): String {
+        return getTextContent(element, "MutationCoverage")
+    }
+
+    private fun getTestStrengthPercentage(element: Element): Int {
+        return getTextContentAsInt(element, "TestStrengthPercentage")
+    }
+
+    private fun getTestStrengthTextRatio(element: Element): String {
+        return getTextContent(element, "TestStrength")
     }
 
     private fun getTextContent(element: Element, tagName: String): String {
         val nodeList = element.getElementsByTagName(tagName)
         return if (nodeList.length > 0) {
-            nodeList.item(0).textContent
+            nodeList.item(0).textContent.trim()
         } else {
             "N/A"
+        }
+    }
+
+    private fun getTextContentAsInt(element: Element, tagName: String): Int {
+        val nodeList = element.getElementsByTagName(tagName)
+        return if (nodeList.length > 0) {
+            val content = nodeList.item(0).textContent.trim()
+            return if (content.toIntOrNull() != null) {
+                content.toInt()
+            } else {
+                0
+            }
+        } else {
+            0
         }
     }
 
@@ -127,14 +178,14 @@ class XMLParser {
         }
     }
 
-    private fun <T> getAttribute(element: Element, attributeName: String, defaultValue: T): T {
+    private inline fun <reified T> getAttribute(element: Element, attributeName: String, defaultValue: T): T {
         return try {
             val attributeValue = element.getAttribute(attributeName)
             if (attributeValue.isNotEmpty()) {
-                when (defaultValue) {
-                    is Boolean -> attributeValue.toBoolean() as T
-                    is Int -> attributeValue.toInt() as T
-                    is String -> attributeValue as T
+                when (T::class) {
+                    Boolean::class -> attributeValue.toBoolean() as T
+                    Int::class -> attributeValue.toIntOrNull() as? T ?: defaultValue
+                    String::class -> attributeValue as T
                     else -> defaultValue
                 }
             } else {
@@ -146,7 +197,6 @@ class XMLParser {
     }
 
     data class ResultData(
-        // placeholder field for coverage report results to be displayed in visualisation
         val coverageReports: MutableList<CoverageReport> = mutableListOf(),
         val mutationResults: MutableList<MutationResult> = mutableListOf(),
         var totalResult: CoverageReport? = null
@@ -159,8 +209,11 @@ class XMLParser {
             coverageReports.add(coverageReport)
         }
 
-        fun displayResult(mutationResult: MutationResult) {
-            // removed in favor of MutationsAnnotator
+        fun addCoverageReportTotals(coverageReport: CoverageReport) {
+            if (coverageReports.isNotEmpty()) {
+                coverageReport.numberOfClasses = coverageReports.size
+            }
+            totalResult = coverageReport
         }
     }
 
