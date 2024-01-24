@@ -20,13 +20,17 @@ abstract class RunConfigurationAction : AnAction() {
 
         val runManager = RunManager.getInstance(project)
 
-        val runConfig: RunnerAndConfigurationSettings = runManager.createConfiguration("Temp Pitest Config", RunConfigurationType::class.java)
+        var runConfig = runManager.findConfigurationByName("Default")
+        if (runConfig == null) {
+            runConfig = runManager.createConfiguration("Default", RunConfigurationType::class.java)
+        }
         runConfig.configuration.let {
             val rc = it as RunConfiguration
             if (classFQN != null) {
                 rc.classFQN = classFQN
             }
         }
+        runManager.addConfiguration(runConfig)
 
         ProgramRunnerUtil.executeConfiguration(runConfig, executor!!)
 
