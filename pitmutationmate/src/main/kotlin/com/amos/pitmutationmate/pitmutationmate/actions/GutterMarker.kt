@@ -16,12 +16,18 @@ class GutterMarker : RunLineMarkerContributor() {
         if (psielement.context is PsiClass && psielement.text.equals("class")) {
             val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${(psielement.context as PsiClass).name}'" }
             val fqn = (psielement.context as PsiClass).qualifiedName
+            if(fqn?.endsWith("Test")!!){
+                return null;
+            }
             val action: Array<GutterAction?> = arrayOf(fqn?.let { GutterAction(it) })
             return Info(gutterIcon, action, toolTipProvider)
         }
         if (psielement.context is KtClass && psielement.text.equals("class")) {
             val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${(psielement.context as KtClass).name}'" }
             val fqn = (psielement.context as KtClass).fqName.toString()
+            if(fqn?.endsWith("Test")!!){
+                return null;
+            }
             val action: Array<GutterAction?> = arrayOf(GutterAction(fqn))
             return Info(gutterIcon, action, toolTipProvider)
         }
