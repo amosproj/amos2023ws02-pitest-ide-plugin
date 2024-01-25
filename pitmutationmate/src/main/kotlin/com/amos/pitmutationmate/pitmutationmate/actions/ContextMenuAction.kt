@@ -42,27 +42,6 @@ class ContextMenuAction : RunConfigurationAction() {
         updateAndExecuteRunConfig(classFQNs, project)
     }
 
-    private fun getPsiFileFromPath(project: Project, filePath: String): PsiFile? {
-        return LocalFileSystem.getInstance().findFileByPath(filePath)
-            ?.let { PsiManager.getInstance(project).findFile(it) }
-    }
-
-    private fun isTestFile(project: Project, file: File): Boolean {
-        val psiFile = getPsiFileFromPath(project, file.path)
-        val psiClasses = (psiFile as PsiClassOwner).classes
-
-        for (psiClass in psiClasses) {
-            val fqn = psiClass.qualifiedName
-            if (fqn != null) {
-                if (fqn.endsWith("Test")) {
-                    return true
-                }
-            }
-        }
-
-        return false
-    }
-
     private fun actionEditorPopup(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
@@ -74,8 +53,7 @@ class ContextMenuAction : RunConfigurationAction() {
             var classFQN = ""
             if (selectedClass is PsiClass) {
                 classFQN = selectedClass.qualifiedName.toString()
-            }
-            if (selectedClass is KtClass) {
+            } else if (selectedClass is KtClass) {
                 classFQN = selectedClass.fqName.toString()
             }
 
@@ -84,21 +62,10 @@ class ContextMenuAction : RunConfigurationAction() {
         }
     }
 
-    private fun actionProjectViewPopupFile(e: AnActionEvent) {
-        val psiFile = e.getData(CommonDataKeys.PSI_FILE)
-
-        if (psiFile != null) {
-            updateAndExecuteForFile(arrayOf(psiFile), e.project!!)
-        }
-    }
-
-    private fun actionProjectViewPopupDir(e: AnActionEvent) {
-        val psiElement = e.getData(CommonDataKeys.PSI_ELEMENT)
+    private fun actionProjectViewPopupDir(e: AnActionEvent, psiDirectory: PsiDirectory) {
         var psiFileArray: Array<PsiFile> = emptyArray()
-        if (psiElement != null) {
-            if (psiElement is PsiDirectory) {
-                val path = psiElement.virtualFile.path.toString()
-                val directory = File(path)
+        val path = psiDirectory.virtualFile.path
+        val directory = File(path)
 
         directory.walk()
             .filter { it.isFile && (it.extension == "java" || it.extension == "kt") }
@@ -108,13 +75,26 @@ class ContextMenuAction : RunConfigurationAction() {
     }
 
     override fun actionPerformed(e: AnActionEvent) {
+        val psiElement = e.getData(CommonDataKeys.PSI_ELEMENT)
         if (e.place == "EditorPopup") {
             actionEditorPopup(e)
         } else if (e.place == "ProjectViewPopup") {
-            if (e.getData(CommonDataKeys.PSI_ELEMENT).toString().startsWith("PsiDirectory")) {
-                actionProjectViewPopupDir(e)
-            } else {
-                actionProjectViewPopupFile(e)
+            when (psiElement) {
+                is PsiDirectory -> {
+                    actionProjectViewPopupDir(e, psiElement)
+                }
+
+                is PsiFile -> { // This also covers KtFiles
+                    updateAndExecuteForFile(arrayOf(psiElement), e.project!!)
+                }
+
+                is KtClass -> {
+                    updateAndExecuteRunConfig(psiElement.fqName.toString(),e.project!!)
+                }
+
+                is PsiClass -> {
+                    updateAndExecuteRunConfig(psiElement.qualifiedName, e.project!!)
+                }
             }
         }
     }
