@@ -10,14 +10,8 @@ class DataNode(
     val lineCoverage: String,
     val mutationCoverage: String,
     val testStrength: String,
-    var children: List<DataNode>?
+    var children: MutableList<DataNode>
 ) {
-
-    init {
-        if (this.children == null) {
-            this.children = emptyList()
-        }
-    }
 
     /**
      * Node text from the JTree.
