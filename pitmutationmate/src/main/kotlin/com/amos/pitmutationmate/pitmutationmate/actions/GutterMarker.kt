@@ -17,7 +17,7 @@ class GutterMarker : RunLineMarkerContributor() {
         val gutterIcon: Icon = Icons.RunButton
         val project = psielement.project
         if (psielement.parent is PsiClass && psielement.text.equals("class")) {
-            if(project.service<TestEnvCheckerService>().isPsiTestClass(psielement.parent as PsiClass)) {
+            if (project.service<TestEnvCheckerService>().isPsiTestClass(psielement.parent as PsiClass)) {
                 return null
             }
             val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${(psielement.parent as PsiClass).name}'" }
@@ -26,7 +26,7 @@ class GutterMarker : RunLineMarkerContributor() {
             return Info(gutterIcon, action, toolTipProvider)
         }
         if (psielement.parent is KtClass && psielement.text.equals("class")) {
-            if(project.service<TestEnvCheckerService>().isKtTestClass(psielement.parent as KtClass)) {
+            if (project.service<TestEnvCheckerService>().isKtTestClass(psielement.parent as KtClass)) {
                 return null
             }
             val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${(psielement.parent as KtClass).name}'" }

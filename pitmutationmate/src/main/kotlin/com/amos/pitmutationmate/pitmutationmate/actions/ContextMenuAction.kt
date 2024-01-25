@@ -26,7 +26,7 @@ class ContextMenuAction : RunConfigurationAction() {
             logger.info("ContextMenuAction: actionPerformed in ProjectViewPopup for file $psiFile")
             val psiClasses = (psiFile as PsiClassOwner).classes
             for (psiClass in psiClasses) {
-                if(!testEnvChecker.isPsiTestClass(psiClass)){
+                if (!testEnvChecker.isPsiTestClass(psiClass)) {
                     val fqn = psiClass.qualifiedName
                     if (fqn != null) {
                         classFQNs = if (classFQNs != "") {
@@ -89,7 +89,7 @@ class ContextMenuAction : RunConfigurationAction() {
                 }
 
                 is KtClass -> {
-                    updateAndExecuteRunConfig(psiElement.fqName.toString(),e.project!!)
+                    updateAndExecuteRunConfig(psiElement.fqName.toString(), e.project!!)
                 }
 
                 is PsiClass -> {

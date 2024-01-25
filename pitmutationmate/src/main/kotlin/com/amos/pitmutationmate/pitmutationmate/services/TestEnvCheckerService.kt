@@ -19,7 +19,7 @@ class TestEnvCheckerService(private val project: Project) {
         val psiClasses = (psiFile as PsiClassOwner).classes
 
         for (psiClass in psiClasses) {
-            if(isPsiTestClass(psiClass)){
+            if (isPsiTestClass(psiClass)) {
                 return true
             }
         }
