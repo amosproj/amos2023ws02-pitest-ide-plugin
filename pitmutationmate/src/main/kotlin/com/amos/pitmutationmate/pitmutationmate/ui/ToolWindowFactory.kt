@@ -10,6 +10,7 @@ import com.amos.pitmutationmate.pitmutationmate.visualization.ConfigurationError
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestClassReport
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestReports
 import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.TreeStructureTable
+import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.TreeTableModel
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
@@ -57,10 +58,11 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
         }
 
         fun updateReport(toolWindow: ToolWindow, newResultData: XMLParser.ResultData?) {
+            val project = toolWindow.project
             val coverageResults = newResultData?.coverageReports
             val totals = newResultData?.totalResult
-            val reportWindow = toolWindow.contentManager.findContent(PiTestReports.TITLE).component
-
+            val reportWindowContent = toolWindow.contentManager.findContent(PiTestReports.TITLE) ?: return
+            val reportWindow = reportWindowContent.component
             if (reportWindow is PiTestReports) {
                 reportWindow.deleteReports()
                 if (coverageResults != null) {
@@ -70,6 +72,14 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
                 }
                 totals?.let { PiTestClassReport(it) }?.let { reportWindow.setSummary(it) }
                 reportWindow.visualizeReports()
+            }
+
+            val treeStructureContent = toolWindow.contentManager.findContent(TreeStructureTable.TITLE) ?: return
+            val treeStructure = treeStructureContent.component
+
+            if(treeStructure is TreeStructureTable) {
+                val newRootNode = treeStructure.createDataStructure(project)
+                (treeStructure.treeTable.tableModel as TreeTableModel).updateData(newRootNode)
             }
         }
     }
