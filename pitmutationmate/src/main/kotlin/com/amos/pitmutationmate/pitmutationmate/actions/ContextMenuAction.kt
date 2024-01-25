@@ -100,11 +100,9 @@ class ContextMenuAction : RunConfigurationAction() {
                 val path = psiElement.virtualFile.path.toString()
                 val directory = File(path)
 
-                directory.walk()
-                    .filter { it.isFile && (it.extension == "kt" || it.extension == "java") }
-                    .forEach { getPsiFileFromPath(e.project!!, it.toString())?.let { it1 -> psiFileArray += it1 } }
-            }
-        }
+        directory.walk()
+            .filter { it.isFile && (it.extension == "java" || it.extension == "kt") }
+            .forEach { Utils.getPsiFileFromPath(e.project!!, it.toString())?.let { it1 -> psiFileArray += it1 } }
 
         updateAndExecuteForFile(psiFileArray, e.project!!)
     }
