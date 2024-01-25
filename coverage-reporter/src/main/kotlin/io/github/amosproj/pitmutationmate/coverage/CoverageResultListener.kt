@@ -9,6 +9,7 @@ import org.pitest.mutationtest.ClassMutationResults
 import org.pitest.mutationtest.MutationResultListener
 import org.pitest.mutationtest.report.html.MutationHtmlReportListener
 import org.pitest.mutationtest.report.html.MutationTotals
+import org.pitest.mutationtest.report.html.PackageSummaryMap
 import org.pitest.util.ResultOutputStrategy
 import org.pitest.util.Unchecked
 import java.io.IOException
@@ -16,7 +17,7 @@ import java.io.Writer
 
 internal enum class Tag {
     FileName, PackageName, MutatedClass, LineCoverage, LineCoveragePercentage, MutationCoverage,
-    MutationCoveragePercentage, TestStrengthPercentage, TestStrength
+    MutationCoveragePercentage, TestStrengthPercentage, TestStrength, NumberOfClasses
 }
 
 class CoverageResultListener(
@@ -26,11 +27,11 @@ class CoverageResultListener(
 ) : MutationResultListener {
 
     private var out: Writer? = null
-    private var totals: MutationTotals? = null
+    private var totals: MutationTotals = MutationTotals()
+    private var packageSummaryData: PackageSummaryMap = PackageSummaryMap()
 
     init {
-        this.totals = MutationTotals()
-        out = outputStrategy?.createWriterForFile("coverageInformation.xml")
+        this.out = outputStrategy?.createWriterForFile("coverageInformation.xml")
     }
 
     private fun writeMetaDataNode(classTotals: MutationTotals) {
@@ -72,16 +73,20 @@ class CoverageResultListener(
     }
 
     override fun handleMutationResult(results: ClassMutationResults?) {
+        if( results == null) {
+            return
+        }
         if (htmlListener is MutationHtmlReportListener) {
             val testMetaData = (htmlListener as MutationHtmlReportListener).createSummaryData(coverage, results)
             val classTotals = testMetaData.totals
-            totals?.add(classTotals)
+
+            totals.add(classTotals)
+            packageSummaryData.update(results.packageName, testMetaData)
+
             write("<testMetaData>")
-            if (results != null) {
-                write(makeNode(results.fileName, Tag.FileName))
-                write(makeNode(results.packageName, Tag.PackageName))
-                write(makeNode(results.mutatedClass.toString(), Tag.MutatedClass))
-            }
+            write(makeNode(results.fileName, Tag.FileName))
+            write(makeNode(results.packageName, Tag.PackageName))
+            write(makeNode(results.mutatedClass.toString(), Tag.MutatedClass))
             writeMetaDataNode(classTotals)
             write("</testMetaData>\n")
         }
@@ -89,13 +94,28 @@ class CoverageResultListener(
 
     override fun runEnd() {
         try {
-            write("<totalMetaData>")
-            totals?.let { writeMetaDataNode(it) }
-            write("</totalMetaData>\n")
-            write("</coverageInformation>\n")
+            writePackageSummaries()
+            writeTotals()
             out!!.close()
         } catch (e: IOException) {
             throw Unchecked.translateCheckedException(e)
+        }
+    }
+
+    private fun writeTotals() {
+        write("<totalMetaData>")
+        writeMetaDataNode(totals)
+        write("</totalMetaData>\n")
+        write("</coverageInformation>\n")
+    }
+
+    private fun writePackageSummaries() {
+        for (packageData in packageSummaryData.values()) {
+            write("<packageMetaData>")
+            write(makeNode(packageData.packageName, Tag.PackageName))
+            write(makeNode(packageData.summaryData.size.toString(), Tag.NumberOfClasses))
+            writeMetaDataNode(packageData.totals)
+            write("</packageMetaData>\n")
         }
     }
 }

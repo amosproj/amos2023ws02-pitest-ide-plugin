@@ -19,6 +19,7 @@ class XMLParser {
 
             extractMutationResults(documentMutationReport, resultData)
             extractCoverageReports(documentCoverageReport, resultData)
+            extractCoverageReportPackage(documentCoverageReport, resultData)
             extractCoverageReportTotals(documentCoverageReport, resultData)
         } catch (e: Exception) {
             thisLogger().warn("Error while parsing XML reports: ${e.message}")
@@ -99,6 +100,29 @@ class XMLParser {
         }
     }
 
+    private fun extractCoverageReportPackage(document: Document, resultData: ResultData) {
+        thisLogger().info("Extracting coverage report totals")
+        val mutationsNodeList = document.getElementsByTagName("packageMetaData")
+
+        for (i in 0 until mutationsNodeList.length) {
+            val element = mutationsNodeList.item(i) as? Element ?: continue
+            val packageName = getTextContent(element, "PackageName")
+            val coverageReport = CoverageReport(
+                "package",
+                packageName,
+                "package",
+                getLineCoveragePercentage(element),
+                getLineCoverageTextRatio(element),
+                getMutationCoveragePercentage(element),
+                getMutationCoverageTextRatio(element),
+                getTestStrengthPercentage(element),
+                getTestStrengthTextRatio(element),
+                getNumberOfClassFromPackage(element)
+            )
+            resultData.addPackageReport(coverageReport)
+        }
+    }
+
     private fun extractCoverageReportTotals(document: Document, resultData: ResultData) {
         thisLogger().info("Extracting coverage report totals")
         val mutationsNodeList = document.getElementsByTagName("totalMetaData")
@@ -146,6 +170,9 @@ class XMLParser {
         return getTextContent(element, "TestStrength")
     }
 
+    private fun getNumberOfClassFromPackage(element: Element): Int {
+        return getTextContentAsInt(element, "NumberOfClasses")
+    }
     private fun getTextContent(element: Element, tagName: String): String {
         val nodeList = element.getElementsByTagName(tagName)
         return if (nodeList.length > 0) {
@@ -198,6 +225,7 @@ class XMLParser {
 
     data class ResultData(
         val coverageReports: MutableList<CoverageReport> = mutableListOf(),
+        val packageReports: MutableList<CoverageReport> = mutableListOf(),
         val mutationResults: MutableList<MutationResult> = mutableListOf(),
         var totalResult: CoverageReport? = null
     ) {
@@ -209,6 +237,9 @@ class XMLParser {
             coverageReports.add(coverageReport)
         }
 
+        fun addPackageReport(packageReport: CoverageReport) {
+            packageReports.add(packageReport)
+        }
         fun addCoverageReportTotals(coverageReport: CoverageReport) {
             if (coverageReports.isNotEmpty()) {
                 coverageReport.numberOfClasses = coverageReports.size

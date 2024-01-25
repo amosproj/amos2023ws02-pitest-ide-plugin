@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "io.github.amosproj"
-version = "1.0"
+version = "1.1"
 
 repositories {
     mavenCentral()
