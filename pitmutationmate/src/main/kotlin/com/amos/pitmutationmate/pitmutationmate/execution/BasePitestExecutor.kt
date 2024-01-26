@@ -52,7 +52,7 @@ abstract class BasePitestExecutor {
                 }
                 // archive the pitestrun using the runarchiver
                 if (classFQN != null) {
-                    RunArchiver(classFQN, project).archiveRun()
+                    RunArchiver(project).archiveRun()
                 }
             }
         })

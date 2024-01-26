@@ -7,30 +7,26 @@ import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorServ
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import java.io.File
-import java.lang.Exception
-import java.nio.file.Paths
+import java.nio.file.Path
 
-class RunArchiver(packageName: String, project: Project) {
-    private val pn: String = packageName
+class RunArchiver(project: Project) {
+
     private val reportPathGeneratorService = project.service<ReportPathGeneratorService>()
-    private val reportDirectory: File = File(reportPathGeneratorService.getReportPath().toString())
+    private val reportDirectory = File(reportPathGeneratorService.getReportPath().toString())
 
     fun archiveRun() {
         println("Archiving $reportDirectory")
-        var archiveDirectory = Paths.get(reportPathGeneratorService.getArchivePath().toString(), this.pn).toFile()
+        var archiveDirectory = Path.of(reportPathGeneratorService.getArchivePath().toString()).toFile()
         if (!archiveDirectory.exists()) {
             val success = archiveDirectory.mkdirs()
-
             if (!success) {
                 throw Exception("error creating archive directory")
             }
-
             print("Created $archiveDirectory")
         }
 
-        val index: Int = archiveDirectory.listFiles()!!.size + 1
-
-        archiveDirectory = Paths.get(archiveDirectory.path, index.toString()).toFile()
+        val index = archiveDirectory.listFiles()!!.size + 1
+        archiveDirectory = Path.of(archiveDirectory.path, index.toString()).toFile()
         val success = archiveDirectory.mkdir()
 
         if (!success) {
