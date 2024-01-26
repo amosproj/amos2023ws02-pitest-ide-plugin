@@ -73,7 +73,7 @@ class CoverageResultListener(
     }
 
     override fun handleMutationResult(results: ClassMutationResults?) {
-        if( results == null) {
+        if (results == null) {
             return
         }
         if (htmlListener is MutationHtmlReportListener) {

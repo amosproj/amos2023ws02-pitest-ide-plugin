@@ -77,7 +77,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             val treeStructureContent = toolWindow.contentManager.findContent(TreeStructureTable.TITLE) ?: return
             val treeStructure = treeStructureContent.component
 
-            if(treeStructure is TreeStructureTable) {
+            if (treeStructure is TreeStructureTable) {
                 val newRootNode = treeStructure.createDataStructure(project)
                 (treeStructure.treeTable.tableModel as TreeTableModel).updateData(newRootNode)
             }
