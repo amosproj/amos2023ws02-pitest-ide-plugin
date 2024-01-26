@@ -30,7 +30,7 @@ class RunArchiver(project: Project) {
         val success = archiveDirectory.mkdir()
 
         if (!success) {
-            throw Exception("error creating archive directory")
+            throw Exception("error creating directory to archive history Number $index")
         }
 
         for (file in this.reportDirectory.listFiles()!!) {
