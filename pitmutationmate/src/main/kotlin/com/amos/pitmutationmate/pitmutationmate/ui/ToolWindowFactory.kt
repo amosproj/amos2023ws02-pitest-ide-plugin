@@ -17,6 +17,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
+import javax.swing.SwingUtilities
 
 internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
 
@@ -71,15 +72,19 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
                     }
                 }
                 totals?.let { PiTestClassReport(it) }?.let { reportWindow.setSummary(it) }
-                reportWindow.visualizeReports()
+                SwingUtilities.invokeLater {
+                    reportWindow.visualizeReports()
+                }
             }
 
             val treeStructureContent = toolWindow.contentManager.findContent(TreeStructureTable.TITLE) ?: return
             val treeStructure = treeStructureContent.component
 
             if (treeStructure is TreeStructureTable) {
-                val newRootNode = treeStructure.createDataStructure(project)
-                (treeStructure.treeTable.tableModel as TreeTableModel).updateData(newRootNode)
+                SwingUtilities.invokeLater {
+                    val newRootNode = treeStructure.createDataStructure(project)
+                    (treeStructure.treeTable.tableModel as TreeTableModel).updateData(newRootNode)
+                }
             }
         }
     }
