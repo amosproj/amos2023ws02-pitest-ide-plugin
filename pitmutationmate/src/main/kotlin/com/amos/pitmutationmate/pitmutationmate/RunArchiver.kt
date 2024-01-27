@@ -5,18 +5,19 @@ package com.amos.pitmutationmate.pitmutationmate
 
 import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorService
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import java.io.File
-import java.lang.Exception
 import java.nio.file.Paths
 
 class RunArchiver(packageName: String, project: Project) {
     private val pn: String = packageName
     private val reportPathGeneratorService = project.service<ReportPathGeneratorService>()
     private val reportDirectory: File = File(reportPathGeneratorService.getReportPath().toString())
+    private val logger = Logger.getInstance(RunArchiver::class.java)
 
     fun archiveRun() {
-        println("Archiving $reportDirectory")
+        logger.info("Archiving $reportDirectory")
         var archiveDirectory = Paths.get(reportPathGeneratorService.getArchivePath().toString(), this.pn).toFile()
         if (!archiveDirectory.exists()) {
             val success = archiveDirectory.mkdirs()
@@ -25,7 +26,7 @@ class RunArchiver(packageName: String, project: Project) {
                 throw Exception("error creating archive directory")
             }
 
-            print("Created $archiveDirectory")
+            logger.info("Created $archiveDirectory")
         }
 
         val index: Int = archiveDirectory.listFiles()!!.size + 1
@@ -41,9 +42,9 @@ class RunArchiver(packageName: String, project: Project) {
             val destinationFile = Paths.get(archiveDirectory.path.toString(), file.name).toFile()
             try {
                 file.copyTo(destinationFile, overwrite = true)
-                println("Report ${file.path} saved successfully")
+                logger.info("Report ${file.path} saved successfully")
             } catch (e: Exception) {
-                println("ErrorDialog saving report")
+                logger.info("ErrorDialog saving report")
             }
         }
     }

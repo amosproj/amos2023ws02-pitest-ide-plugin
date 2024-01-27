@@ -20,7 +20,7 @@ class ReportPathGeneratorService(private val project: Project) {
      * Returns the path to the report base path.
      * @return the path to the report base path
      */
-    fun getBasePath(): Path {
+    private fun getBasePath(): Path {
         val projectBasePath = project.basePath ?: ""
         if (projectBasePath.isEmpty()) {
             log.warn("Project base path is empty, using current directory as base path")
