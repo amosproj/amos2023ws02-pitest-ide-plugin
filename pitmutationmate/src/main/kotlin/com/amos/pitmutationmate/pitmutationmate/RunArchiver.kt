@@ -5,6 +5,7 @@ package com.amos.pitmutationmate.pitmutationmate
 
 import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorService
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import java.io.File
 import java.nio.file.Path
@@ -12,17 +13,18 @@ import java.nio.file.Path
 class RunArchiver(project: Project) {
 
     private val reportPathGeneratorService = project.service<ReportPathGeneratorService>()
-    private val reportDirectory = File(reportPathGeneratorService.getReportPath().toString())
+    private val reportDirectory: File = File(reportPathGeneratorService.getReportPath().toString())
+    private val logger = Logger.getInstance(RunArchiver::class.java)
 
     fun archiveRun() {
-        println("Archiving $reportDirectory")
+        logger.info("Archiving $reportDirectory")
         var archiveDirectory = Path.of(reportPathGeneratorService.getArchivePath().toString()).toFile()
         if (!archiveDirectory.exists()) {
             val success = archiveDirectory.mkdirs()
             if (!success) {
                 throw Exception("error creating archive directory")
             }
-            print("Created $archiveDirectory")
+            logger.info("Created $archiveDirectory")
         }
 
         val index = archiveDirectory.listFiles()!!.size + 1
