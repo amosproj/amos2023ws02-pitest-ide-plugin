@@ -35,5 +35,6 @@ class RunArchiver(project: Project) {
         if (this.reportDirectory.listFiles() == null) {
             throw Exception("The last pitest run didn't generate any report files!")
         }
+        reportDirectory.copyRecursively(archiveDirectory)
     }
 }
