@@ -28,19 +28,12 @@ class RunArchiver(project: Project) {
         val index = archiveDirectory.listFiles()!!.size + 1
         archiveDirectory = Path.of(archiveDirectory.path, index.toString()).toFile()
         val success = archiveDirectory.mkdir()
-
         if (!success) {
             throw Exception("error creating directory to archive history Number $index")
         }
 
-        for (file in this.reportDirectory.listFiles()!!) {
-            val destinationFile = Paths.get(archiveDirectory.path.toString(), file.name).toFile()
-            try {
-                file.copyTo(destinationFile, overwrite = true)
-                println("Report ${file.path} saved successfully")
-            } catch (e: Exception) {
-                println("ErrorDialog saving report")
-            }
+        if (this.reportDirectory.listFiles() == null) {
+            throw Exception("The last pitest run didn't generate any report files!")
         }
     }
 }
