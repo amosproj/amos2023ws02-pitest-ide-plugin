@@ -16,7 +16,8 @@ dependencies {
     implementation("org.pitest:pitest-command-line:1.7.0")
     implementation("org.junit.jupiter:junit-jupiter:5.8.1")
     implementation("org.junit.jupiter:junit-jupiter:5.8.1")
-
+    implementation("org.jfree:jfreechart:1.5.4")
+    implementation("org.jfree:jcommon:1.0.24")
     testImplementation("org.mockito:mockito-core:5.8.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")

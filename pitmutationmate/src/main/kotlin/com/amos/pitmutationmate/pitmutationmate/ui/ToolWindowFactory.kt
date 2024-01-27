@@ -7,6 +7,7 @@ import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
 import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.amos.pitmutationmate.pitmutationmate.visualization.ConfigurationErrorPanel
+import com.amos.pitmutationmate.pitmutationmate.visualization.LineGraph
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestClassReport
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestReports
 import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.TreeStructureTable
@@ -48,9 +49,11 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
 
             val coverageReport = ContentFactory.getInstance().createContent(PiTestReports(), PiTestReports.TITLE, false)
             val table = ContentFactory.getInstance().createContent(TreeStructureTable(project), TreeStructureTable.TITLE, false)
+            val lineChart = ContentFactory.getInstance().createContent(LineGraph(), LineGraph.TITLE, false)
 
             toolWindow.contentManager.addContent(coverageReport)
             toolWindow.contentManager.addContent(table)
+            toolWindow.contentManager.addContent(lineChart)
 
             val reportGeneratorService = project.service<MutationResultService>()
             val newCoverageReports = reportGeneratorService.updateLastMutationResult()
