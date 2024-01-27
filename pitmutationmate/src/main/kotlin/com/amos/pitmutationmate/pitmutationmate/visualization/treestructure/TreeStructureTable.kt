@@ -15,16 +15,29 @@ import javax.swing.JScrollPane
 
 class TreeStructureTable(project: Project) : JPanel() {
 
+    private var rootNode: DataNode = DataNode(
+        "",
+        "",
+        "",
+        "",
+        "",
+        mutableListOf()
+    )
+    var treeTable: TreeTable
+    companion object {
+        const val ID = "PackageBreakdown"
+        const val TITLE = "Package Breakdown"
+    }
+
     init {
         layout = GridLayout(0, 1)
         val treeTableModel = TreeTableModel(createDataStructure(project))
-        val treeTable = TreeTable(treeTableModel)
+        treeTable = TreeTable(treeTableModel)
         treeTable.setRootVisible(true)
         treeTable.apply {
             tree.apply {
                 showsRootHandles = true
                 isRootVisible = true
-//                cellRenderer = CellRenderer()
             }
         }
         treeTable.tableHeader.reorderingAllowed = false
@@ -32,33 +45,60 @@ class TreeStructureTable(project: Project) : JPanel() {
         this.add(JScrollPane(treeTable))
         setSize(1000, 800)
     }
-    companion object {
 
-        const val ID = "PackageBreakdown"
-        const val TITLE = "Package Breakdown"
-        private var rootNode: MutableList<DataNode> = ArrayList()
-        private fun createDataStructure(project: Project): DataNode {
-            val coverageReports: MutableList<XMLParser.CoverageReport>? = project.service<MutationResultService>().updateLastMutationResult()?.coverageReports
-            val totalReport = project.service<MutationResultService>().updateLastMutationResult()?.totalResult
+    fun createDataStructure(project: Project): DataNode {
+        deleteTree(rootNode)
+        val resultData = project.service<MutationResultService>().updateLastMutationResult()
+        val coverageReports = resultData?.coverageReports
+        val packageReports = resultData?.packageReports
+        val totalReport = resultData?.totalResult
 
-            // iterate over reports and add them to data node structure
-            if (coverageReports != null) {
-                for (report in coverageReports) {
-                    var packageNode = rootNode.find { it.name == report.packageName }
-                    if (packageNode != null) {
-                        packageNode.children = packageNode.children?.plus(DataNode(report.fileName, report.numberOfClasses.toString(), report.lineCoverageTextRatio, report.mutationCoverageTextRatio, report.testStrengthTextRatio, emptyList()))
-                    } else {
-                        packageNode = DataNode(report.packageName, "", "", "", "", emptyList())
-                        packageNode.children = packageNode.children?.plus(DataNode(report.fileName, report.numberOfClasses.toString(), report.lineCoverageTextRatio, report.mutationCoverageTextRatio, report.testStrengthTextRatio, emptyList()))
-                        rootNode = rootNode.plus(packageNode).toMutableList()
+        rootNode = if (totalReport != null) {
+            createReportDataNode("All", totalReport, mutableListOf())
+        } else {
+            DataNode("All", "", "", "", "", mutableListOf())
+        }
+        // iterate over reports and add them to data node structure
+        if (coverageReports != null && packageReports != null) {
+            for (report in coverageReports) {
+                var packageNode = rootNode.children.find { it.name == report.packageName }
+                if (packageNode != null) {
+                    packageNode.children.add(createReportDataNode(report.fileName, report))
+                } else {
+                    val packageReport = packageReports.find { it.packageName == report.packageName }
+                    if (packageReport != null) {
+                        packageNode = createReportDataNode(packageReport.packageName, packageReport)
+                        packageNode.children.add(createReportDataNode(report.fileName, report))
+                        rootNode.children.add(packageNode)
                     }
                 }
             }
-            if (totalReport != null) {
-                return DataNode("All", totalReport.numberOfClasses.toString(), totalReport.lineCoverageTextRatio, totalReport.mutationCoverageTextRatio, totalReport.testStrengthTextRatio, rootNode)
-            } else {
-                return DataNode("All", "", "", "", "", rootNode)
-            }
         }
+        return rootNode
+    }
+
+    private fun deleteTree(rootNode: DataNode) {
+        if (rootNode.children.isEmpty()) {
+            return
+        }
+        for (child in rootNode.children) {
+            deleteTree(child)
+        }
+        rootNode.children.removeAll(rootNode.children)
+    }
+
+    private fun createReportDataNode(
+        name: String,
+        report: XMLParser.CoverageReport,
+        children: MutableList<DataNode> = mutableListOf()
+    ): DataNode {
+        return DataNode(
+            name,
+            report.numberOfClasses.toString(),
+            report.lineCoverageTextRatio,
+            report.mutationCoverageTextRatio,
+            report.testStrengthTextRatio,
+            children
+        )
     }
 }

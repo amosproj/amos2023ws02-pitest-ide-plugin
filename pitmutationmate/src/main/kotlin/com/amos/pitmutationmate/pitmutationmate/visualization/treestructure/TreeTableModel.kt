@@ -124,9 +124,14 @@ class TreeTableModel(@JvmField var rootNode: DataNode) : TreeTableModel {
         fireTreeNode(STRUCTURE_CHANGED, source, path, childIndices, children)
     }
 
+    fun updateData(newRootNode: DataNode) {
+        rootNode = newRootNode
+        fireTreeStructureChanged(this, arrayOf<Any>(rootNode), IntArray(0), arrayOf())
+    }
+
     companion object {
-        protected var columnNames = arrayOf("Name", "Number of Classes", "Line Coverage", "Mutation Coverage", "Test Strength")
-        protected var columnTypes = arrayOf(
+        private var columnNames = arrayOf("Name", "Number of Classes", "Line Coverage", "Mutation Coverage", "Test Strength")
+        private var columnTypes = arrayOf(
             TreeTableModel::class.java,
             Integer::class.java,
             String::class.java,
