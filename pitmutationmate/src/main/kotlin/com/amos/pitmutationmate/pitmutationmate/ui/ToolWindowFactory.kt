@@ -9,7 +9,8 @@ import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.amos.pitmutationmate.pitmutationmate.visualization.ConfigurationErrorPanel
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestClassReport
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestReports
-import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.TreeStructureTable
+import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.HistoricalDataTable
+import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.PackageBreakdownTable
 import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.TreeTableModel
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.DumbAware
@@ -48,11 +49,12 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             toolWindow.contentManager.removeAllContents(true)
 
             val coverageReport = ContentFactory.getInstance().createContent(PiTestReports(), PiTestReports.TITLE, false)
-            val table =
-                ContentFactory.getInstance().createContent(TreeStructureTable(project), TreeStructureTable.TITLE, false)
+            val packageBreakdownTable = ContentFactory.getInstance().createContent(PackageBreakdownTable(project), PackageBreakdownTable.TITLE, false)
+            val historicalDataTable = ContentFactory.getInstance().createContent(HistoricalDataTable(project), HistoricalDataTable.TITLE, false)
 
             toolWindow.contentManager.addContent(coverageReport)
-            toolWindow.contentManager.addContent(table)
+            toolWindow.contentManager.addContent(packageBreakdownTable)
+            toolWindow.contentManager.addContent(historicalDataTable)
 
             val reportGeneratorService = project.service<MutationResultService>()
             val newCoverageReports = reportGeneratorService.updateLastMutationResult()
@@ -79,10 +81,10 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
                 }
             }
 
-            val treeStructureContent = toolWindow.contentManager.findContent(TreeStructureTable.TITLE) ?: return
+            val treeStructureContent = toolWindow.contentManager.findContent(PackageBreakdownTable.TITLE) ?: return
             val treeStructure = treeStructureContent.component
 
-            if (treeStructure is TreeStructureTable) {
+            if (treeStructure is PackageBreakdownTable) {
                 ToolWindowManager.getInstance(project).invokeLater {
                     val newRootNode = treeStructure.createDataStructure(project)
                     (treeStructure.treeTable.tableModel as TreeTableModel).updateData(newRootNode)
