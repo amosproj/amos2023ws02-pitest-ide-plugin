@@ -11,13 +11,13 @@ import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestClassReport
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestReports
 import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.TreeStructureTable
 import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.TreeTableModel
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
-import javax.swing.SwingUtilities
 
 internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
 
@@ -72,7 +72,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
                     }
                 }
                 totals?.let { PiTestClassReport(it) }?.let { reportWindow.setSummary(it) }
-                SwingUtilities.invokeLater {
+                ApplicationManager.getApplication().invokeLater {
                     reportWindow.visualizeReports()
                 }
             }
@@ -81,7 +81,7 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
             val treeStructure = treeStructureContent.component
 
             if (treeStructure is TreeStructureTable) {
-                SwingUtilities.invokeLater {
+                ApplicationManager.getApplication().invokeLater {
                     val newRootNode = treeStructure.createDataStructure(project)
                     (treeStructure.treeTable.tableModel as TreeTableModel).updateData(newRootNode)
                 }
