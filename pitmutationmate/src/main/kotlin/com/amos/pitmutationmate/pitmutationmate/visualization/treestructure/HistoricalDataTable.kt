@@ -52,7 +52,6 @@ class HistoricalDataTable(project: Project) : JPanel() {
     }
 
     private fun gatherHistoricData(
-        project: Project,
         coverageReports: MutableList<XMLParser.CoverageReport>,
         packageReports: MutableList<XMLParser.CoverageReport>,
         totalReports:  MutableList<XMLParser.CoverageReport>,
@@ -90,7 +89,7 @@ class HistoricalDataTable(project: Project) : JPanel() {
         val totalReports:  MutableList<XMLParser.CoverageReport> = newMutableList()
         val directory = File(project.service<ReportPathGeneratorService>().getArchivePath().toString())
 
-        gatherHistoricData(project,coverageReports,packageReports,totalReports, directory)
+        gatherHistoricData(coverageReports,packageReports,totalReports, directory)
 
         val totalReport = totalReports.first()
 
