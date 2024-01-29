@@ -22,11 +22,11 @@ class MavenTaskExecutor : BasePitestExecutor() {
         val commandLine = GeneralCommandLine()
 
         if (!executable.isNullOrEmpty()) {
-            this.mavenExecutable = executable!!
+            this.mavenExecutable = executable
         }
 
         if (!overrideTaskName.isNullOrEmpty()) {
-            this.taskName = overrideTaskName!!
+            this.taskName = overrideTaskName
         }
 
         commandLine.exePath = mavenExecutable
