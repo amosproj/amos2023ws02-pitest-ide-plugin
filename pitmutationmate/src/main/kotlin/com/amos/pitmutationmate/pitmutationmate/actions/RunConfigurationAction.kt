@@ -5,8 +5,6 @@ package com.amos.pitmutationmate.pitmutationmate.actions
 
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfiguration
 import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType
-import com.amos.pitmutationmate.pitmutationmate.editor.PluginState
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.execution.ExecutorRegistry
 import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
@@ -29,10 +27,5 @@ abstract class RunConfigurationAction : AnAction() {
         }
 
         ProgramRunnerUtil.executeConfiguration(runConfig, executor!!)
-
-        // restart code highlighting upon new pitest results
-        PluginState.isAnnotatorEnabled = true
-        // TODO: ensure only the external annotator is rerun
-        DaemonCodeAnalyzer.getInstance(project).restart()
     }
 }
