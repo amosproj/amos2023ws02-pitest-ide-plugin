@@ -9,7 +9,6 @@ import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorServ
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.ui.treeStructure.treetable.TreeTable
-import com.squareup.wire.internal.newMutableList
 import java.awt.GridLayout
 import java.io.File
 import java.nio.file.Path
@@ -27,7 +26,7 @@ class HistoricalDataTable(project: Project) : JPanel() {
         "",
         mutableListOf()
     )
-    private var alreadyFoundData: MutableList<String> = newMutableList()
+    private var alreadyFoundData: MutableList<String> = mutableListOf()
     private var treeTable: TreeTable
     companion object {
         const val ID = "HistoricalData"
@@ -84,9 +83,9 @@ class HistoricalDataTable(project: Project) : JPanel() {
 
     private fun createDataStructure(project: Project): DataNode {
         deleteTree(rootNode)
-        val coverageReports: MutableList<XMLParser.CoverageReport> = newMutableList()
-        val packageReports: MutableList<XMLParser.CoverageReport> = newMutableList()
-        val totalReports: MutableList<XMLParser.CoverageReport> = newMutableList()
+        val coverageReports: MutableList<XMLParser.CoverageReport> = mutableListOf()
+        val packageReports: MutableList<XMLParser.CoverageReport> = mutableListOf()
+        val totalReports: MutableList<XMLParser.CoverageReport> = mutableListOf()
         val directory = File(project.service<ReportPathGeneratorService>().getArchivePath().toString())
 
         gatherHistoricData(coverageReports, packageReports, totalReports, directory)
