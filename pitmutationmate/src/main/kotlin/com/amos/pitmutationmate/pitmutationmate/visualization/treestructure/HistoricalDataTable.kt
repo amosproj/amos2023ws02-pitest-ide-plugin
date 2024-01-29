@@ -54,7 +54,7 @@ class HistoricalDataTable(project: Project) : JPanel() {
     private fun gatherHistoricData(
         coverageReports: MutableList<XMLParser.CoverageReport>,
         packageReports: MutableList<XMLParser.CoverageReport>,
-        totalReports:  MutableList<XMLParser.CoverageReport>,
+        totalReports: MutableList<XMLParser.CoverageReport>,
         directory: File
     ) {
         val maxNumberOfLastReports = 3
@@ -86,10 +86,10 @@ class HistoricalDataTable(project: Project) : JPanel() {
         deleteTree(rootNode)
         val coverageReports: MutableList<XMLParser.CoverageReport> = newMutableList()
         val packageReports: MutableList<XMLParser.CoverageReport> = newMutableList()
-        val totalReports:  MutableList<XMLParser.CoverageReport> = newMutableList()
+        val totalReports: MutableList<XMLParser.CoverageReport> = newMutableList()
         val directory = File(project.service<ReportPathGeneratorService>().getArchivePath().toString())
 
-        gatherHistoricData(coverageReports,packageReports,totalReports, directory)
+        gatherHistoricData(coverageReports, packageReports, totalReports, directory)
 
         val totalReport = totalReports.first()
 
