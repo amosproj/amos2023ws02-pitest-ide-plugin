@@ -80,12 +80,12 @@ publishing {
     }
 }
 
-//val signingKey: String? by project
-//val signingPassword: String? by project
+// val signingKey: String? by project
+// val signingPassword: String? by project
 //
-//signing {
+// signing {
 //    if (signingKey != null && signingPassword != null) {
 //        useInMemoryPgpKeys(signingKey, signingPassword)
 //    }
 //    sign(publishing.publications)
-//}
+// }
