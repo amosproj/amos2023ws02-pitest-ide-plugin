@@ -46,6 +46,14 @@ class ReportPathGeneratorService(private val project: Project) {
         return Path.of("$projectBasePath/.history")
     }
 
+    fun getMutationInformationPath(path: String): Path {
+        return Path.of("$path/mutations.xml")
+    }
+
+    fun getCoverageInformationPath(path: String): Path {
+        return Path.of("$path/coverageInformation.xml")
+    }
+
     private fun checkForDebugBuiltType(): Path {
         var path = getReportPath()
         if (Files.exists(Path.of("$path/debug"))) {

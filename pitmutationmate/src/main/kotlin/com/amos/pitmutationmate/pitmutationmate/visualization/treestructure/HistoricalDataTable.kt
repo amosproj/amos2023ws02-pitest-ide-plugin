@@ -5,6 +5,7 @@
 package com.amos.pitmutationmate.pitmutationmate.visualization.treestructure
 
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
+import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
 import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorService
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -50,48 +51,15 @@ class HistoricalDataTable(project: Project) : JPanel() {
         setSize(1000, 800)
     }
 
-    private fun gatherHistoricData(
-        coverageReports: MutableList<XMLParser.CoverageReport>,
-        packageReports: MutableList<XMLParser.CoverageReport>,
-        totalReports: MutableList<XMLParser.CoverageReport>,
-        directory: File
-    ) {
-        val maxNumberOfLastReports = 3
-
-        if (directory.exists() && directory.isDirectory) {
-            val parser = XMLParser()
-            val files = directory.listFiles()
-
-            val sortedFiles = files?.sortedByDescending { it.lastModified() }
-            val mostRecentFiles = sortedFiles?.take(maxNumberOfLastReports)
-
-            if (mostRecentFiles != null) {
-                for (file in mostRecentFiles) {
-                    val mutationReportPath = Path.of(file.path + "/mutations.xml")
-                    val coverageReportPath = Path.of(file.path + "/coverageInformation.xml")
-
-                    if (mutationReportPath.exists() && coverageReportPath.exists()) {
-                        val resultData = parser.loadResultsFromXmlReport(mutationReportPath.toString(), coverageReportPath.toString())
-                        coverageReports.addAll(resultData.coverageReports)
-                        packageReports.addAll(resultData.packageReports)
-                        resultData.totalResult?.let { totalReports.add(it) }
-                    }
-                }
-            }
-        }
-    }
-
     private fun createDataStructure(project: Project): DataNode {
         deleteTree(rootNode)
-        val coverageReports: MutableList<XMLParser.CoverageReport> = mutableListOf()
-        val packageReports: MutableList<XMLParser.CoverageReport> = mutableListOf()
-        val totalReports: MutableList<XMLParser.CoverageReport> = mutableListOf()
-        val directory = File(project.service<ReportPathGeneratorService>().getArchivePath().toString())
 
-        gatherHistoricData(coverageReports, packageReports, totalReports, directory)
+        val bundledReports = project.service<MutationResultService>().getHistoricMutationResults()
+        val coverageReports = bundledReports.coverageReports
+        val packageReports = bundledReports.packageReports
+        val totalReport = bundledReports.totalResult
 
-        if (totalReports.isNotEmpty()) {
-            val totalReport = totalReports.first()
+        if (totalReport != null) {
             rootNode = createReportDataNode("All", totalReport, mutableListOf())!!
             // iterate over reports and add them to data node structure
             for (report in coverageReports) {
@@ -112,7 +80,7 @@ class HistoricalDataTable(project: Project) : JPanel() {
                 }
             }
         } else {
-            rootNode = DataNode("No test run", "found in history!", "Try to rerun", " pitest.", "", mutableListOf())
+            rootNode = DataNode("No test run", "found in history!", "Try to rerun", " pitest", "or restart the IDE", mutableListOf())
         }
 
         return rootNode
