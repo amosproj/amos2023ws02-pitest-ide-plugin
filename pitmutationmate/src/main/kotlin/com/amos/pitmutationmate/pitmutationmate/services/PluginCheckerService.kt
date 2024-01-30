@@ -148,7 +148,9 @@ class PluginCheckerService(private val project: Project) {
         )
         val groovyChecker = PluginCheckerGroovy()
         for (node in nodes) {
-            node.visit(groovyChecker)
+            if (node::class.java.declaredMethods.any { it.name == "visit" }) {
+                node.visit(groovyChecker)
+            }
         }
         if (!groovyPlugins.pitestPluginAvailable) {
             groovyPlugins.pitestPluginAvailable = groovyChecker.pitestPluginAvailable
