@@ -50,7 +50,7 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     }
 
     fun checkDefault(runConfiguration: RunConfiguration) {
-        if (runConfiguration.isDefault()) {
+        if (runConfiguration.isDefault) {
             targetClasses.isEditable = false
         }
     }

@@ -29,19 +29,16 @@ class RunConfiguration(
     name: String?
 ) : RunConfigurationBase<RunConfigurationOptions?>(project, factory, name) {
     private val logger: Logger = Logger.getInstance(RunConfiguration::class.java)
-    private var isDefault = false
 
     override fun getOptions(): RunConfigurationOptions {
         return super.getOptions() as RunConfigurationOptions
     }
 
-    fun setDefault() {
-        this.isDefault = true
-    }
-
-    fun isDefault(): Boolean {
-        return this.isDefault
-    }
+    var isDefault: Boolean
+        get() = options.isDefault
+        set(isDefault) {
+            options.isDefault = isDefault
+        }
 
     var taskName: String?
         get() = options.taskName

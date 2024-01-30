@@ -7,6 +7,13 @@ import com.intellij.execution.configurations.RunConfigurationOptions
 import com.intellij.openapi.components.StoredProperty
 
 class RunConfigurationOptions : RunConfigurationOptions() {
+    private var isDefaultOption: StoredProperty<Boolean> = property(false).provideDelegate(this, "isDefault")
+    var isDefault: Boolean
+        get() = isDefaultOption.getValue(this)
+        set(value) {
+            isDefaultOption.setValue(this, value)
+        }
+
     private var taskNameOption: StoredProperty<String?> = string("").provideDelegate(this, "taskName")
     var taskName: String?
         get() = taskNameOption.getValue(this)
