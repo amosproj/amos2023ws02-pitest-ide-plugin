@@ -6,16 +6,12 @@ package com.amos.pitmutationmate.pitmutationmate.visualization.treestructure
 
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
-import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorService
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.ui.treeStructure.treetable.TreeTable
 import java.awt.GridLayout
-import java.io.File
-import java.nio.file.Path
 import javax.swing.JPanel
 import javax.swing.JScrollPane
-import kotlin.io.path.exists
 
 class HistoricalDataTable(project: Project) : JPanel() {
 
