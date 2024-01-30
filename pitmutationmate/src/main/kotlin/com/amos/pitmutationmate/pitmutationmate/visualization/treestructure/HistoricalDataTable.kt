@@ -90,27 +90,32 @@ class HistoricalDataTable(project: Project) : JPanel() {
 
         gatherHistoricData(coverageReports, packageReports, totalReports, directory)
 
-        val totalReport = totalReports.first()
-
-        rootNode = createReportDataNode("All", totalReport, mutableListOf())!!
-        // iterate over reports and add them to data node structure
-        for (report in coverageReports) {
-            var packageNode = rootNode.children.find { it.name == report.packageName }
-            if (packageNode != null) {
-                createReportDataNode(report.fileName, report)?.let { packageNode!!.children.add(it) }
-            } else {
-                val packageReport = packageReports.find { it.packageName == report.packageName }
-                if (packageReport != null) {
-                    packageNode = createReportDataNode(packageReport.packageName, packageReport)
-                    if (packageNode != null) {
-                        createReportDataNode(report.fileName, report)?.let { packageNode.children.add(it) }
-                    }
-                    if (packageNode != null) {
-                        rootNode.children.add(packageNode)
+        if (totalReports.isNotEmpty()) {
+            val totalReport = totalReports.first()
+            rootNode = createReportDataNode("All", totalReport, mutableListOf())!!
+            // iterate over reports and add them to data node structure
+            for (report in coverageReports) {
+                var packageNode = rootNode.children.find { it.name == report.packageName }
+                if (packageNode != null) {
+                    createReportDataNode(report.fileName, report)?.let { packageNode!!.children.add(it) }
+                } else {
+                    val packageReport = packageReports.find { it.packageName == report.packageName }
+                    if (packageReport != null) {
+                        packageNode = createReportDataNode(packageReport.packageName, packageReport)
+                        if (packageNode != null) {
+                            createReportDataNode(report.fileName, report)?.let { packageNode.children.add(it) }
+                        }
+                        if (packageNode != null) {
+                            rootNode.children.add(packageNode)
+                        }
                     }
                 }
             }
         }
+        else {
+            rootNode = DataNode("No test run" , "found in history!", "Try to rerun", " pitest.", "", mutableListOf())
+        }
+
         return rootNode
     }
 
