@@ -49,6 +49,12 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
         return scopeTipMessage
     }
 
+    fun checkDefault(runConfiguration: RunConfiguration) {
+        if (runConfiguration.isDefault) {
+            targetClasses.isEditable = false
+        }
+    }
+
     override fun resetEditorFrom(runConfiguration: RunConfiguration) {
         targetClasses.text = runConfiguration.classFQN
         gradleTaskField.text = runConfiguration.taskName

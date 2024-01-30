@@ -34,6 +34,12 @@ class RunConfiguration(
         return super.getOptions() as RunConfigurationOptions
     }
 
+    var isDefault: Boolean
+        get() = options.isDefault
+        set(isDefault) {
+            options.isDefault = isDefault
+        }
+
     var taskName: String?
         get() = options.taskName
         set(taskName) {
@@ -56,7 +62,9 @@ class RunConfiguration(
         }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
-        return com.amos.pitmutationmate.pitmutationmate.configuration.SettingsEditor()
+        val settingsEditor = com.amos.pitmutationmate.pitmutationmate.configuration.SettingsEditor()
+        settingsEditor.checkDefault(this)
+        return settingsEditor
     }
 
     override fun getState(
