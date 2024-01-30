@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.execution
 
+import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationOptions
 import com.intellij.execution.configurations.GeneralCommandLine
 import java.io.File
 import java.nio.file.Path
@@ -20,19 +21,17 @@ class GradleTaskExecutor : BasePitestExecutor() {
     private var systemInfoProvider: SystemInfoProvider = SystemInfo()
 
     override fun buildCommandLine(
-        executable: String?,
-        overrideTaskName: String?,
+        options: RunConfigurationOptions,
         projectDir: String,
-        classFQN: String?,
         reportDir: Path,
         port: Int
     ): GeneralCommandLine {
         val commandLine = GeneralCommandLine()
-        var gradleExecutable: String? = executable
+        var gradleExecutable: String? = options.gradleExecutable
         var taskName: String? = PITEST_TASK_NAME
 
-        if (!overrideTaskName.isNullOrEmpty()) {
-            taskName = overrideTaskName
+        if (!options.taskName.isNullOrEmpty()) {
+            taskName = options.taskName
         }
 
         if (systemInfoProvider.isWindows()) {
@@ -49,20 +48,20 @@ class GradleTaskExecutor : BasePitestExecutor() {
             commandLine.addParameters(UNIX_FIRST_PARAMETER, gradleExecutable, taskName)
         }
 
-        commandLine.addParameters(getPitestOverrideParameters(classFQN, port, reportDir))
+        commandLine.addParameters(getPitestOverrideParameters(options.classFQN, port, reportDir, options.verbose))
 
         commandLine.workDirectory = File(projectDir)
         return commandLine
     }
 
-    private fun getPitestOverrideParameters(classFQN: String?, port: Int, reportDir: Path): List<String> {
+    private fun getPitestOverrideParameters(classFQN: String?, port: Int, reportDir: Path, verbose: Boolean): List<String> {
         val parameters = mutableListOf<String>()
         if (!classFQN.isNullOrEmpty()) {
             parameters.add("-Dpitmutationmate.override.targetClasses=$classFQN")
         }
         parameters.add("-Dpitmutationmate.override.outputFormats=XML,report-coverage")
         parameters.add("-Dpitmutationmate.override.addCoverageListenerDependency=io.github.amosproj:coverage-reporter:1.1")
-        parameters.add("-Dpitmutationmate.override.verbose=true")
+        parameters.add("-Dpitmutationmate.override.verbose=$verbose")
         parameters.add("-Dpitmutationmate.override.port=$port")
         parameters.add("-Dpitmutationmate.override.reportDir=${reportDir.toAbsolutePath()}")
         return parameters

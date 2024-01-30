@@ -94,11 +94,11 @@ class RunConfiguration(
                 if (project.isMavenized) {
                     logger.debug("MutationMateRunConfiguration: executing maven task.")
                     val mavenTaskExecutor = MavenTaskExecutor()
-                    return mavenTaskExecutor.executeTask(project, gradleExecutable, taskName, classFQN)
+                    return mavenTaskExecutor.executeTask(project, options)
                 }
                 logger.debug("MutationMateRunConfiguration: executing gradle task.")
                 val gradleTaskExecutor = GradleTaskExecutor()
-                return gradleTaskExecutor.executeTask(project, gradleExecutable, taskName, classFQN)
+                return gradleTaskExecutor.executeTask(project, options)
             }
         }
     }
