@@ -20,7 +20,6 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
-import com.intellij.openapi.util.JDOMExternalizerUtil
 import org.jdom.Element
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.kotlin.idea.configuration.isMavenized
@@ -56,13 +55,6 @@ class RunConfiguration(
             options.classFQN = classFQN
             logger.debug("MutationMateRunConfiguration: classFQN was updated to '$classFQN'.")
         }
-
-    override fun writeExternal(element: Element) {
-        super.writeExternal(element)
-        JDOMExternalizerUtil.writeField(element, "TASK_NAME", taskName)
-        JDOMExternalizerUtil.writeField(element, "GRADLE_EXECUTABLE", gradleExecutable)
-        JDOMExternalizerUtil.writeField(element, "CLASS_FQN", classFQN)
-    }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
         return com.amos.pitmutationmate.pitmutationmate.configuration.SettingsEditor()
