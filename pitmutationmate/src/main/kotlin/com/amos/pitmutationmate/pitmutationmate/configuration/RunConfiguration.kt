@@ -44,21 +44,30 @@ class RunConfiguration(
         get() = options.taskName
         set(taskName) {
             options.taskName = taskName
-            logger.debug("MutationMateRunConfiguration: taskName was updated to '$taskName'.")
         }
 
     var gradleExecutable: String?
         get() = options.gradleExecutable
         set(gradleExecutable) {
             options.gradleExecutable = gradleExecutable
-            logger.debug("MutationMateRunConfiguration: gradleExecutable was updated to '$gradleExecutable'.")
+        }
+
+    var buildType: String?
+        get() = options.buildType
+        set(buildType) {
+            options.buildType = buildType
+        }
+
+    var verbose: Boolean
+        get() = options.verbose
+        set(verbose) {
+            options.verbose = verbose
         }
 
     var classFQN: String?
         get() = options.classFQN
         set(classFQN) {
             options.classFQN = classFQN
-            logger.debug("MutationMateRunConfiguration: classFQN was updated to '$classFQN'.")
         }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
@@ -85,11 +94,11 @@ class RunConfiguration(
                 if (project.isMavenized) {
                     logger.debug("MutationMateRunConfiguration: executing maven task.")
                     val mavenTaskExecutor = MavenTaskExecutor()
-                    return mavenTaskExecutor.executeTask(project, gradleExecutable, taskName, classFQN)
+                    return mavenTaskExecutor.executeTask(project, options)
                 }
                 logger.debug("MutationMateRunConfiguration: executing gradle task.")
                 val gradleTaskExecutor = GradleTaskExecutor()
-                return gradleTaskExecutor.executeTask(project, gradleExecutable, taskName, classFQN)
+                return gradleTaskExecutor.executeTask(project, options)
             }
         }
     }
