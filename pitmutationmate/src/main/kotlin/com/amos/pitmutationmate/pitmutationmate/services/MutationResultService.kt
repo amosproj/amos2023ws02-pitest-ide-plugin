@@ -32,7 +32,7 @@ class MutationResultService(private val project: Project) {
         return lastMutationResult
     }
 
-    fun getHistoricMutationResults(): XMLParser.ResultData{
+    fun getHistoricMutationResults(): XMLParser.ResultData {
         val maxNumberOfRecentReportsToLookUp = 3
         val directory = project.service<ReportPathGeneratorService>().getArchivePath().toFile()
 
