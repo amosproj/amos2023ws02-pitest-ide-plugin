@@ -53,7 +53,7 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     }
 
     private fun getBuildTypesMessage(): JLabel {
-        val multilineText = "<html>The Android build type of which you want to use for the pitest results from.<br/>If kept empty, <c>debug</c> and <c>release</c>are tried if it is an Android project.</html>"
+        val multilineText = "<html>The Android build type of which you want to use for the pitest results from.<br/>If kept empty, <c>debug</c> and <c>release</c> are tried if it is an Android project.</html>"
         val scopeTipMessage = JLabel(multilineText)
         scopeTipMessage.font = Font(UIUtil.getLabelFont().name, UIUtil.getLabelFont().style, 12)
         return scopeTipMessage
