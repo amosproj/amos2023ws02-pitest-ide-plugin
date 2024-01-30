@@ -111,9 +111,8 @@ class HistoricalDataTable(project: Project) : JPanel() {
                     }
                 }
             }
-        }
-        else {
-            rootNode = DataNode("No test run" , "found in history!", "Try to rerun", " pitest.", "", mutableListOf())
+        } else {
+            rootNode = DataNode("No test run", "found in history!", "Try to rerun", " pitest.", "", mutableListOf())
         }
 
         return rootNode
