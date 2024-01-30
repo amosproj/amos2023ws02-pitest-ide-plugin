@@ -26,6 +26,7 @@ abstract class BasePitestExecutor {
         messagingServer.startServer(options.classFQN) // Start the UDP server
 
         val reportPathGenerator = project.service<ReportPathGeneratorService>()
+        reportPathGenerator.setBuildType(options.buildType)
         val reportDir = reportPathGenerator.getReportPath()
 
         val commandLine = buildCommandLine(options, project.basePath!!, reportDir, messagingServer.port)
