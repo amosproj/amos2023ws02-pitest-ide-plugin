@@ -29,9 +29,18 @@ class RunConfiguration(
     name: String?
 ) : RunConfigurationBase<RunConfigurationOptions?>(project, factory, name) {
     private val logger: Logger = Logger.getInstance(RunConfiguration::class.java)
+    private var isDefault = false
 
     override fun getOptions(): RunConfigurationOptions {
         return super.getOptions() as RunConfigurationOptions
+    }
+
+    fun setDefault() {
+        this.isDefault = true
+    }
+
+    fun isDefault(): Boolean {
+        return this.isDefault
     }
 
     var taskName: String?
@@ -56,7 +65,9 @@ class RunConfiguration(
         }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
-        return com.amos.pitmutationmate.pitmutationmate.configuration.SettingsEditor()
+        val settingsEditor = com.amos.pitmutationmate.pitmutationmate.configuration.SettingsEditor()
+        settingsEditor.checkDefault(this)
+        return settingsEditor
     }
 
     override fun getState(

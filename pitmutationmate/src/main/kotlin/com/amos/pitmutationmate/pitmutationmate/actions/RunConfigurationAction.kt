@@ -22,6 +22,7 @@ abstract class RunConfigurationAction : AnAction() {
         var runConfig = runManager.findConfigurationByName("Default")
         if (runConfig == null) {
             runConfig = runManager.createConfiguration("Default", RunConfigurationType::class.java)
+            (runConfig.configuration as RunConfiguration).setDefault()
         }
         runConfig.configuration.let {
             val rc = it as RunConfiguration
