@@ -24,7 +24,7 @@ class HistoricalDataTable(project: Project) : JPanel() {
         mutableListOf()
     )
     private var alreadyFoundData: MutableList<String> = mutableListOf()
-    private var treeTable: TreeTable
+    var treeTable: TreeTable
     companion object {
         const val ID = "HistoricalData"
         const val TITLE = "Historical Data"
@@ -47,36 +47,39 @@ class HistoricalDataTable(project: Project) : JPanel() {
         setSize(1000, 800)
     }
 
-    private fun createDataStructure(project: Project): DataNode {
+    fun createDataStructure(project: Project): DataNode {
         deleteTree(rootNode)
+        alreadyFoundData.clear()
 
         val bundledReports = project.service<MutationResultService>().getHistoricMutationResults()
         val coverageReports = bundledReports.coverageReports
         val packageReports = bundledReports.packageReports
         val totalReport = bundledReports.totalResult
 
-        if (totalReport != null) {
-            rootNode = createReportDataNode("All", totalReport, mutableListOf())!!
-            // iterate over reports and add them to data node structure
-            for (report in coverageReports) {
-                var packageNode = rootNode.children.find { it.name == report.packageName }
-                if (packageNode != null) {
-                    createReportDataNode(report.fileName, report)?.let { packageNode!!.children.add(it) }
-                } else {
-                    val packageReport = packageReports.find { it.packageName == report.packageName }
-                    if (packageReport != null) {
+        rootNode = if (totalReport != null) {
+            createReportDataNode("All", totalReport, mutableListOf())
+        } else {
+            DataNode("All", "", "", "", "", mutableListOf())
+        }
+        // iterate over reports and add them to data node structure
+        for (report in coverageReports) {
+            var packageNode = rootNode.children.find { it.name == report.packageName }
+            if (packageNode != null) {
+                if (!checkIfAlreadyFound(report.fileName)) {
+                    packageNode.children.add(createReportDataNode(report.fileName, report))
+                }
+            } else {
+                val packageReport = packageReports.find { it.packageName == report.packageName }
+                if (packageReport != null) {
+                    if (!checkIfAlreadyFound(packageReport.packageName)) {
                         packageNode = createReportDataNode(packageReport.packageName, packageReport)
-                        if (packageNode != null) {
-                            createReportDataNode(report.fileName, report)?.let { packageNode.children.add(it) }
+                        if (!checkIfAlreadyFound(report.fileName)) {
+                            packageNode.children.add(createReportDataNode(report.fileName, report))
                         }
-                        if (packageNode != null) {
-                            rootNode.children.add(packageNode)
-                        }
+                        rootNode.children.add(packageNode)
                     }
                 }
             }
-        } else {
-            rootNode = DataNode("No test run", "found in history!", "Try to rerun", " pitest", "or restart the IDE", mutableListOf())
         }
 
         return rootNode
@@ -96,18 +99,21 @@ class HistoricalDataTable(project: Project) : JPanel() {
         name: String,
         report: XMLParser.CoverageReport,
         children: MutableList<DataNode> = mutableListOf()
-    ): DataNode? {
-        if (!alreadyFoundData.contains(name)) {
+    ): DataNode {
+        return DataNode(
+            name,
+            report.numberOfClasses.toString(),
+            report.lineCoverageTextRatio,
+            report.mutationCoverageTextRatio,
+            report.testStrengthTextRatio,
+            children
+        )
+    }
+
+    private fun checkIfAlreadyFound(name: String): Boolean {
+        return if (!alreadyFoundData.contains(name)) {
             alreadyFoundData.add(name)
-            return DataNode(
-                name,
-                report.numberOfClasses.toString(),
-                report.lineCoverageTextRatio,
-                report.mutationCoverageTextRatio,
-                report.testStrengthTextRatio,
-                children
-            )
-        }
-        return null
+            false
+        } else true
     }
 }

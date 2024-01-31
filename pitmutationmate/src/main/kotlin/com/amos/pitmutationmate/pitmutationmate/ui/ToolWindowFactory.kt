@@ -90,6 +90,16 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
                     (treeStructure.treeTable.tableModel as TreeTableModel).updateData(newRootNode)
                 }
             }
+
+            val historicalDataContent = toolWindow.contentManager.findContent(HistoricalDataTable.TITLE) ?: return
+            val historicalData = historicalDataContent.component
+
+            if (historicalData is HistoricalDataTable) {
+                ToolWindowManager.getInstance(project).invokeLater {
+                    val newRootNode = historicalData.createDataStructure(project)
+                    (historicalData.treeTable.tableModel as TreeTableModel).updateData(newRootNode)
+                }
+            }
         }
     }
 }
