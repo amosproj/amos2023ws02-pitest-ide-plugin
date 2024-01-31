@@ -8,7 +8,6 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.io.path.exists
 
 /**
  * A service that generates the path to the report directory.
