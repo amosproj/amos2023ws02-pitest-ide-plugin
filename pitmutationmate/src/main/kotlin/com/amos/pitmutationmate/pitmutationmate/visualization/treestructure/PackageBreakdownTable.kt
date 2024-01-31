@@ -13,7 +13,7 @@ import java.awt.GridLayout
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 
-class TreeStructureTable(project: Project) : JPanel() {
+class PackageBreakdownTable(project: Project) : JPanel() {
 
     private var rootNode: DataNode = DataNode(
         "",

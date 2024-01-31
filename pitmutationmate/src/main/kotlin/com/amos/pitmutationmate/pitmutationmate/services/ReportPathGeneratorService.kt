@@ -8,7 +8,6 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.io.path.exists
 
 /**
  * A service that generates the path to the report directory.
@@ -76,6 +75,14 @@ class ReportPathGeneratorService(private val project: Project) {
      */
     fun getReportCoverageFile(): Path {
         val path = checkForDebugBuiltType()
+        return Path.of("$path/coverageInformation.xml")
+    }
+
+    fun getMutationInformationPath(path: String): Path {
+        return Path.of("$path/coverageInformation.xml")
+    }
+
+    fun getCoverageInformationPath(path: String): Path {
         return Path.of("$path/coverageInformation.xml")
     }
 
