@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "io.github.amosproj"
-version = "1.1"
+version = "1.2"
 
 repositories {
     mavenCentral()
@@ -24,7 +24,7 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(11)
 }
 
 java {
