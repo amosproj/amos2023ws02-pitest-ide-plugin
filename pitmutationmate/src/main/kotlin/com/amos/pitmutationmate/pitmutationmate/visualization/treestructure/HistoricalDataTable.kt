@@ -114,6 +114,8 @@ class HistoricalDataTable(project: Project) : JPanel() {
         return if (!alreadyFoundData.contains(name)) {
             alreadyFoundData.add(name)
             false
-        } else true
+        } else {
+            true
+        }
     }
 }
