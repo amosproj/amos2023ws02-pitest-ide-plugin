@@ -15,6 +15,7 @@ import kotlin.io.path.exists
  */
 @Service(Service.Level.PROJECT)
 class ReportPathGeneratorService(private val project: Project) {
+    private var buildType: String? = null
 
     /**
      * Returns the path to the report base path.
@@ -34,7 +35,7 @@ class ReportPathGeneratorService(private val project: Project) {
      */
     fun getReportPath(): Path {
         val projectBasePath = getBasePath()
-        return Path.of("$projectBasePath/build/reports/pitest/test")
+        return Path.of("$projectBasePath/build/reports/pitest/pitmutationmate")
     }
 
     /**
@@ -46,18 +47,16 @@ class ReportPathGeneratorService(private val project: Project) {
         return Path.of("$projectBasePath/.history")
     }
 
-    fun getMutationInformationPath(path: String): Path {
-        return Path.of("$path/mutations.xml")
-    }
-
-    fun getCoverageInformationPath(path: String): Path {
-        return Path.of("$path/coverageInformation.xml")
-    }
-
+    /**
+     * Checks if either the given build type or the debug build type exists.
+     * @return the path to the report directory with the build type or without
+     */
     private fun checkForDebugBuiltType(): Path {
-        var path = getReportPath()
-        if (Files.exists(Path.of("$path/debug"))) {
-            path = Path.of("$path/debug")
+        val path = getReportPath()
+        if (buildType != null && Files.exists(Path.of("$path/$buildType"))) {
+            return Path.of("$path/$buildType")
+        } else if (Files.exists(Path.of("$path/debug"))) {
+            return Path.of("$path/debug")
         }
         return path
     }
@@ -80,20 +79,8 @@ class ReportPathGeneratorService(private val project: Project) {
         return Path.of("$path/coverageInformation.xml")
     }
 
-    /**
-     * Creates the report path if it does not exist yet.
-     * @return the report path
-     */
-    fun createReportPath(reportPath: Path): Path {
-        if (!reportPath.exists()) {
-            try {
-                reportPath.toFile().mkdirs()
-                log.info("Created report path: $reportPath")
-            } catch (e: Exception) {
-                log.error("Could not create report path: $reportPath")
-            }
-        }
-        return reportPath
+    fun setBuildType(buildType: String?) {
+        this.buildType = buildType
     }
 
     companion object {

@@ -8,7 +8,6 @@ import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationTy
 import com.intellij.execution.ExecutorRegistry
 import com.intellij.execution.ProgramRunnerUtil
 import com.intellij.execution.RunManager
-import com.intellij.execution.RunnerAndConfigurationSettings
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.project.Project
 
@@ -18,13 +17,18 @@ abstract class RunConfigurationAction : AnAction() {
 
         val runManager = RunManager.getInstance(project)
 
-        val runConfig: RunnerAndConfigurationSettings = runManager.createConfiguration("Temp Pitest Config", RunConfigurationType::class.java)
+        var runConfig = runManager.findConfigurationByName("Default")
+        if (runConfig == null) {
+            runConfig = runManager.createConfiguration("Default", RunConfigurationType::class.java)
+            (runConfig.configuration as RunConfiguration).isDefault = true
+        }
         runConfig.configuration.let {
             val rc = it as RunConfiguration
             if (classFQN != null) {
                 rc.classFQN = classFQN
             }
         }
+        runManager.addConfiguration(runConfig)
 
         ProgramRunnerUtil.executeConfiguration(runConfig, executor!!)
     }

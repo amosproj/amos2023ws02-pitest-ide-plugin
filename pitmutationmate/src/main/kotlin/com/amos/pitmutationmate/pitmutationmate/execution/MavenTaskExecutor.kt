@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.execution
 
+import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationOptions
 import com.intellij.execution.configurations.GeneralCommandLine
 import java.io.File
 import java.nio.file.Path
@@ -12,26 +13,24 @@ class MavenTaskExecutor : BasePitestExecutor() {
     private var mavenExecutable: String = "mvn"
 
     override fun buildCommandLine(
-        executable: String?,
-        overrideTaskName: String?,
+        options: RunConfigurationOptions,
         projectDir: String,
-        classFQN: String?,
         reportDir: Path,
         port: Int
     ): GeneralCommandLine {
         val commandLine = GeneralCommandLine()
 
-        if (!executable.isNullOrEmpty()) {
-            this.mavenExecutable = executable
+        if (!options.gradleExecutable.isNullOrEmpty()) {
+            this.mavenExecutable = options.gradleExecutable!!
         }
 
-        if (!overrideTaskName.isNullOrEmpty()) {
-            this.taskName = overrideTaskName
+        if (!options.taskName.isNullOrEmpty()) {
+            this.taskName = options.taskName!!
         }
 
         commandLine.exePath = mavenExecutable
         commandLine.addParameters(this.taskName)
-        commandLine.addParameters(getPitestOverrideParameters(classFQN))
+        commandLine.addParameters(getPitestOverrideParameters(options.classFQN))
 
         commandLine.workDirectory = File(projectDir)
         return commandLine

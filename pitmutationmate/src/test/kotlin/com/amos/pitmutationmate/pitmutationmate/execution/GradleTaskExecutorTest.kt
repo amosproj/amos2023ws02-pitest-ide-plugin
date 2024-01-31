@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.execution
 
+import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationOptions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -35,11 +36,13 @@ class GradleTaskExecutorTest {
     fun `test buildCommandLine for Windows`() {
         `when`(systemInfo.isWindows()).thenReturn(true)
 
+        val options = RunConfigurationOptions()
+        options.gradleExecutable = null
+        options.taskName = "clean"
+        options.classFQN = "com.example.Class"
         val commandLine = gradleTaskExecutor.buildCommandLine(
-            null,
-            "clean",
+            options,
             "/path/to/project",
-            "com.example.Class",
             Path.of("/path/to/report"),
             8080
         )
@@ -53,11 +56,13 @@ class GradleTaskExecutorTest {
     fun `test buildCommandLine for Unix`() {
         `when`(systemInfo.isWindows()).thenReturn(false)
 
+        val options = RunConfigurationOptions()
+        options.gradleExecutable = null
+        options.taskName = "clean"
+        options.classFQN = "com.example.Class"
         val commandLine = gradleTaskExecutor.buildCommandLine(
-            null,
-            "clean",
+            options,
             "/path/to/project",
-            "com.example.Class",
             Path.of("/path/to/report"),
             8080
         )
@@ -71,11 +76,13 @@ class GradleTaskExecutorTest {
     fun `test buildCommandLine without taskName uses default taskName`() {
         `when`(systemInfo.isWindows()).thenReturn(true)
 
+        val options = RunConfigurationOptions()
+        options.gradleExecutable = null
+        options.taskName = null
+        options.classFQN = "com.example.Class"
         val commandLine = gradleTaskExecutor.buildCommandLine(
-            null,
-            null,
+            options,
             "/path/to/project",
-            "com.example.Class",
             Path.of("/path/to/report"),
             8080
         )
@@ -88,11 +95,13 @@ class GradleTaskExecutorTest {
         `when`(systemInfo.isWindows()).thenReturn(true)
 
         val taskName = "test123"
+        val options = RunConfigurationOptions()
+        options.gradleExecutable = null
+        options.taskName = taskName
+        options.classFQN = "com.example.Class"
         val commandLine = gradleTaskExecutor.buildCommandLine(
-            null,
-            taskName,
+            options,
             "/path/to/project",
-            "com.example.Class",
             Path.of("/path/to/report"),
             8080
         )
@@ -104,11 +113,13 @@ class GradleTaskExecutorTest {
     fun `test buildCommandLine without classFQDN does not add targetClass override`() {
         `when`(systemInfo.isWindows()).thenReturn(true)
 
+        val options = RunConfigurationOptions()
+        options.gradleExecutable = null
+        options.taskName = "clean"
+        options.classFQN = null
         val commandLine = gradleTaskExecutor.buildCommandLine(
-            null,
-            "clean",
+            options,
             "/path/to/project",
-            null,
             Path.of("/path/to/report"),
             8080
         )
@@ -123,11 +134,13 @@ class GradleTaskExecutorTest {
         `when`(systemInfo.isWindows()).thenReturn(true)
 
         val classFQN = "com.example.Class"
+        val options = RunConfigurationOptions()
+        options.gradleExecutable = null
+        options.taskName = "clean"
+        options.classFQN = classFQN
         val commandLine = gradleTaskExecutor.buildCommandLine(
-            null,
-            "clean",
+            options,
             "/path/to/project",
-            classFQN,
             Path.of("/path/to/report"),
             8080
         )
