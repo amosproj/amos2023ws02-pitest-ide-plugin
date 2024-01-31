@@ -3,6 +3,7 @@
 
 package com.amos.pitmutationmate.pitmutationmate.execution
 
+import com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationOptions
 import com.amos.pitmutationmate.pitmutationmate.services.ReportPathGeneratorService
 import com.amos.pitmutationmate.pitmutationmate.services.UdpMessagingServer
 import com.intellij.execution.configurations.GeneralCommandLine
@@ -19,28 +20,26 @@ abstract class BasePitestExecutor {
 
     fun executeTask(
         project: Project,
-        executable: String?,
-        overrideTaskName: String?,
-        classFQN: String?
+        options: RunConfigurationOptions
     ): ProcessHandler {
         val messagingServer = project.service<UdpMessagingServer>()
-        messagingServer.startServer(classFQN) // Start the UDP server
+        messagingServer.startServer(options.classFQN) // Start the UDP server
 
-        val reportDir = project.service<ReportPathGeneratorService>().getReportPath()
+        val reportPathGenerator = project.service<ReportPathGeneratorService>()
+        reportPathGenerator.setBuildType(options.buildType)
+        val reportDir = reportPathGenerator.getReportPath()
 
-        val commandLine = buildCommandLine(executable, overrideTaskName, project.basePath!!, classFQN, reportDir, messagingServer.port)
+        val commandLine = buildCommandLine(options, project.basePath!!, reportDir, messagingServer.port)
         log.debug("BasePitestExecutor: executeTask: commandLine: $commandLine")
         val processHandler = createProcessHandler(commandLine)
-        processHandler.addProcessListener(ExecutionDoneProcessListener(project, classFQN))
+        processHandler.addProcessListener(ExecutionDoneProcessListener(project, options.classFQN))
         ProcessTerminatedListener.attach(processHandler)
         return processHandler
     }
 
     abstract fun buildCommandLine(
-        executable: String?,
-        overrideTaskName: String?,
+        options: RunConfigurationOptions,
         projectDir: String,
-        classFQN: String?,
         reportDir: Path,
         port: Int
     ): GeneralCommandLine

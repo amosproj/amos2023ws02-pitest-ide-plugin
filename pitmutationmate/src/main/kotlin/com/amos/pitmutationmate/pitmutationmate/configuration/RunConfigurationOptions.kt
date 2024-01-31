@@ -34,4 +34,18 @@ class RunConfigurationOptions : RunConfigurationOptions() {
         set(value) {
             gradleExecutableOption.setValue(this, value)
         }
+
+    private val buildTypeOption: StoredProperty<String?> = string("").provideDelegate(this, "buildType")
+    var buildType: String?
+        get() = buildTypeOption.getValue(this)
+        set(value) {
+            buildTypeOption.setValue(this, value)
+        }
+
+    private val verboseOption: StoredProperty<Boolean> = property(false).provideDelegate(this, "verbose")
+    var verbose: Boolean
+        get() = verboseOption.getValue(this)
+        set(value) {
+            verboseOption.setValue(this, value)
+        }
 }
