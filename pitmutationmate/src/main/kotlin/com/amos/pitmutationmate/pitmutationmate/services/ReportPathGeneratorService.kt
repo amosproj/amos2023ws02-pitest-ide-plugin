@@ -79,6 +79,14 @@ class ReportPathGeneratorService(private val project: Project) {
         return Path.of("$path/coverageInformation.xml")
     }
 
+    fun getMutationInformationPath(path: String): Path {
+        return Path.of("$path/coverageInformation.xml")
+    }
+
+    fun getCoverageInformationPath(path: String): Path {
+        return Path.of("$path/coverageInformation.xml")
+    }
+
     fun setBuildType(buildType: String?) {
         this.buildType = buildType
     }
