@@ -3,7 +3,6 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
-import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.amos.pitmutationmate.pitmutationmate.services.TestEnvCheckerService
 import com.amos.pitmutationmate.pitmutationmate.utils.Utils
 import com.intellij.openapi.actionSystem.ActionUpdateThread
@@ -31,19 +30,25 @@ class ContextMenuAction : RunConfigurationAction() {
             val psiClasses = (psiFile as PsiClassOwner).classes
             for (psiClass in psiClasses) {
                 if (!testEnvChecker.isPsiTestClass(psiClass)) {
-                    val fqn = psiClass.qualifiedName
-                    if (fqn != null) {
-                        classFQNs = if (classFQNs != "") {
-                            "$classFQNs,$fqn"
-                        } else {
-                            fqn
-                        }
-                    }
+                    classFQNs = buildClassFQN(psiClass, classFQNs)
                 }
             }
         }
         logger.info("ContextMenuAction: selected classes are $classFQNs.")
         updateAndExecuteRunConfig(classFQNs, project)
+    }
+
+    private fun buildClassFQN(psiClass: PsiClass, classFQNs: String): String {
+        var newClassFQNs = classFQNs
+        val fqn = psiClass.qualifiedName
+        if (fqn != null) {
+            newClassFQNs = if (classFQNs != "") {
+                "$classFQNs,$fqn"
+            } else {
+                fqn
+            }
+        }
+        return newClassFQNs
     }
 
     private fun actionEditorPopup(e: AnActionEvent) {
