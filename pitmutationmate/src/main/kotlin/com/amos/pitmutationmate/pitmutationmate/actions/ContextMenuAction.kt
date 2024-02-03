@@ -110,11 +110,6 @@ class ContextMenuAction : AnAction() {
     }
 
     override fun update(e: AnActionEvent) {
-        val pluginError = e.project?.service<PluginCheckerService>()?.getErrorMessage()
-        if (pluginError != null) {
-            e.presentation.isEnabled = false
-            return
-        }
         e.presentation.isEnabled = shouldEnablePitRun(e)
     }
 

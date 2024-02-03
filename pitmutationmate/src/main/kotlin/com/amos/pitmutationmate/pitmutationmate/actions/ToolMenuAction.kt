@@ -17,7 +17,6 @@ class ToolMenuAction : AnAction() {
     }
 
     override fun update(e: AnActionEvent) {
-        val pluginError = e.project?.service<PluginCheckerService>()?.getErrorMessage() != null
-        e.presentation.isEnabled = pluginError
+        e.presentation.isEnabled = true
     }
 }
