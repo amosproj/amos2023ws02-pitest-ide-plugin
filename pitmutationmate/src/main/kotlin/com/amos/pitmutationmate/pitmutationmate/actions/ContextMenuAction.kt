@@ -77,8 +77,7 @@ class ContextMenuAction : AnAction() {
         val path = psiDirectory.virtualFile.path
         val directory = File(path)
 
-        directory.walk()
-            .filter { it.isFile && (it.extension == "java" || it.extension == "kt") }
+        directory.walk().filter { it.isFile && (it.extension == "java" || it.extension == "kt") }
             .forEach { Utils.getPsiFileFromPath(e.project!!, it.toString())?.let { it1 -> psiFileArray += it1 } }
 
         updateAndExecuteForFile(psiFileArray, e.project!!)
@@ -133,9 +132,11 @@ class ContextMenuAction : AnAction() {
         if (e.place == "ProjectViewPopup" && psiElement is PsiDirectory) {
             val directory = File(psiElement.virtualFile.path)
             var returnValue = false
-            directory.walk()
-                .filter { it.isFile && (it.extension == "kt" || it.extension == "java") }
-                .forEach { if (!testEnvChecker.isTestFile(it)) { returnValue = true } }
+            directory.walk().filter { it.isFile && (it.extension == "kt" || it.extension == "java") }.forEach {
+                if (!testEnvChecker.isTestFile(it)) {
+                    returnValue = true
+                }
+            }
             return returnValue
         }
         return validFile && !testEnvChecker.isTestFile(File(psiFile!!.virtualFile.path))
