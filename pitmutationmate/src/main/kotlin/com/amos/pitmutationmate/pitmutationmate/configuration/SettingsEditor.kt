@@ -3,6 +3,8 @@
 
 package com.amos.pitmutationmate.pitmutationmate.configuration
 
+import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
+import com.intellij.openapi.components.service
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
@@ -21,11 +23,10 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     private val gradleTaskField: TextFieldWithHistory = TextFieldWithHistory()
     private val gradleExecutableField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
     private val targetClasses: JBTextField = JBTextField()
-    private val buildTypesField: JBTextField = JBTextField()
+    private val buildTypesField: TextFieldWithHistory = TextFieldWithHistory()
     private val verboseCheckbox = JCheckBox("Enable Pitest verbose mode")
 
     init {
-        gradleTaskField.text = "pitest"
         gradleExecutableField.addBrowseFolderListener(
             "Select Gradle Script",
             null,
@@ -33,7 +34,6 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
             FileChooserDescriptorFactory.createSingleFileDescriptor()
         )
         targetClasses.emptyText.setText("com.myproj.package1.classA,com.myproj.package1.classB,com.myproj.package2.classC,...")
-        buildTypesField.emptyText.setText("<none>")
         myPanel = FormBuilder.createFormBuilder()
             .addLabeledComponent("Gradle task", gradleTaskField)
             .addLabeledComponent("Gradle script", gradleExecutableField)
@@ -66,11 +66,23 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
     }
 
     override fun resetEditorFrom(runConfiguration: RunConfiguration) {
+        if (!runConfiguration.gradleExecutable.isNullOrEmpty()) {
+            runConfiguration.gradleExecutable.also { gradleExecutableField.text = it ?: "gradlew" }
+        } else {
+            gradleExecutableField.text = "gradlew"
+        }
+        if (!runConfiguration.taskName.isNullOrEmpty()) {
+            gradleTaskField.text = runConfiguration.taskName!!
+        } else {
+            gradleTaskField.setTextAndAddToHistory("pitest")
+        }
         targetClasses.text = runConfiguration.classFQN
-        gradleTaskField.text = runConfiguration.taskName
-        runConfiguration.gradleExecutable.also { gradleExecutableField.text = it ?: "" }
         buildTypesField.text = runConfiguration.buildType
         verboseCheckbox.isSelected = runConfiguration.verbose
+
+        runConfiguration.project.service<PluginCheckerService>().getBuildTypes().forEach { buildType ->
+            buildTypesField.history.add(buildType)
+        }
     }
 
     override fun applyEditorTo(runConfiguration: RunConfiguration) {

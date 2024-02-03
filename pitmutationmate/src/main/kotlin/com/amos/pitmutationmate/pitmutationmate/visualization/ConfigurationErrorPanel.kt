@@ -44,12 +44,13 @@ class ConfigurationErrorPanel(message: String?) : JPanel() {
             return formatMessage(DEFAULT_MESSAGE)
         }
         val font = UIUtil.getToolbarFont()
-        return """
+        val msg = """
             <html>
-                <body style="font-family: '${font.family}'; font-size: 12px; margin: 15px;">
-                    ${message.replace("\n", "<br/>")}
-                </body>
+            <body style="font-family: '${font.family}'; font-size: 12px; margin: 15px;">
+            ${message.replace("\n", "<br/>")}
+            </body>
             </html>
-            """.trimIndent()
+            """
+        return msg.trimIndent()
     }
 }
