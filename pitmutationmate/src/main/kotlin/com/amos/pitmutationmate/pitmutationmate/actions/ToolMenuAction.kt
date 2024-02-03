@@ -3,14 +3,13 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
-import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.intellij.openapi.actionSystem.ActionUpdateThread
+import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.components.service
 
-class ToolMenuAction : RunConfigurationAction() {
+class ToolMenuAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
-        updateAndExecuteRunConfig("", e.project!!)
+        RunConfigurationActionRunner.updateAndExecuteRunConfig("", e.project!!)
     }
 
     override fun getActionUpdateThread(): ActionUpdateThread {
