@@ -15,12 +15,12 @@ enum class PitestSeverity(
     private val highlightSeverity: HighlightSeverity
 ) {
     HIGH(
-        CodeInsightColors.WARNINGS_ATTRIBUTES,
-        ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+        CodeInsightColors.INFORMATION_ATTRIBUTES,
+        ProblemHighlightType.WARNING,
         HighlightSeverity.WARNING
     ),
-    MEDIUM(CodeInsightColors.WARNINGS_ATTRIBUTES, ProblemHighlightType.WEAK_WARNING, HighlightSeverity.WARNING),
-    LOW(CodeInsightColors.WARNINGS_ATTRIBUTES, ProblemHighlightType.INFORMATION, HighlightSeverity.WEAK_WARNING);
+    MEDIUM(CodeInsightColors.INFORMATION_ATTRIBUTES, ProblemHighlightType.WARNING, HighlightSeverity.WEAK_WARNING),
+    LOW(CodeInsightColors.INFORMATION_ATTRIBUTES, ProblemHighlightType.INFORMATION, HighlightSeverity.INFORMATION);
 
     companion object {
         fun fromMutationResults(mutationResults: List<XMLParser.MutationResult>): PitestSeverity {
