@@ -66,6 +66,9 @@ class GradleTaskExecutor : BasePitestExecutor() {
         parameters.add("-Dpitmutationmate.override.verbose=$verbose")
         parameters.add("-Dpitmutationmate.override.port=$port")
         parameters.add("-Dpitmutationmate.override.reportDir=${reportDir.toAbsolutePath()}")
+        parameters.add("-Dpitmutationmate.override.mutationThreshold=0")
+        parameters.add("-Dpitmutationmate.override.coverageThreshold=0")
+        parameters.add("-Dpitmutationmate.override.testStrengthThreshold=0")
         return parameters
     }
 }
