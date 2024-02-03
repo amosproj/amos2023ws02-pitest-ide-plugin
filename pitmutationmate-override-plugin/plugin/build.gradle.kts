@@ -23,16 +23,21 @@ tasks.test {
     useJUnitPlatform()
 }
 
-dependencies {
-    implementation("commons-beanutils:commons-beanutils-core:1.8.3")
+val beanUtilsVersion = "1.8.3"
+val nebulaTestVersion = "10.3.0"
+val spockVersion = "2.2-groovy-3.0"
+val junitPlatformVersion = "1.9.2"
 
-    testImplementation("com.netflix.nebula:nebula-test:10.3.0")
-    testImplementation("org.spockframework:spock-core:2.2-groovy-3.0")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")
+dependencies {
+    implementation("commons-beanutils:commons-beanutils-core:$beanUtilsVersion")
+
+    testImplementation("com.netflix.nebula:nebula-test:$nebulaTestVersion")
+    testImplementation("org.spockframework:spock-core:$spockVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:$junitPlatformVersion")
 }
 
 group = "io.github.amos-pitmutationmate.pitmutationmate.override"
-version = "1.2"
+version = "1.3"
 
 gradlePlugin {
     website = "https://github.com/amosproj/amos2023ws02-pitest-ide-plugin"
