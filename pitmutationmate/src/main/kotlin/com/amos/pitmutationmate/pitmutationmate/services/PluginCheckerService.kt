@@ -136,9 +136,14 @@ class PluginCheckerService(private val project: Project) {
     }
 
     private fun checkForCompanionPlugin(connection: ProjectConnection) {
-        val project = connection.getModel(GradleProject::class.java)
-        // Recursively search for the task in the project and its subprojects
-        isCompanionPluginAvailable = findTaskRecursively(project)
+        try {
+            val project = connection.getModel(GradleProject::class.java)
+            // Recursively search for the task in the project and its subprojects
+            isCompanionPluginAvailable = findTaskRecursively(project)
+        } catch (e: Exception) {
+            logger.warn("Error while checking for companion plugin. Assuming it is not present!", e)
+            isCompanionPluginAvailable = false
+        }
     }
 
     private fun checkForPlugins(connection: ProjectConnection) {
