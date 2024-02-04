@@ -52,7 +52,7 @@ class ReportPathGeneratorService(private val project: Project) {
      */
     private fun checkForDebugBuiltType(): Path {
         val path = getReportPath()
-        if (buildType != null && Files.exists(Path.of("$path/$buildType"))) {
+        if (!buildType.isNullOrEmpty() && Files.exists(Path.of("$path/$buildType"))) {
             return Path.of("$path/$buildType")
         } else if (Files.exists(Path.of("$path/debug"))) {
             return Path.of("$path/debug")
