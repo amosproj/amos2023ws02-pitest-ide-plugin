@@ -216,12 +216,12 @@ class PluginCheckerService(private val project: Project) {
         private const val KOTLIN_PITEST_PLUGIN = "id(\"$PITEST_PLUGIN\") version \"x.y.z\""
         private const val KOTLIN_PITEST_ANDROID_PLUGIN = "id(\"$PITEST_ANDROID_PLUGIN\") version \"x.y.z\""
         private const val KOTLIN_OVERRIDE_PLUGIN =
-            "id(\"io.github.amos-pitmutationmate.pitmutationmate.override\") version \"1.2\""
+            "id(\"io.github.amos-pitmutationmate.pitmutationmate.override\") version \"1.3\""
 
         private const val GROOVY_PITEST_PLUGIN = "id '$PITEST_PLUGIN' version 'x.y.z'"
         private const val GROOVY_PITEST_ANDROID_PLUGIN = "id '$PITEST_ANDROID_PLUGIN' version 'x.y.z'"
         private const val GROOVY_OVERRIDE_PLUGIN =
-            "id \"io.github.amos-pitmutationmate.pitmutationmate.override\" version \"1.2\""
+            "id \"io.github.amos-pitmutationmate.pitmutationmate.override\" version \"1.3\""
 
         const val ERROR_MESSAGE_TITLE = "Plugins for PITMutationPlugin are missing"
         private val ERROR_MESSAGE_PITEST_PLUGIN_MISSING = """<b>The pitest gradle Plugin is missing.</b>
