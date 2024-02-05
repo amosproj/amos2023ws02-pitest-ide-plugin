@@ -39,14 +39,16 @@ class GradleTaskExecutor : BasePitestExecutor() {
                 gradleExecutable = WINDOWS_GRADLE_EXECUTABLE
             }
             commandLine.exePath = WINDOWS_SHELL_EXECUTABLE
-            commandLine.addParameters(WINDOWS_FIRST_PARAMETER, gradleExecutable, taskName)
+            commandLine.addParameters(WINDOWS_FIRST_PARAMETER)
         } else {
             if (gradleExecutable.isNullOrEmpty()) {
                 gradleExecutable = UNIX_GRADLE_EXECUTABLE
             }
             commandLine.exePath = UNIX_SHELL_EXECUTABLE
-            commandLine.addParameters(UNIX_FIRST_PARAMETER, gradleExecutable, taskName)
+            commandLine.addParameters(UNIX_FIRST_PARAMETER)
         }
+        gradleExecutable.split(" ").forEach { commandLine.addParameter(it) }
+        commandLine.addParameter(taskName!!)
 
         commandLine.addParameters(getPitestOverrideParameters(options.classFQN, port, reportDir, options.verbose))
 
@@ -64,6 +66,9 @@ class GradleTaskExecutor : BasePitestExecutor() {
         parameters.add("-Dpitmutationmate.override.verbose=$verbose")
         parameters.add("-Dpitmutationmate.override.port=$port")
         parameters.add("-Dpitmutationmate.override.reportDir=${reportDir.toAbsolutePath()}")
+        parameters.add("-Dpitmutationmate.override.mutationThreshold=0")
+        parameters.add("-Dpitmutationmate.override.coverageThreshold=0")
+        parameters.add("-Dpitmutationmate.override.testStrengthThreshold=0")
         return parameters
     }
 }

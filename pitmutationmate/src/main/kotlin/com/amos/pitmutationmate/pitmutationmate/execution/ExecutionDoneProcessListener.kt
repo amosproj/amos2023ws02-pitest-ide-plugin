@@ -15,8 +15,6 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.wm.ToolWindow
-import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiFile
 import com.intellij.psi.search.GlobalSearchScope
@@ -34,19 +32,16 @@ class ExecutionDoneProcessListener(val project: Project, private val classFqdns:
         // save and get latest pitest results
         val resultData = project.service<MutationResultService>().updateLastMutationResult()
         // update tool window with latest result data
-        val toolWindowManager = ToolWindowManager.getInstance(project)
-        val toolWindow: ToolWindow? = toolWindowManager.getToolWindow(ToolWindowFactory.ID)
-        if (toolWindow != null) {
-            toolWindowManager.invokeLater {
-                ToolWindowFactory.Util.updateReport(toolWindow, resultData)
-            }
-        }
+        ToolWindowFactory.Util.updateReport(project, resultData)
+        ToolWindowFactory.Util.updateTree(project)
+
         // restart code highlighting upon new pitest results
         ApplicationManager.getApplication().runReadAction {
             restartCodeHighlighting()
         }
         // archive the pitest run
         project.service<RunArchiveService>().archiveRun()
+        ToolWindowFactory.Util.updateHistory(project)
     }
 
     private fun restartCodeHighlighting() {

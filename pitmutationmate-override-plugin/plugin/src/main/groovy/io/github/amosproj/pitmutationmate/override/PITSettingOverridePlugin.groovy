@@ -11,6 +11,7 @@ import io.github.amosproj.pitmutationmate.override.reader.SystemPropertyOverride
 import io.github.amosproj.pitmutationmate.override.strategy.DependencyInclusionStrategy
 import io.github.amosproj.pitmutationmate.override.strategy.OverrideStrategy
 import io.github.amosproj.pitmutationmate.override.strategy.PitestPropertyOverrideStrategy
+import io.github.amosproj.pitmutationmate.override.tasks.PitmutationmateStatusCheckTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
@@ -25,6 +26,9 @@ class PITSettingOverridePlugin implements Plugin<Project> {
     private final static String PORT_PROPERTY_NAME = 'port'
 
     void apply(Project project) {
+
+        project.tasks.register(PitmutationmateStatusCheckTask.TASK_NAME, PitmutationmateStatusCheckTask)
+
         OverrideReader overrideReader = new SystemPropertyOverrideReader()
         Map<String, String> overrideProperties = overrideReader.parseProperties()
         log.debug("Found override properties: $overrideProperties")

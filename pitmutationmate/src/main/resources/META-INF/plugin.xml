@@ -50,7 +50,6 @@
                 implementation="com.amos.pitmutationmate.pitmutationmate.configuration.RunConfigurationType"/>
         <externalAnnotator language=""
                            implementationClass="com.amos.pitmutationmate.pitmutationmate.editor.MutationsAnnotator"/>
-        <fileDocumentManagerListener implementation="com.amos.pitmutationmate.pitmutationmate.listener.BuildFileListener" />
         <postStartupActivity implementation="com.amos.pitmutationmate.pitmutationmate.activity.LaunchActivity" />
 
     </extensions>
@@ -61,13 +60,6 @@
                 description="Initializes a PiTest run on the selected class"
                 icon="com.amos.pitmutationmate.pitmutationmate.icons.Icons.Logo16">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
-            <!-- <keyboard-shortcut
-                    keymap="$default"
-                    first-keystroke="control alt A"
-                    second-keystroke="C"/>
-            <mouse-shortcut
-                keymap="$default"
-                keystroke="control button3 doubleClick"/> -->
         </action>
         <action id="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"
                 class="com.amos.pitmutationmate.pitmutationmate.actions.AnnotationAction"

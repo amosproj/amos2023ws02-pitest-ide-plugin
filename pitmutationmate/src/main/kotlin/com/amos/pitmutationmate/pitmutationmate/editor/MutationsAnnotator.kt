@@ -87,7 +87,13 @@ class MutationsAnnotator :
         val document: Document = PsiDocumentManager.getInstance(file.project).getDocument(file) ?: return
 
         for (r in annotationResult) {
-            val lineRange = Util.getContentOffset(document, r.key - 1)
+            var lineRange: TextRange
+            try {
+                lineRange = Util.getContentOffset(document, r.key - 1)
+            } catch (e: IndexOutOfBoundsException) {
+                log.warn("Line number ${r.key} is out of bounds")
+                continue
+            }
             val severity = PitestSeverity.fromMutationResults(r.value)
             holder.newAnnotation(
                 severity.highlightSeverity(),

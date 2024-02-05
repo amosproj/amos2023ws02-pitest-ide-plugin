@@ -20,7 +20,8 @@ class RunArchiveService(private val project: Project) {
         var archiveDirectory = Path.of(reportPathGeneratorService.getArchivePath().toString()).toFile()
         if (!archiveDirectory.exists()) {
             if (!archiveDirectory.mkdirs()) {
-                throw Exception("error creating archive directory $archiveDirectory")
+                log.error("error creating archive directory $archiveDirectory")
+                return
             }
             log.info("Created $archiveDirectory")
         }
@@ -28,12 +29,14 @@ class RunArchiveService(private val project: Project) {
         val index = archiveDirectory.listFiles()!!.size + 1
         archiveDirectory = Path.of(archiveDirectory.path, index.toString()).toFile()
         if (!archiveDirectory.mkdir()) {
-            throw Exception("error creating archive directory $archiveDirectory")
+            log.error("error creating archive directory $archiveDirectory")
+            return
         }
         log.info("Created $archiveDirectory")
 
         if (reportDirectory.listFiles() == null) {
-            throw Exception("The last pitest run didn't generate any report files!")
+            log.warn("The last pitest run didn't generate any report files!")
+            return
         }
         reportDirectory.copyRecursively(archiveDirectory)
     }

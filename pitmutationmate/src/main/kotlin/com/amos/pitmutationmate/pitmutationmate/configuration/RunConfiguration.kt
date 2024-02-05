@@ -6,6 +6,7 @@ package com.amos.pitmutationmate.pitmutationmate.configuration
 import com.amos.pitmutationmate.pitmutationmate.execution.GradleTaskExecutor
 import com.amos.pitmutationmate.pitmutationmate.execution.MavenTaskExecutor
 import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
+import com.amos.pitmutationmate.pitmutationmate.ui.ToolWindowFactory
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.CommandLineState
@@ -19,7 +20,8 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.ui.MessageType
+import com.intellij.openapi.wm.ToolWindowManager
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.kotlin.idea.configuration.isMavenized
 
@@ -81,10 +83,17 @@ class RunConfiguration(
         environment: ExecutionEnvironment
     ): RunProfileState? {
         val pluginChecker = project.service<PluginCheckerService>()
+        pluginChecker.checkPlugins()
         val errorMessage = pluginChecker.getErrorMessage(withHeader = false)
         if (errorMessage != null) {
-            Messages.showErrorDialog(project, errorMessage, PluginCheckerService.ERROR_MESSAGE_TITLE)
-            return null
+            ToolWindowFactory.Util.updateErrorPanel(project, errorMessage)
+            ToolWindowManager.getInstance(project).notifyByBalloon(
+                ToolWindowFactory.ID,
+                MessageType.INFO,
+                "<p>Detected errors in your project's PITest configuration. Check the Error tab!</p>"
+            )
+        } else {
+            ToolWindowFactory.Util.updateErrorPanel(project, null)
         }
 
         return object : CommandLineState(environment) {

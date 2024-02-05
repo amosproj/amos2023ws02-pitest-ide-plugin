@@ -5,21 +5,31 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.0"
     id("org.jetbrains.intellij") version "1.17.0"
-    id("info.solidsoft.pitest") version "1.15.0"
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
-dependencies {
-    implementation("org.pitest:pitest-command-line:1.7.0")
-    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
+val gradleToolingApiVersion = "7.4.2"
+val pitestCommandLineVersion = "1.7.0"
+val junitVersion = "5.8.1"
+val mockitoVersion = "5.8.0"
+val slf4jVersion = "2.0.11"
+val kotlinSerializationVersion = "1.6.0"
 
-    testImplementation("org.mockito:mockito-core:5.8.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+dependencies {
+    implementation("org.pitest:pitest-command-line:$pitestCommandLineVersion")
+    implementation("org.gradle:gradle-tooling-api:$gradleToolingApiVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinSerializationVersion")
+
+    runtimeOnly("org.slf4j:slf4j-api:$slf4jVersion")
+
+    testImplementation("org.mockito:mockito-core:$mockitoVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 
 group = "com.amos.pitmutationmate"
@@ -27,6 +37,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://repo.gradle.org/gradle/libs-releases/")
 }
 
 // Configure Gradle IntelliJ Plugin

@@ -3,10 +3,10 @@
 
 package com.amos.pitmutationmate.pitmutationmate.actions
 
-import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.amos.pitmutationmate.pitmutationmate.services.TestEnvCheckerService
 import com.amos.pitmutationmate.pitmutationmate.utils.Utils
 import com.intellij.openapi.actionSystem.ActionUpdateThread
+import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.service
@@ -20,7 +20,7 @@ import com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.psi.KtClass
 import java.io.File
 
-class ContextMenuAction : RunConfigurationAction() {
+class ContextMenuAction : AnAction() {
     private val logger = Logger.getInstance(ContextMenuAction::class.java)
 
     private fun updateAndExecuteForFile(psiFileArray: Array<PsiFile>, project: Project) {
@@ -31,19 +31,25 @@ class ContextMenuAction : RunConfigurationAction() {
             val psiClasses = (psiFile as PsiClassOwner).classes
             for (psiClass in psiClasses) {
                 if (!testEnvChecker.isPsiTestClass(psiClass)) {
-                    val fqn = psiClass.qualifiedName
-                    if (fqn != null) {
-                        classFQNs = if (classFQNs != "") {
-                            "$classFQNs,$fqn"
-                        } else {
-                            fqn
-                        }
-                    }
+                    classFQNs = buildClassFQN(psiClass, classFQNs)
                 }
             }
         }
         logger.info("ContextMenuAction: selected classes are $classFQNs.")
-        updateAndExecuteRunConfig(classFQNs, project)
+        RunConfigurationActionRunner.updateAndExecuteRunConfig(classFQNs, project)
+    }
+
+    private fun buildClassFQN(psiClass: PsiClass, classFQNs: String): String {
+        var newClassFQNs = classFQNs
+        val fqn = psiClass.qualifiedName
+        if (fqn != null) {
+            newClassFQNs = if (classFQNs != "") {
+                "$classFQNs,$fqn"
+            } else {
+                fqn
+            }
+        }
+        return newClassFQNs
     }
 
     private fun actionEditorPopup(e: AnActionEvent) {
@@ -62,7 +68,7 @@ class ContextMenuAction : RunConfigurationAction() {
             }
 
             logger.info("ContextMenuAction: selected class is $classFQN.")
-            updateAndExecuteRunConfig(classFQN, e.project!!)
+            RunConfigurationActionRunner.updateAndExecuteRunConfig(classFQN, e.project!!)
         }
     }
 
@@ -71,8 +77,7 @@ class ContextMenuAction : RunConfigurationAction() {
         val path = psiDirectory.virtualFile.path
         val directory = File(path)
 
-        directory.walk()
-            .filter { it.isFile && (it.extension == "java" || it.extension == "kt") }
+        directory.walk().filter { it.isFile && (it.extension == "java" || it.extension == "kt") }
             .forEach { Utils.getPsiFileFromPath(e.project!!, it.toString())?.let { it1 -> psiFileArray += it1 } }
 
         updateAndExecuteForFile(psiFileArray, e.project!!)
@@ -93,22 +98,17 @@ class ContextMenuAction : RunConfigurationAction() {
                 }
 
                 is KtClass -> {
-                    updateAndExecuteRunConfig(psiElement.fqName.toString(), e.project!!)
+                    RunConfigurationActionRunner.updateAndExecuteRunConfig(psiElement.fqName.toString(), e.project!!)
                 }
 
                 is PsiClass -> {
-                    updateAndExecuteRunConfig(psiElement.qualifiedName, e.project!!)
+                    RunConfigurationActionRunner.updateAndExecuteRunConfig(psiElement.qualifiedName, e.project!!)
                 }
             }
         }
     }
 
     override fun update(e: AnActionEvent) {
-        val pluginError = e.project?.service<PluginCheckerService>()?.getErrorMessage()
-        if (pluginError != null) {
-            e.presentation.isEnabled = false
-            return
-        }
         e.presentation.isEnabled = shouldEnablePitRun(e)
     }
 
@@ -132,9 +132,11 @@ class ContextMenuAction : RunConfigurationAction() {
         if (e.place == "ProjectViewPopup" && psiElement is PsiDirectory) {
             val directory = File(psiElement.virtualFile.path)
             var returnValue = false
-            directory.walk()
-                .filter { it.isFile && (it.extension == "kt" || it.extension == "java") }
-                .forEach { if (!testEnvChecker.isTestFile(it)) { returnValue = true } }
+            directory.walk().filter { it.isFile && (it.extension == "kt" || it.extension == "java") }.forEach {
+                if (!testEnvChecker.isTestFile(it)) {
+                    returnValue = true
+                }
+            }
             return returnValue
         }
         return validFile && !testEnvChecker.isTestFile(File(psiFile!!.virtualFile.path))

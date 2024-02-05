@@ -4,65 +4,55 @@
 package com.amos.pitmutationmate.pitmutationmate.ui
 
 import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
-import com.amos.pitmutationmate.pitmutationmate.services.MutationResultService
-import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
 import com.amos.pitmutationmate.pitmutationmate.visualization.ConfigurationErrorPanel
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestClassReport
 import com.amos.pitmutationmate.pitmutationmate.visualization.PiTestReports
 import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.HistoricalDataTable
 import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.PackageBreakdownTable
 import com.amos.pitmutationmate.pitmutationmate.visualization.treestructure.TreeTableModel
-import com.intellij.openapi.components.service
-import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.content.ContentFactory
 
-internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
+internal class ToolWindowFactory : ToolWindowFactory {
 
     companion object {
         const val ID = "Pitest"
     }
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val pluginError = project.service<PluginCheckerService>().getErrorMessage()
-        if (pluginError != null) {
-            Util.initiateWithConfigError(pluginError, toolWindow)
-        } else {
-            Util.initiateWithData(toolWindow, project)
-            Util.updateReport(toolWindow, null)
-        }
+        toolWindow.contentManager.removeAllContents(true)
+
+        val coverageReport = ContentFactory.getInstance().createContent(PiTestReports(), PiTestReports.TITLE, false)
+        val packageBreakdownTable = ContentFactory.getInstance().createContent(PackageBreakdownTable(project), PackageBreakdownTable.TITLE, false)
+        val historicalDataTable = ContentFactory.getInstance().createContent(HistoricalDataTable(project), HistoricalDataTable.TITLE, false)
+        val errorContent =
+            ContentFactory.getInstance().createContent(ConfigurationErrorPanel(null), ConfigurationErrorPanel.TITLE, false)
+
+        toolWindow.contentManager.addContent(coverageReport)
+        toolWindow.contentManager.addContent(packageBreakdownTable)
+        toolWindow.contentManager.addContent(historicalDataTable)
+        toolWindow.contentManager.addContent(errorContent)
     }
 
     object Util {
-        fun initiateWithConfigError(errorMessage: String, toolWindow: ToolWindow) {
-            toolWindow.contentManager.removeAllContents(true)
-            val errorDialog = ConfigurationErrorPanel(errorMessage)
-            val errorContent =
-                ContentFactory.getInstance().createContent(errorDialog, ConfigurationErrorPanel.ID, false)
-            toolWindow.contentManager.addContent(errorContent)
+        fun updateErrorPanel(project: Project, message: String?) {
+            val toolWindow = ToolWindowManager.getInstance(project).getToolWindow(ID) ?: return
+
+            val errorContent = toolWindow.contentManager.findContent(ConfigurationErrorPanel.TITLE)
+            if (errorContent != null && errorContent.component is ConfigurationErrorPanel) {
+                val errorPanel = errorContent.component as ConfigurationErrorPanel
+                ToolWindowManager.getInstance(project).invokeLater {
+                    errorPanel.updateMessage(message)
+                }
+            }
         }
 
-        fun initiateWithData(toolWindow: ToolWindow, project: Project) {
-            toolWindow.contentManager.removeAllContents(true)
+        fun updateReport(project: Project, newResultData: XMLParser.ResultData?) {
+            val toolWindow = ToolWindowManager.getInstance(project).getToolWindow(ID) ?: return
 
-            val coverageReport = ContentFactory.getInstance().createContent(PiTestReports(), PiTestReports.TITLE, false)
-            val packageBreakdownTable = ContentFactory.getInstance().createContent(PackageBreakdownTable(project), PackageBreakdownTable.TITLE, false)
-            val historicalDataTable = ContentFactory.getInstance().createContent(HistoricalDataTable(project), HistoricalDataTable.TITLE, false)
-
-            toolWindow.contentManager.addContent(coverageReport)
-            toolWindow.contentManager.addContent(packageBreakdownTable)
-            toolWindow.contentManager.addContent(historicalDataTable)
-
-            val reportGeneratorService = project.service<MutationResultService>()
-            val newCoverageReports = reportGeneratorService.updateLastMutationResult()
-            updateReport(toolWindow, newCoverageReports)
-        }
-
-        fun updateReport(toolWindow: ToolWindow, newResultData: XMLParser.ResultData?) {
-            val project = toolWindow.project
             val coverageResults = newResultData?.coverageReports
             val totals = newResultData?.totalResult
 
@@ -80,7 +70,10 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
                     reportWindow.visualizeReports()
                 }
             }
+        }
 
+        fun updateTree(project: Project) {
+            val toolWindow = ToolWindowManager.getInstance(project).getToolWindow(ID) ?: return
             val treeStructureContent = toolWindow.contentManager.findContent(PackageBreakdownTable.TITLE) ?: return
             val treeStructure = treeStructureContent.component
 
@@ -90,7 +83,10 @@ internal class ToolWindowFactory : ToolWindowFactory, DumbAware {
                     (treeStructure.treeTable.tableModel as TreeTableModel).updateData(newRootNode)
                 }
             }
+        }
 
+        fun updateHistory(project: Project) {
+            val toolWindow = ToolWindowManager.getInstance(project).getToolWindow(ID) ?: return
             val historicalDataContent = toolWindow.contentManager.findContent(HistoricalDataTable.TITLE) ?: return
             val historicalData = historicalDataContent.component
 
