@@ -27,6 +27,14 @@ class PluginCheckerService(private val project: Project) {
     private var testDirectories = mutableListOf<File>()
     private var sourceDirectories = mutableListOf<File>()
 
+    /**
+     * Check if the companion plugin is available and if the pitest plugin is applied
+     *
+     * If the project is mavenized no checks are performed, all plugins are assumed to be available.
+     * If the project is gradle, the companion plugin is checked first based on the existence of a task.
+     * If the companion plugin is available, the pitest plugins task performs the plugin checks
+     * and returns them as a JSON string to stdout.
+     */
     fun checkPlugins() {
         if (project.isMavenized) {
             isCompanionPluginAvailable = true
@@ -41,14 +49,29 @@ class PluginCheckerService(private val project: Project) {
         }
     }
 
-    fun checkBuildEnvironment() {
+    /**
+     * Gets build environment information
+     *
+     * If the project is mavenized, no actual checks are performed.
+     * It is assumed that the build file is a pom.xml and the test directories are src/test/{java/kotlin}.
+     *
+     * If the project is gradle, the build files and test directories are collected from the project.
+     */
+    fun getBuildEnvironment() {
         if (project.isMavenized) {
-            checkBuildEnvironmentMaven()
+            getBuildEnvironmentMaven()
         } else {
-            checkBuildEnvironmentGradle()
+            getBuildEnvironmentGradle()
         }
     }
 
+    /**
+     * Get the error message for the plugin checks
+     *
+     * @param withHeader If true, the error message will be prefixed with a title
+     * @return The error message or null if no errors were found
+     *          The message is formatted in HTML and designed to be placed in a <body> tag
+     */
     fun getErrorMessage(withHeader: Boolean = true): String? {
         var errorMessage = ""
 
@@ -76,14 +99,33 @@ class PluginCheckerService(private val project: Project) {
         return null
     }
 
+    /**
+     * Get the test directories of the project
+     *
+     * The test directories are collected from the project and its subprojects.
+     * On Android they are always empty since the information is not available.
+     *
+     * @return A list of source directories
+     */
     fun getTestDirectories(): List<File> {
         return testDirectories
     }
 
+    /**
+     * Get the used android build types for the project
+     *
+     * The build types are only available for Android projects.
+     * @return A list of build types, empty if the project is not an Android project
+     */
     fun getBuildTypes(): List<String> {
         return pluginCheckData?.androidBuildTypes ?: emptyList()
     }
 
+    /**
+     * Use the GradleConnector to check for the existence of the pitmutationmateStatusCheck task
+     * to determine if the companion plugin is available.
+     * If the task is available, task is executed, and it's output is checked for the pitest plugins existence.
+     */
     private fun checkPluginsGradle() {
         val projectDir = File(project.basePath ?: "")
 
@@ -99,20 +141,24 @@ class PluginCheckerService(private val project: Project) {
         }
     }
 
-    private fun checkBuildEnvironmentMaven() {
+    /**
+     * Get the build files and test directories for maven projects
+     *
+     * The build file is assumed to be a pom.xml.
+     * No test/source directories are assumed.
+     */
+    private fun getBuildEnvironmentMaven() {
         val projectDir = File(project.basePath ?: "")
         val pomFile = File(projectDir, "pom.xml")
         buildFiles.add(pomFile)
-        // add project base path + src/test/{java/kotlin} to testDirectories
-        testDirectories.addAll(
-            listOf(
-                File(projectDir, "src/test/java"),
-                File(projectDir, "src/test/kotlin")
-            )
-        )
     }
 
-    private fun checkBuildEnvironmentGradle() {
+    /**
+     * Get the build files and test directories for gradle projects
+     *
+     * The build files and test/source directories are collected from the project and its subprojects.
+     */
+    private fun getBuildEnvironmentGradle() {
         val projectDir = File(project.basePath ?: "")
 
         GradleConnector.newConnector().forProjectDirectory(projectDir).connect().use { connection ->
@@ -120,6 +166,12 @@ class PluginCheckerService(private val project: Project) {
         }
     }
 
+    /**
+     * Get the build files and test directories for gradle projects by checking the
+     * IdeaProject model for the build files and source/test directories.
+     *
+     * On Android the source/test directories are always empty since the IdeaProject is not available.
+     */
     private fun getBuildFiles(connection: ProjectConnection) {
         try {
             val ideaProject = connection.getModel(IdeaProject::class.java)
@@ -131,10 +183,14 @@ class PluginCheckerService(private val project: Project) {
                 }
             }
         } catch (e: Exception) {
-            logger.warn("Could not get gradle script file", e)
+            logger.warn("Could not get build environment information from gradle", e)
         }
     }
 
+    /**
+     * Use the GradleConnector to check for the existence of the pitmutationmateStatusCheck task
+     * to determine if the companion plugin is available.
+     */
     private fun checkForCompanionPlugin(connection: ProjectConnection) {
         try {
             val project = connection.getModel(GradleProject::class.java)
@@ -146,6 +202,10 @@ class PluginCheckerService(private val project: Project) {
         }
     }
 
+    /**
+     * Use the GradleConnector to execute the pitmutationmateStatusCheck task
+     * and check its output for the pitest plugins existence.
+     */
     private fun checkForPlugins(connection: ProjectConnection) {
         val outputStream = ByteArrayOutputStream()
         connection.newBuild().forTasks(TASK_NAME).setStandardOutput(outputStream).run()
@@ -159,6 +219,9 @@ class PluginCheckerService(private val project: Project) {
         logger.debug("Got plugin check data: $pluginCheckData")
     }
 
+    /**
+     * Recursively search for the pitmutationmateStatusCheck task in the project and its subprojects
+     */
     private fun findTaskRecursively(project: GradleProject): Boolean {
         // Check if the current project contains the task
         val taskExistsInCurrentProject = project.tasks.any { it.name == TASK_NAME }
@@ -170,10 +233,18 @@ class PluginCheckerService(private val project: Project) {
         return project.children.any { findTaskRecursively(it) }
     }
 
+    /**
+     * Get the name of the build file
+     *
+     * @return The name of the build file or "Unknown build file" if no build file was found
+     */
     private fun getBuildFileName(): String {
         return buildFiles.firstOrNull()?.name ?: "Unknown build file"
     }
 
+    /**
+     * Get the gradle plugin inclusion string for the companion plugin based on the build file
+     */
     private fun getCompanionPluginString(): String {
         val buildFile = getBuildFileName()
         return if (buildFile.endsWith(KOTLIN_BUILD_FILE)) {
@@ -185,8 +256,13 @@ class PluginCheckerService(private val project: Project) {
         }
     }
 
+    /**
+     * Get the pitest plugin name based on the build file and the android plugin
+     *
+     * @return A list containing the build file, the pitest plugin name and the plugin URL
+     */
     private fun getPitestPluginName(): List<String> {
-        val isAndroid = pluginCheckData?.androidPitestPluginApplied ?: false
+        val isAndroid = pluginCheckData?.androidPluginApplied ?: false
         val buildFile = getBuildFileName()
 
         return if (isAndroid) {

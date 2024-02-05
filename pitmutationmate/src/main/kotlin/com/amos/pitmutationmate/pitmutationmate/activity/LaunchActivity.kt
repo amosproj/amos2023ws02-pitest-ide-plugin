@@ -13,7 +13,7 @@ import com.intellij.openapi.startup.ProjectActivity
 
 class LaunchActivity : ProjectActivity {
     override suspend fun execute(project: Project) {
-        project.service<PluginCheckerService>().checkBuildEnvironment()
+        project.service<PluginCheckerService>().getBuildEnvironment()
 
         ApplicationManager.getApplication().invokeLater {
             val coverageReport = project.service<MutationResultService>().updateLastMutationResult()
