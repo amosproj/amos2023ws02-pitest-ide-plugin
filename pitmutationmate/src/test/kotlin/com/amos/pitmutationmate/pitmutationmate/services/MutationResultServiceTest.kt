@@ -143,7 +143,7 @@ class MutationResultServiceTest : LightJavaCodeInsightFixtureTestCase5() {
                 mutationCoverageTextRatio = "3/13",
                 testStrengthPercentage = 25,
                 testStrengthTextRatio = "3/12",
-                numberOfClasses = 1
+                numberOfClasses = 0
             ),
             mutationResult.totalResult
         )
