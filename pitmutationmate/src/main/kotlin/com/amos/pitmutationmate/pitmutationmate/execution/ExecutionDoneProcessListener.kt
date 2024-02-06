@@ -32,7 +32,7 @@ class ExecutionDoneProcessListener(val project: Project, private val classFqdns:
         // save and get latest pitest results
         project.service<MutationResultService>().updateLastMutationResult()
         val resultData = project.service<MutationResultService>().getMutationResult()
-            // update tool window with latest result data
+        // update tool window with latest result data
         ToolWindowFactory.Util.updateReport(project, resultData)
         ToolWindowFactory.Util.updateTree(project)
 

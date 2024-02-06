@@ -13,16 +13,13 @@ import javax.swing.JComponent
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-class RunConfigFormBuilder{
+class RunConfigFormBuilder {
 
     private var lineCount: Int = 0
     private var components = ArrayList<JComponent>()
     private var constraints = ArrayList<GridConstraints>()
 
-    fun addLabeledComponent(
-        labelText: String,
-        component: JComponent,
-    ): RunConfigFormBuilder {
+    fun addLabeledComponent(labelText: String, component: JComponent): RunConfigFormBuilder {
         val label = createLabelForComponent(labelText, component)
         return addLabeledComponent(label, component)
     }
@@ -43,10 +40,7 @@ class RunConfigFormBuilder{
         }
     }
 
-    private fun addLabeledComponent(
-        label: JComponent,
-        component: JComponent,
-    ): RunConfigFormBuilder {
+    private fun addLabeledComponent(label: JComponent, component: JComponent): RunConfigFormBuilder {
         val c = GridConstraints()
 
         c.row = lineCount
@@ -86,7 +80,7 @@ class RunConfigFormBuilder{
 
     fun buildPanel(): JPanel {
         val panel =  JPanel(GridLayoutManager(lineCount, 2))
-        for(i in 0..<components.size) {
+        for (i in 0 until components.size) {
             panel.add(components[i], constraints[i])
         }
         return panel

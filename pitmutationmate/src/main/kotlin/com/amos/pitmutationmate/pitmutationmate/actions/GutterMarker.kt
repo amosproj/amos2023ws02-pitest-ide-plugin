@@ -42,9 +42,9 @@ class GutterMarker : RunLineMarkerContributor() {
     }
 
     private fun isInnerClass(potentialInnerClass: PsiElement?): Boolean {
-        if(potentialInnerClass == null) {
+        if (potentialInnerClass == null) {
             return false
-        } else if (potentialInnerClass.parent is KtClass || potentialInnerClass.parent is PsiClass){
+        } else if (potentialInnerClass.parent is KtClass || potentialInnerClass.parent is PsiClass) {
             return true
         }
         return isInnerClass(potentialInnerClass.parent)

@@ -7,7 +7,6 @@ import com.amos.pitmutationmate.pitmutationmate.reporting.XMLParser
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.exists
 
@@ -18,7 +17,7 @@ class MutationResultService(private val project: Project) {
     private var lastHistoricResult: XMLParser.ResultData? = null
 
     fun getMutationResult(): XMLParser.ResultData? {
-        if (lastMutationResult == null){
+        if (lastMutationResult == null) {
             updateLastMutationResult()
         }
         return lastMutationResult
@@ -31,7 +30,7 @@ class MutationResultService(private val project: Project) {
 
         if (mutationReportPath.exists() && coverageReportPath.exists()) {
             val parser = XMLParser()
-            lastMutationResult =  parser.loadResultsFromXmlReport(mutationReportPath.toString(), coverageReportPath.toString())
+            lastMutationResult = parser.loadResultsFromXmlReport(mutationReportPath.toString(), coverageReportPath.toString())
         }
     }
 
@@ -67,6 +66,6 @@ class MutationResultService(private val project: Project) {
                 }
             }
         }
-        lastHistoricResult =  result
+        lastHistoricResult = result
     }
 }

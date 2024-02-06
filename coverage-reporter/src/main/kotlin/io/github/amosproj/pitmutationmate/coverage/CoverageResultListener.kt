@@ -101,7 +101,7 @@ class CoverageResultListener(
     }
 
     private fun writeFileSummaries() {
-        for(fileSummary in fileSummaryData.values) {
+        for (fileSummary in fileSummaryData.values) {
             write("<testMetaData>")
             write(makeNode(fileSummary.fileName, Tag.FileName))
             write(makeNode(fileSummary.packageName, Tag.PackageName))
