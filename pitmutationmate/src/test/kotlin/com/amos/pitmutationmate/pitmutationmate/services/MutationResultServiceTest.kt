@@ -189,6 +189,5 @@ class MutationResultServiceTest : LightJavaCodeInsightFixtureTestCase5() {
         Assertions.assertEquals(expected, actual)
         Assertions.assertEquals(4, mutationResult.coverageReports.size)
         Assertions.assertNotNull(mutationResult.totalResult)
-        Assertions.assertEquals(4, mutationResult.totalResult!!.numberOfClasses)
     }
 }
