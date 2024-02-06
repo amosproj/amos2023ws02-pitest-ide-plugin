@@ -83,11 +83,9 @@ class XMLParser {
 
             val fileName = getTextContent(element, "FileName")
             val packageName = getTextContent(element, "PackageName")
-            val mutatedClass = getTextContent(element, "MutatedClass")
             val coverageReport = CoverageReport(
                 fileName,
                 packageName,
-                mutatedClass,
                 getLineCoveragePercentage(element),
                 getLineCoverageTextRatio(element),
                 getMutationCoveragePercentage(element),
@@ -110,7 +108,6 @@ class XMLParser {
             val coverageReport = CoverageReport(
                 "package",
                 packageName,
-                "package",
                 getLineCoveragePercentage(element),
                 getLineCoverageTextRatio(element),
                 getMutationCoveragePercentage(element),
@@ -131,7 +128,6 @@ class XMLParser {
             val element = mutationsNodeList.item(i) as? Element ?: continue
 
             val coverageReport = CoverageReport(
-                "totals",
                 "totals",
                 "totals",
                 getLineCoveragePercentage(element),
@@ -241,8 +237,10 @@ class XMLParser {
             packageReports.add(packageReport)
         }
         fun addCoverageReportTotals(coverageReport: CoverageReport) {
-            if (coverageReports.isNotEmpty()) {
-                coverageReport.numberOfClasses = coverageReports.size
+            if (packageReports.isNotEmpty()) {
+                for(packageReport in packageReports) {
+                    coverageReport.numberOfClasses += packageReport.numberOfClasses
+                }
             }
             totalResult = coverageReport
         }
@@ -267,7 +265,6 @@ class XMLParser {
     data class CoverageReport(
         val fileName: String,
         val packageName: String,
-        val mutatedClass: String,
         var lineCoveragePercentage: Int,
         val lineCoverageTextRatio: String,
         var mutationCoveragePercentage: Int,

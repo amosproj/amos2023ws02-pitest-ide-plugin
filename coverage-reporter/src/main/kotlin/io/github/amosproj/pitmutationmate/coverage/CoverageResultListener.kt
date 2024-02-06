@@ -8,6 +8,7 @@ import org.pitest.coverage.ReportCoverage
 import org.pitest.mutationtest.ClassMutationResults
 import org.pitest.mutationtest.MutationResultListener
 import org.pitest.mutationtest.report.html.MutationHtmlReportListener
+import org.pitest.mutationtest.report.html.MutationTestSummaryData
 import org.pitest.mutationtest.report.html.MutationTotals
 import org.pitest.mutationtest.report.html.PackageSummaryMap
 import org.pitest.util.ResultOutputStrategy
@@ -16,7 +17,7 @@ import java.io.IOException
 import java.io.Writer
 
 internal enum class Tag {
-    FileName, PackageName, MutatedClass, LineCoverage, LineCoveragePercentage, MutationCoverage,
+    FileName, PackageName, LineCoverage, LineCoveragePercentage, MutationCoverage,
     MutationCoveragePercentage, TestStrengthPercentage, TestStrength, NumberOfClasses
 }
 
@@ -29,6 +30,7 @@ class CoverageResultListener(
     private var out: Writer? = null
     private var totals: MutationTotals = MutationTotals()
     private var packageSummaryData: PackageSummaryMap = PackageSummaryMap()
+    private var fileSummaryData = HashMap<String, MutationTestSummaryData>()
 
     init {
         this.out = outputStrategy?.createWriterForFile("coverageInformation.xml")
@@ -79,26 +81,32 @@ class CoverageResultListener(
         if (htmlListener is MutationHtmlReportListener) {
             val testMetaData = (htmlListener as MutationHtmlReportListener).createSummaryData(coverage, results)
             val classTotals = testMetaData.totals
-
             totals.add(classTotals)
             packageSummaryData.update(results.packageName, testMetaData)
-
-            write("<testMetaData>")
-            write(makeNode(results.fileName, Tag.FileName))
-            write(makeNode(results.packageName, Tag.PackageName))
-            write(makeNode(results.mutatedClass.toString(), Tag.MutatedClass))
-            writeMetaDataNode(classTotals)
-            write("</testMetaData>\n")
+            fileSummaryData[results.fileName]?.add(testMetaData) ?: run {
+                fileSummaryData[results.fileName] = testMetaData
+            }
         }
     }
 
     override fun runEnd() {
         try {
+            writeFileSummaries()
             writePackageSummaries()
             writeTotals()
             out!!.close()
         } catch (e: IOException) {
             throw Unchecked.translateCheckedException(e)
+        }
+    }
+
+    private fun writeFileSummaries() {
+        for(fileSummary in fileSummaryData.values) {
+            write("<testMetaData>")
+            write(makeNode(fileSummary.fileName, Tag.FileName))
+            write(makeNode(fileSummary.packageName, Tag.PackageName))
+            writeMetaDataNode(fileSummary.totals)
+            write("</testMetaData>\n")
         }
     }
 
