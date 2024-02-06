@@ -23,7 +23,6 @@ class LatestPiTestReport(
     coverageReport: XMLParser.CoverageReport = XMLParser.CoverageReport(
         "Test",
         "Test",
-        "Test",
         lineCoveragePercentage = 0,
         lineCoverageTextRatio = "",
         mutationCoveragePercentage = 0,
@@ -61,7 +60,7 @@ class LatestPiTestReport(
 
         val table = JBTable(model)
 
-        table.setRowHeight(lineCoverageBar.height + 2)
+        table.rowHeight = lineCoverageBar.height + 2
         table.tableHeader.reorderingAllowed = false
         table.tableHeader.resizingAllowed = false
         table.tableHeader.font = UIUtil.getLabelFont()
@@ -103,12 +102,18 @@ class LatestPiTestReport(
             row: Int,
             column: Int
         ): Component {
-            if (value is CustomProgressBar) {
-                return value
-            } else if (value is JBLabel) {
-                return value
-            } else {
-                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
+            return when (value) {
+                is CustomProgressBar -> {
+                    value
+                }
+
+                is JBLabel -> {
+                    value
+                }
+
+                else -> {
+                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
+                }
             }
         }
     }

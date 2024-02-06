@@ -22,7 +22,7 @@ class GutterMarker : RunLineMarkerContributor() {
         val project = psielement.project
 
         if (psielement.parent is PsiClass && psielement.text.equals("class")) {
-            if (project.service<TestEnvCheckerService>().isPsiTestClass(psielement.parent as PsiClass)) {
+            if (project.service<TestEnvCheckerService>().isPsiTestClass(psielement.parent as PsiClass) || isInnerClass(psielement.parent)) {
                 return null
             }
             val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${(psielement.parent as PsiClass).name}'" }
@@ -31,7 +31,7 @@ class GutterMarker : RunLineMarkerContributor() {
             return Info(gutterIcon, toolTipProvider, getAction(project, fqn))
         }
         if (psielement.parent is KtClass && psielement.text.equals("class")) {
-            if (project.service<TestEnvCheckerService>().isKtTestClass(psielement.parent as KtClass)) {
+            if (project.service<TestEnvCheckerService>().isKtTestClass(psielement.parent as KtClass) || isInnerClass(psielement.parent)) {
                 return null
             }
             val toolTipProvider: (PsiElement) -> String = { _ -> "Run PIT MutationMate on '${(psielement.parent as KtClass).name}'" }
@@ -39,6 +39,15 @@ class GutterMarker : RunLineMarkerContributor() {
             return Info(gutterIcon, toolTipProvider, getAction(project, fqn))
         }
         return null
+    }
+
+    private fun isInnerClass(potentialInnerClass: PsiElement?): Boolean {
+        if (potentialInnerClass == null) {
+            return false
+        } else if (potentialInnerClass.parent is KtClass || potentialInnerClass.parent is PsiClass) {
+            return true
+        }
+        return isInnerClass(potentialInnerClass.parent)
     }
 
     private fun getAction(project: Project, fqdn: String?): AnAction {

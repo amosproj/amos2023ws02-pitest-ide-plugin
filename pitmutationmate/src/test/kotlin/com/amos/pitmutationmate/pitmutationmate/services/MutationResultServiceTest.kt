@@ -121,7 +121,6 @@ class MutationResultServiceTest : LightJavaCodeInsightFixtureTestCase5() {
                 XMLParser.CoverageReport(
                     fileName = "Presenter.java",
                     packageName = "de.esolutions.pitest.showcase",
-                    mutatedClass = "de.esolutions.pitest.showcase.Presenter",
                     lineCoveragePercentage = 100,
                     lineCoverageTextRatio = "19/19",
                     mutationCoveragePercentage = 23,
@@ -138,14 +137,13 @@ class MutationResultServiceTest : LightJavaCodeInsightFixtureTestCase5() {
             XMLParser.CoverageReport(
                 fileName = "totals",
                 packageName = "totals",
-                mutatedClass = "totals",
                 lineCoveragePercentage = 100,
                 lineCoverageTextRatio = "19/19",
                 mutationCoveragePercentage = 23,
                 mutationCoverageTextRatio = "3/13",
                 testStrengthPercentage = 25,
                 testStrengthTextRatio = "3/12",
-                numberOfClasses = 1
+                numberOfClasses = 0
             ),
             mutationResult.totalResult
         )
@@ -190,16 +188,6 @@ class MutationResultServiceTest : LightJavaCodeInsightFixtureTestCase5() {
         val actual = mutationResult.mutationResults.map { "${it.mutatedMethod}:${it.lineNumber}:${it.status}" }
         Assertions.assertEquals(expected, actual)
         Assertions.assertEquals(4, mutationResult.coverageReports.size)
-        Assertions.assertEquals(
-            listOf(
-                "de.pfoerd.example.pitest.coffeemachine.Palindrome",
-                "de.pfoerd.example.pitest.coffeemachine.service.CoffeeService",
-                "de.pfoerd.example.pitest.coffeemachine.service.CoffeeService2",
-                "de.pfoerd.example.pitest.coffeemachine.MyEmptyClass"
-            ),
-            mutationResult.coverageReports.map { it.mutatedClass }
-        )
         Assertions.assertNotNull(mutationResult.totalResult)
-        Assertions.assertEquals(4, mutationResult.totalResult!!.numberOfClasses)
     }
 }

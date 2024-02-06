@@ -26,7 +26,8 @@ class RunConfigurationActionRunner {
             runConfig.configuration.let {
                 val rc = it as RunConfiguration
                 if (classFQN != null) {
-                    rc.classFQN = classFQN
+                    // Adds a star at the end of each ClassFQN so every inner class is included in the pitest task
+                    rc.classFQN = classFQN.split(",").joinToString(separator = ",") { classIt -> "$classIt*" }
                 }
             }
             runManager.addConfiguration(runConfig)

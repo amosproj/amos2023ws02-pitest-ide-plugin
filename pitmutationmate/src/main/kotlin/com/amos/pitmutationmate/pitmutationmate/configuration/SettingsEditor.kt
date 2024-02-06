@@ -4,13 +4,13 @@
 package com.amos.pitmutationmate.pitmutationmate.configuration
 
 import com.amos.pitmutationmate.pitmutationmate.services.PluginCheckerService
+import com.amos.pitmutationmate.pitmutationmate.ui.RunConfigFormBuilder
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.ui.TextFieldWithHistory
 import com.intellij.ui.components.JBTextField
-import com.intellij.util.ui.FormBuilder
 import com.intellij.util.ui.UIUtil
 import java.awt.Font
 import javax.swing.JCheckBox
@@ -34,7 +34,7 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
             FileChooserDescriptorFactory.createSingleFileDescriptor()
         )
         targetClasses.emptyText.setText("com.myproj.package1.classA,com.myproj.package1.classB,com.myproj.package2.classC,...")
-        myPanel = FormBuilder.createFormBuilder()
+        myPanel = RunConfigFormBuilder.createFormBuilder()
             .addLabeledComponent("Gradle task", gradleTaskField)
             .addLabeledComponent("Gradle script", gradleExecutableField)
             .addLabeledComponent("Android build type", buildTypesField)
@@ -42,7 +42,7 @@ class SettingsEditor : SettingsEditor<RunConfiguration>() {
             .addLabeledComponent("Pitest Verbose mode", verboseCheckbox)
             .addLabeledComponent("Target classes", targetClasses)
             .addLabeledComponent("", getScopeTipMessage())
-            .panel
+            .buildPanel()
     }
 
     private fun getScopeTipMessage(): JLabel {

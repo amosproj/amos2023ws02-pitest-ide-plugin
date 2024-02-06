@@ -52,6 +52,8 @@ class HistoricalDataTable(project: Project) : JPanel() {
         alreadyFoundData.clear()
 
         val bundledReports = project.service<MutationResultService>().getHistoricMutationResults()
+            ?: return DataNode("All", "", "", "", "", mutableListOf())
+
         val coverageReports = bundledReports.coverageReports
         val packageReports = bundledReports.packageReports
         val totalReport = bundledReports.totalResult

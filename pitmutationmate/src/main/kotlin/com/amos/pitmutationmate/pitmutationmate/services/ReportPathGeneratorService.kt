@@ -50,8 +50,7 @@ class ReportPathGeneratorService(private val project: Project) {
      * Checks if either the given build type or the debug build type exists.
      * @return the path to the report directory with the build type or without
      */
-    private fun checkForDebugBuiltType(): Path {
-        val path = getReportPath()
+    private fun checkForDebugBuiltType(path: Path): Path {
         if (!buildType.isNullOrEmpty() && Files.exists(Path.of("$path/$buildType"))) {
             return Path.of("$path/$buildType")
         } else if (Files.exists(Path.of("$path/debug"))) {
@@ -64,26 +63,18 @@ class ReportPathGeneratorService(private val project: Project) {
      * Returns the path to mutations.xml.
      * @return the path to the report file
      */
-    fun getReportMutationsFile(): Path {
-        val path = checkForDebugBuiltType()
-        return Path.of("$path/mutations.xml")
+    fun getReportMutationsFile(path: Path = getReportPath()): Path {
+        val fullPath = checkForDebugBuiltType(path)
+        return Path.of("$fullPath/mutations.xml")
     }
 
     /**
      * Returns the path to coverage.xml.
      * @return the path to the report file
      */
-    fun getReportCoverageFile(): Path {
-        val path = checkForDebugBuiltType()
-        return Path.of("$path/coverageInformation.xml")
-    }
-
-    fun getMutationInformationPath(path: String): Path {
-        return Path.of("$path/coverageInformation.xml")
-    }
-
-    fun getCoverageInformationPath(path: String): Path {
-        return Path.of("$path/coverageInformation.xml")
+    fun getReportCoverageFile(path: Path = getReportPath()): Path {
+        val fullPath = checkForDebugBuiltType(path)
+        return Path.of("$fullPath/coverageInformation.xml")
     }
 
     fun setBuildType(buildType: String?) {
