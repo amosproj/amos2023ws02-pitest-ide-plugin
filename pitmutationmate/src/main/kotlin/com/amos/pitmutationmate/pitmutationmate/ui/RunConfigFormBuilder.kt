@@ -56,19 +56,21 @@ class RunConfigFormBuilder {
         constraints.add(c)
 
         components.add(component)
-        constraints.add(GridConstraints(
-            c.row,
-            1,
-            c.rowSpan,
-            c.colSpan,
-            c.anchor,
-            getFill(component),
-            getSizePolicy(component),
-            c.vSizePolicy,
-            null,
-            getPreferredSize(component),
-            null
-        ))
+        constraints.add(
+            GridConstraints(
+                c.row,
+                1,
+                c.rowSpan,
+                c.colSpan,
+                c.anchor,
+                getFill(component),
+                getSizePolicy(component),
+                c.vSizePolicy,
+                null,
+                getPreferredSize(component),
+                null
+            )
+        )
 
         lineCount++
         return this
@@ -79,7 +81,7 @@ class RunConfigFormBuilder {
     }
 
     fun buildPanel(): JPanel {
-        val panel =  JPanel(GridLayoutManager(lineCount, 2))
+        val panel = JPanel(GridLayoutManager(lineCount, 2))
         for (i in 0 until components.size) {
             panel.add(components[i], constraints[i])
         }
