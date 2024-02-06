@@ -238,7 +238,7 @@ class XMLParser {
         }
         fun addCoverageReportTotals(coverageReport: CoverageReport) {
             if (packageReports.isNotEmpty()) {
-                for(packageReport in packageReports) {
+                for (packageReport in packageReports) {
                     coverageReport.numberOfClasses += packageReport.numberOfClasses
                 }
             }
