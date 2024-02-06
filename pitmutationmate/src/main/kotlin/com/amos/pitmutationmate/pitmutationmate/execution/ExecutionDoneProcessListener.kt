@@ -30,8 +30,9 @@ class ExecutionDoneProcessListener(val project: Project, private val classFqdns:
         }
 
         // save and get latest pitest results
-        val resultData = project.service<MutationResultService>().updateLastMutationResult()
-        // update tool window with latest result data
+        project.service<MutationResultService>().updateLastMutationResult()
+        val resultData = project.service<MutationResultService>().getMutationResult()
+            // update tool window with latest result data
         ToolWindowFactory.Util.updateReport(project, resultData)
         ToolWindowFactory.Util.updateTree(project)
 
@@ -41,6 +42,8 @@ class ExecutionDoneProcessListener(val project: Project, private val classFqdns:
         }
         // archive the pitest run
         project.service<RunArchiveService>().archiveRun()
+        // newest run is also part of the history tab
+        project.service<MutationResultService>().updateHistoricMutationResults()
         ToolWindowFactory.Util.updateHistory(project)
     }
 

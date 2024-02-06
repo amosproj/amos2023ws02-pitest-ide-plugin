@@ -16,7 +16,10 @@ class LaunchActivity : ProjectActivity {
         project.service<PluginCheckerService>().getBuildEnvironment()
 
         ApplicationManager.getApplication().invokeLater {
-            val coverageReport = project.service<MutationResultService>().updateLastMutationResult()
+            project.service<MutationResultService>().updateLastMutationResult()
+            val coverageReport = project.service<MutationResultService>().getMutationResult()
+            // also parse history data for history tab
+            project.service<MutationResultService>().updateHistoricMutationResults()
             // Check if coverageResult is stored
             if (coverageReport != null) {
                 ToolWindowFactory.Util.updateReport(project, coverageReport)

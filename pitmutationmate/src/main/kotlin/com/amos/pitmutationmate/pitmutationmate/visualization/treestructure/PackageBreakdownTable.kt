@@ -48,7 +48,7 @@ class PackageBreakdownTable(project: Project) : JPanel() {
 
     fun createDataStructure(project: Project): DataNode {
         deleteTree(rootNode)
-        val resultData = project.service<MutationResultService>().updateLastMutationResult()
+        val resultData = project.service<MutationResultService>().getMutationResult()
         val coverageReports = resultData?.coverageReports
         val packageReports = resultData?.packageReports
         val totalReport = resultData?.totalResult
